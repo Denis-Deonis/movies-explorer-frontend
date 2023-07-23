@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import "./App.css";
 
-
 import Main from "../Main/Main";
+import Register from "../Register/Register.jsx";
+import Login from "../Login/Login";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({
@@ -14,10 +15,13 @@ function App() {
   });
 
   return (
-    <CurrentUserContext.Provider  value={currentUser}>
-      <div className='page'>
-        <Main/>
-        <Routes></Routes>
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="page">
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/signup" element={<Register />} />
+          <Route path="/signin" element={<Login />} />
+        </Routes>
       </div>
     </CurrentUserContext.Provider>
   );

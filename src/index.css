@@ -17,6 +17,11 @@
 @import url('./components/Main/Portfolio/Portfolio.css');
 /* </Main> */
 
+/* <AuthForm> */
+@import url('./components/AuthForm/AuthForm.css');
+@import url('./components/Register/Register.css');
+/* </AuthForm> */
+
 /* <Footer> */
 @import url('./components/Footer/Footer.css');
 /* </Footer> */

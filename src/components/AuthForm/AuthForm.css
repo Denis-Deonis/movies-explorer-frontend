@@ -1,0 +1,133 @@
+.auth-form {
+  width: 25rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-form__logo {
+  margin: 70px 0 40px 0;
+  width: 38px;
+  height: 38px;
+  background-color: inherit;
+  border: none;
+  background-image: url('../../images/logo.svg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  transition: all .7s ease-out;
+}
+
+.auth-form__logo:hover {
+  background-size: 34px 34px;
+  -webkit-transform: rotate(-360deg);
+          transform: rotate(-360deg);
+}
+
+.auth-form__title {
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.auth-form__form {
+  margin: 40px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.auth-form__box {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-form__input-label {
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 400;
+  color: #8B8B8B;
+}
+
+.auth-form__input {
+  margin-top: 10px;
+  padding: 15px;
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 400;
+  background-color: #2F2F2F;
+  color: #FFF;
+  border: none;
+  border-radius: 8px;
+}
+
+.auth-form__input:focus {
+  outline: 1px solid #FFF;
+  outline-offset: -1px;
+}
+
+.auth-form__wrapper {
+  margin: auto 0 0 0;
+  width: 100%;
+}
+
+.auth-form__submit {
+  margin-top: 90px;
+  width: 100%;
+  height: 45px;
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 500;
+  border-radius: 3px;
+  background: #4285F4;
+  color: #FFF;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s ease-out;
+}
+
+.auth-form__submit:hover {
+  opacity: .8;
+}
+
+
+.auth-form__transition {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.auth-form__transition-text {
+  margin: 0;
+  user-select: none;
+
+  color: #8B8B8B;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.auth-form__transition-link {
+  color: #4285F4;
+  text-align: center;
+
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-decoration: none;
+
+  transition: all .2s ease-out;
+}
+
+.auth-form__transition-link:hover {
+  opacity: .7;
+}
