@@ -1,8 +1,11 @@
-import Promo from "./Promo/Promo";
 import Header from "../Header/Header";
+import Promo from "./Promo/Promo";
 import Project from "./Project/Project";
 import Techno from "./Techno/Techno";
 import Student from "./Student/Student";
+import Portfolio from "./Portfolio/Portfolio";
+import Footer from "../Footer/Footer";
+
 
 export default function Main() {
   return (
@@ -12,6 +15,8 @@ export default function Main() {
       <Project/>
       <Techno/>
       <Student/>
+      <Portfolio/>
+      <Footer/>
     </div>
   )
 }

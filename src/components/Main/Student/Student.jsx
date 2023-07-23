@@ -1,7 +1,7 @@
 import SectionTitle from "../SectionTitle/SectionTitle";
 import { birthDate } from '../../../utils/constants.js';
 import getEndLine from '../../../utils/getEndLine.js';
-import myPhoto from '../../../images/my_photo.png';
+import myPhoto from './my_photo.png';
 
 export default function Student() {
   function getAge({ birthDate, dateTitles }) {
@@ -28,14 +28,16 @@ export default function Student() {
             Системный администратор в школе. Фронтенд-разработка моё хобби. С 2022 года занимаюсь веб разработкой.
             Люблю верстать сайты так, как в эти моменты чувствую себя творцом.
           </p>
-          <a
-            href="https://github.com/Denis-Deonis"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="student__link"
-          >
-            Github
+          <p className="student__link">
+            <a
+              className="student__link_text"
+              href="https://github.com/Denis-Deonis"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Github
           </a>
+          </p>
         </div>
         <img
           className="student__photo"

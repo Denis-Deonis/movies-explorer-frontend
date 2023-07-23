@@ -15,4 +15,6 @@
   -moz-text-size-adjust: 100%;
   overflow: -moz-scrollbars-vertical;
   overflow-y: scroll;
+
+  scroll-behavior: smooth !important;
 }
