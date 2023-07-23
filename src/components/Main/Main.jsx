@@ -10,7 +10,7 @@ import Footer from "../Footer/Footer";
 export default function Main() {
   return (
     <div >
-      <Header />
+      <Header theme={{ default: false }}/>
       <Promo/>
       <Project/>
       <Techno/>

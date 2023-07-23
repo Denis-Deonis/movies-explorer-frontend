@@ -21,6 +21,9 @@
 
 .auth-form__logo:hover {
   background-size: 34px 34px;
+}
+
+.auth-form__logo:focus {
   -webkit-transform: rotate(-360deg);
           transform: rotate(-360deg);
 }
