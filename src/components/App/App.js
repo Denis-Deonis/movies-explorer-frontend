@@ -4,8 +4,9 @@ import { CurrentUserContext } from "../../context/CurrentUserContext";
 import "./App.css";
 
 import Main from "../Main/Main";
-import Register from "../Register/Register.jsx";
+import Register from "../Register/Register";
 import Login from "../Login/Login";
+import Profile from "../Profile/Profile";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/signin" element={<Login />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </CurrentUserContext.Provider>

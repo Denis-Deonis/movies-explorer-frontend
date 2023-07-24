@@ -12,6 +12,10 @@
 @import url('./components/Navigation/Navigation.css');
 /* </Navigation> */
 
+/* <Profile> */
+@import url('./components/Profile/Profile.css');
+/* </Profile> */
+
 /* <Main> */
 @import url('./components/Main/SectionTitle/SectionTitle.css');
 @import url('./components/Main/Promo/Promo.css');
