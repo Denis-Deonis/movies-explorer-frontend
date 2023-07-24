@@ -16,6 +16,10 @@
 @import url('./components/Profile/Profile.css');
 /* </Profile> */
 
+/* <Movies> */
+@import url('./components/SearchForm/SearchForm.css');
+/* </Movies> */
+
 /* <Main> */
 @import url('./components/Main/SectionTitle/SectionTitle.css');
 @import url('./components/Main/Promo/Promo.css');
