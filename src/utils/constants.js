@@ -3,6 +3,8 @@ export const birthDate = {
   dateTitles: ["год", "года", "лет"],
 };
 
+export const durationTitles = ["минута", "минуты", "минут"];
+
 export const registerFormSetting = {
   type: "register",
   title: "Добро пожаловать!",

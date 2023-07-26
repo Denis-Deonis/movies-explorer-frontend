@@ -14,7 +14,7 @@ export default function SearchForm() {
         <button className="search-form__button"/>
       </label>
       <label className="search-form__wrapper search-form__wrapper_short-film">
-        <span className="search-form__"></span>
+        <span className="search-form__line"></span>
         <input
           id="short-film-toggle"
           className="search-form__checkbox"
