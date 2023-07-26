@@ -27,6 +27,8 @@ export default function MoviesCardList({ cardList, typeCardBtn }) {
         <button className="movies-card__more-btn">
           Ещё
         </button>} */}
+
+        
       <button className="movies-card__more-btn">Ещё</button>
     </section>
   );

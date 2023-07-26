@@ -1,88 +1,83 @@
 .card {
+  width: 364px;
+  height: 281px;
   box-sizing: border-box;
-  background-color: var(--color-dark-card-bg);
   border-radius: 6px;
-  width: 300px;
-  height: 200px;
-}
-
-.card__header {
-  padding: 14px;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.card__title {
-  margin: 0;
-  padding: 0;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.card__duration {
-  margin: 0;
-  padding: 0;
-  font-size: 10px;
-  line-height: 18px;
-  font-weight: 400;
-  color: #8B8B8B;
-  flex-shrink: 0;
+  background: #222;
 }
 
 .card__img {
   width: 100%;
   height: 168px;
   object-fit: contain;
+  border: none;
+
+}
+
+.card__group {
+  margin: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card__title {
+  margin: 0;
+  padding: 0;
+
+  color: #FFF;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card__btn {
   display: block;
-  margin: 14px auto;
-  padding: 0;
-  width: 100px;
-  height: 29px;
-  font-size: 12px;
-  line-height: 11px;
-  font-weight: 400;
-  color: var(--color-white);
+
+  height: 1.875rem;
+  width: 1.875rem;
+
   border: none;
   border-radius: 30px;
-  background-color: #313131;
+  background-color: transparent;
+  background-image: url('./save4d.svg');
   cursor: pointer;
-  transition: color .2s ease-out;
+  transition: all .2s ease-out;
 }
 
-.card__btn:hover {
-  color: var(--color-white-hover);
+/* .card__btn:hover {
+
 }
 
 .card__btn_type_delete {
 
-  background-size: 8px 8px;
-  background-repeat: no-repeat;
-  background-position: center;
-  transition: background-size .2s ease-out;
+
 }
 
 .card__btn_type_delete:hover {
-  background-size: 12px 12px;
+
 }
 
 .card__btn_saved {
-  background-color: var(--color-pink);
 
-  background-size: 10px 10px;
-  background-repeat: no-repeat;
-  background-position: center;
-  transition: all .2s ease-out;
 }
 
 .card__btn_saved:hover {
 
-  background-color: #313131;
+} */
+
+
+.card__duration {
+  margin-left: 1rem;
+  padding: 0;
+  color: #8B8B8B;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
