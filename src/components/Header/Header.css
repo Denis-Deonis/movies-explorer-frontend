@@ -81,7 +81,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 70vw;
+  width: 100%;
   height: 100vh;
   display: block;
   opacity: 0;
@@ -154,8 +154,11 @@
 }
 
 @media (min-width: 768px) {
-  .header {
+  /* .header {
     width: 45.5rem;
+  } */
+  .header__overlay {
+    width: 32.5rem;
   }
 }
 

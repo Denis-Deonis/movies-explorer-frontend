@@ -1,8 +1,11 @@
 .movies-card {
-  margin: 70px auto 0;
+  /* margin: 70px auto 0;
   padding-top: 5rem;
   height: 57vh;
-  width: 71.25rem;
+  width: 71.25rem; */
+
+  width: 95vw;
+  margin: 2.8125rem auto 0;
   border-top: 1px solid #424242;
 
   display: grid;
@@ -11,7 +14,7 @@
 
 .movies-card__list {
   margin: 0;
-  padding: 0;
+  padding-top: 3.125rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, 364px);
   justify-content: center;
@@ -41,4 +44,22 @@
 
 .movies-card__more-button:hover {
   opacity: .7;
+}
+
+@media (min-width: 768px) {
+  .movies-card {
+    margin: 6.8125rem auto 0;
+    padding-top: 5rem;
+
+    grid-template-rows: 5fr 1fr ;
+  }
+}
+
+@media (min-width: 1280px) {
+  .movies-card {
+    margin: 4.375rem auto 0;
+    width: 71.25rem;
+
+    grid-template-rows: 5fr 1fr ;
+  }
 }

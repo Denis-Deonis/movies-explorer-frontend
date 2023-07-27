@@ -2,16 +2,16 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  width: 410px;
+  width: 25.625rem;
   height: 80vh;
 }
 
 .profile__title {
   margin: 0;
-  padding-top: 74px;
+  padding-top: 4.625rem;
 
   text-align: center;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -117,6 +117,17 @@
 }
 
 
-@media (max-width: 767px) {
-  
+@media (max-width: 480px) {
+  .profile {
+    width: 16.25rem;
+  }
+  .profile__title {
+    padding-top: 4.375rem;
+  }
+  .profile__submit {
+    font-size: .75rem;
+  }
+  .profile__btn-exit {
+    font-size: .75rem;
+  }
 }
