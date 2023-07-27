@@ -56,12 +56,12 @@
 
 .student__link {
   margin: 0;
-
-  padding-top: 8.1875rem;
+  padding-top: 2rem;
 }
 
 .student__link_text {
   display: inline-block;
+  margin-right: .625rem;
   color: #fff;
   font-size: 14px;
   font-style: normal;
@@ -74,5 +74,5 @@
 
 .student__link_text:hover {
   opacity: .7;
-  text-shadow: 18px -9px #3DDC84;
+  text-shadow: 15px -13px #3DDC84;
 }

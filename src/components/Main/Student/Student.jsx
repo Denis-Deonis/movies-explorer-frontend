@@ -1,7 +1,7 @@
 import SectionTitle from "../SectionTitle/SectionTitle";
-import { birthDate } from '../../../utils/constants.js';
-import getEndLine from '../../../utils/getEndLine.js';
-import myPhoto from './my_photo.png';
+import { birthDate } from "../../../utils/constants.js";
+import getEndLine from "../../../utils/getEndLine.js";
+import myPhoto from "./my_photo.png";
 
 export default function Student() {
   function getAge({ birthDate, dateTitles }) {
@@ -25,8 +25,16 @@ export default function Student() {
             Фронтенд-разработчик, {getAge(birthDate)}
           </p>
           <p className="student__text">
-            Системный администратор в школе. Фронтенд-разработка моё хобби. С 2022 года занимаюсь веб разработкой.
-            Люблю верстать сайты так, как в эти моменты чувствую себя творцом.
+            Системный администратор в школе. Фронтенд-разработка моё хобби. С
+            2022 года занимаюсь веб разработкой. Люблю верстать сайты так, как в
+            эти моменты чувствую себя творцом.
+          </p>
+          <p className="student__text">
+            Стараюсь постоянно изучать новое: делаю дополнительные проекты на
+            курсах, решаю задачки на Codewars. Читаю дополнительные источники,
+            мои любимые: learn.javascript.ru, регулярные новости фронтенда на
+            Хабре от HTML Academy, классные статьи от CSS Tricks или Josh
+            Comeau.
           </p>
           <p className="student__link">
             <a
@@ -36,7 +44,15 @@ export default function Student() {
               rel="noopener noreferrer"
             >
               Github
-          </a>
+            </a>
+            <a
+              className="student__link_text"
+              href="https://www.codewars.com/users/Denis-Deonis"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Codewars
+            </a>
           </p>
         </div>
         <img

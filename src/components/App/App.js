@@ -9,6 +9,7 @@ import Login from "../Login/Login";
 import Profile from "../Profile/Profile";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
+import Page404 from "../Page404/Page404";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({
@@ -21,6 +22,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Routes>
+          <Route path="*" element={<Page404 />} />
           <Route path="/" element={<Main />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/signin" element={<Login />} />
