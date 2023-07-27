@@ -23,15 +23,14 @@ export default function MoviesCard({
       <div className="card__group">
         <h2 className="card__title">{name}</h2>
         <button
-          className={`card__btn ${
+          className={`card__button ${
             !typeCardBtn.save
-              ? "card__btn_type_delete"
-              : isSavedMovieCard
-              ? "card__btn_saved"
-              : ""
+            ? 'card__button_type_delete'
+            : isSavedMovieCard
+            ? "card__button_type_seved"
+            : "card__button_type_like"
           }`}
         >
-          {/* {!typeCardBtn.save || isSavedMovieCard ? "" : "Сохранить"} */}
         </button>
       </div>
       <p className="card__duration">{getDuration(duration, durationTitles)}</p>

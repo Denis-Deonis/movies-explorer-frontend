@@ -1,18 +1,10 @@
 import MoviesCard from "../MoviesCard/MoviesCard";
 
-export default function MoviesCardList({ cardList, typeCardBtn }) {
+export default function MoviesCardList({ cardLists, typeCardBtn }) {
   return (
     <section className="movies-card">
       <ul className="movies-card__list">
-        <MoviesCard
-          key={cardList.movieId}
-          movieId={cardList.movieId}
-          duration={cardList.duration}
-          image={cardList.image}
-          name={cardList.nameRU}
-          typeCardBtn={typeCardBtn}
-        />
-        {cardList.map((card) => (
+        {cardLists.map((card) => (
           <MoviesCard
             key={card.movieId}
             movieId={card.movieId}
@@ -23,13 +15,9 @@ export default function MoviesCardList({ cardList, typeCardBtn }) {
           />
         ))}
       </ul>
-      {/* {cardList.length > 2 &&
-        <button className="movies-card__more-btn">
-          Ещё
-        </button>} */}
-
-        
-      <button className="movies-card__more-btn">Ещё</button>
+      {cardLists.length > 2 && (
+        <button className="movies-card__more-btn">Ещё</button>
+      )}
     </section>
   );
 }
