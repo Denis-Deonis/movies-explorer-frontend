@@ -5,7 +5,7 @@
   top: 0;
   padding: 144px 0 48px 0;
   display: grid;
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto;
   align-items: center;
   gap: 24px;
   width: 100%;
@@ -28,6 +28,17 @@
   gap: 24px;
 }
 
+.navigation__item {
+  display: inline-block;
+  opacity: 1;
+  transition: all .2s ease-out;
+}
+
+.navigation__item:hover {
+  opacity: .7;
+  border-bottom: 2px solid #FFF;
+}
+
 .navigation__link {
   color: #fff;
 
@@ -38,13 +49,8 @@
 
   text-align: center;
   text-decoration: none;
-  opacity: 1;
-  transition: all .2s ease-out;
 }
 
-.navigation__link:hover {
-  opacity: .7;
-}
 
 .navigation__link_home {
   display: block;
@@ -54,7 +60,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   margin: 0 auto;
   width: 100px;
   height: 32px;
@@ -78,7 +84,7 @@
 }
 
 /* брейкпоинт скрытия бокового меню */
-@media screen and (min-width: 992px) {
+@media (min-width: 1280px) {
   .navigation {
     position: relative;
     padding: 0;

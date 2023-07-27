@@ -1,10 +1,10 @@
 .header {
+  width: 95vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
   padding-top: 18px;
-  width: 1140px;
 }
 
 .header__logo {
@@ -80,19 +80,19 @@
 .header__overlay {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
+  right: 0;
+  width: 70vw;
   height: 100vh;
   display: block;
-  background-color: rgba(0, 0, 0, .3);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.4s ease-out;
+  transition: all 0.4s ease-out;
 }
 
 .header__overlay_active {
   opacity: 1;
   visibility: visible;
+  background: #202020;
 }
 
 .header__burger {
@@ -151,4 +151,20 @@
 
 .header__burger-inner_active::after {
   transform: translateY(-8px);
+}
+
+@media (min-width: 768px) {
+  .header {
+    width: 45.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .header {
+    width: 71.25rem;
+  }
+  .header__burger {
+    display: none;
+    visibility: hidden;
+  }
 }
