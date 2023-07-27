@@ -16,7 +16,7 @@ export default function MoviesCardList({ cardLists, typeCardBtn }) {
         ))}
       </ul>
       {cardLists.length > 2 && (
-        <button className="movies-card__more-btn">Ещё</button>
+        <button className="movies-card__more-button">Ещё</button>
       )}
     </section>
   );

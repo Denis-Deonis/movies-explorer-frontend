@@ -19,7 +19,7 @@
   list-style: none;
 }
 
-.movies-card__more-btn {
+.movies-card__more-button {
   width: 20rem;
   height: 2.25rem;
   margin: 60px auto 0;
@@ -39,6 +39,6 @@
   transition: all .2s ease-out;
 }
 
-.movies-card__more-btn:hover {
+.movies-card__more-button:hover {
   opacity: .7;
 }

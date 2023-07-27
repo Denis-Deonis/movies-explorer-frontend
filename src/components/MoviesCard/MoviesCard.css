@@ -68,11 +68,14 @@
 }
 
 .card__button_type_delete {
-  background-image: url("./delete.svg");
+  visibility: hidden;
 }
 
-.card__button_type_delete:hover {
+.card__group:hover .card__button_type_delete {
+  visibility: visible;
   transform: scale(1.2);
+  background-image: url("./delete.svg");
+  cursor: pointer;
 }
 
 .card__duration {
