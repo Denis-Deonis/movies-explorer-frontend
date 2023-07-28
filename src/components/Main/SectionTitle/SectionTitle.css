@@ -3,7 +3,7 @@
   margin: 0;
   padding-bottom: 23px;
 
-  font-size: 22px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -18,4 +18,10 @@
   width: 100%;
   height: 1px;
   background-color: #DADADA;
+}
+
+@media (min-width: 768px) {
+  .section-title {
+    font-size: 1.375rem;
+  }
 }

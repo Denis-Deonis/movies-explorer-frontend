@@ -1,20 +1,22 @@
 .project {
-  width: 71.25rem;
+  width: calc(100vw - 2.25rem);
   margin: 6.5625rem auto 0;
 }
 
 .project__list {
   margin: 0;
-  padding: 4.375rem 0 0 0;
-  display: flex;
-  gap: 2.5rem;
+  padding: 3.75rem 0 0 0;
   list-style: none;
+
+  display: flex;
+  gap: 3.5rem;
+  flex-direction: column;
 }
 
 .project__title {
   margin: 0;
 
-  font-size: 20px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -25,7 +27,7 @@
   margin: 0;
   padding-top: 1.625rem;
 
-  font-size: 14px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
@@ -44,7 +46,7 @@
   background: #303030;
 
   text-align: center;
-  font-size: 14px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -60,9 +62,40 @@
   padding: 14px 0 0 0;
   color: #8B8B8B;
   text-align: center;
-  font-size: 14px;
+  font-size: 11px;
   font-style: normal;
   font-weight: 500;
   line-height: 17px;
 }
 
+
+
+@media (min-width: 768px) {
+  .project {
+    width: calc(100vw - 6.25rem);
+  }
+  .project__list {
+    padding: 4.375rem 0 0 0;
+    flex-direction: row;
+  }
+  .project__title {
+    font-size: 1.25rem;
+  }
+
+  .project__text {
+    font-size: .875rem;
+  }
+  .project__week {
+    font-size: .875rem;
+  }
+  .project__week-signature {
+    font-size: .875rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .project {
+    width: 71.25rem;
+    margin: 6.5625rem auto 0;
+  }
+}
