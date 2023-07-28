@@ -84,7 +84,7 @@
 }
 
 /* брейкпоинт скрытия бокового меню */
-@media (min-width: 1280px) {
+@media (min-width: 769px) {
   .navigation {
     position: relative;
     padding: 0;
@@ -106,5 +106,9 @@
 
   .navigation__link_home {
     display: none;
+  }
+
+  .navigation__item:hover {
+    border: none;
   }
 }

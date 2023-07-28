@@ -1,6 +1,10 @@
 .footer {
-  width: 71.25rem;
+  width: 95vw;
   margin: 4.9375rem auto 0;
+  /* padding-top: 5rem;
+  position: absolute;
+  bottom: 0;
+  left: 2.5vw; */
 }
 
 .footer__title {
@@ -72,3 +76,25 @@
   text-shadow: -15px -9px #3DDC84;
 }
 
+@media (max-width: 481px) {
+
+  .footer__wrapper {
+    flex-direction: column-reverse;
+    padding: 1.875rem 0 1.25rem;
+  }
+
+  .footer__list {
+    flex-direction: column;
+    gap: .75rem;
+  }
+
+  .footer__age {
+    margin: 1.875rem auto 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .footer  {
+    width: 71.25rem;
+  }
+}
