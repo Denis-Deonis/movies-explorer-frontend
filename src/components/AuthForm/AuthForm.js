@@ -1,31 +1,93 @@
 import { Link } from "react-router-dom";
+import Header from "../Header/Header";
+import useFormValidation from "../../hooks/useFormValidator";
+import { INPUT_ERROR_NAME } from "../../utils/constants";
 
-export default function AuthForm({ setting }) {
+export default function AuthForm({
+  setting,
+  isLoad,
+  handleSubmit,
+  requestError,
+}) {
+  const { values, errors, isValid, handleChange, currentInputName } =
+    useFormValidation();
+
+  const handleSubmitForm = (evt) => {
+    evt.preventDefault();
+
+    handleSubmit(values);
+  };
+
   return (
     <section className="auth-form">
-      <Link to="/" className="auth-form__logo"/>
+      <Header theme={{ default: true }} />
+      {/* <Link to="/" className="auth-form__logo" /> */}
       <h2 className="auth-form__title">{setting.title}</h2>
-      <form className="auth-form__form">
+      <form
+        id="auth-form"
+        className="auth-form__form"
+        onSubmit={handleSubmitForm}
+      >
         {setting.type === "register" && (
           <div className="auth-form__box">
             <label className="auth-form__input-label">Имя</label>
-            <input type="text" className="auth-form__input" required />
+            <input
+              className={`auth-form__input ${
+                errors.name ? "auth-form__input_error" : ""
+              }`}
+              type="text"
+              name="name"
+              minLength={2}
+              maxLength={30}
+              onChange={handleChange}
+              required
+            />
           </div>
         )}
 
         <div className="auth-form__box">
           <label className="auth-form__input-label">E-mail</label>
-          <input type="email" className="auth-form__input" required />
+          <input
+            className={`auth-form__input ${
+              errors.email ? "auth-form__input_error" : ""
+            }`}
+            type="email"
+            name="email"
+            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+            onChange={handleChange}
+            required
+          />
         </div>
 
         <div className="auth-form__box">
           <label className="auth-form__input-label">Пароль</label>
-          <input type="password" className="auth-form__input" required />
+          <input
+            className={`auth-form__input ${
+              errors.password ? "auth-form__input_error" : ""
+            }`}
+            type="password"
+            name="password"
+            minLength={8}
+            onChange={handleChange}
+            required
+          />
+          <span className="auth-form__span-error">
+            {errors[currentInputName]
+              ? INPUT_ERROR_NAME[currentInputName]
+              : ""
+              ? requestError
+              : requestError}
+          </span>
         </div>
       </form>
 
       <div className="auth-form__wrapper">
-        <button type="submit" className="auth-form__submit">
+        <button
+          className="auth-form__submit"
+          type="submit"
+          form="auth-form"
+          disabled={isLoad || !isValid ? true : false}
+        >
           {setting.submitText}
         </button>
         <div className="auth-form__transition">

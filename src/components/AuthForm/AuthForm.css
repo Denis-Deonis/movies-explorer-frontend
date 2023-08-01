@@ -75,6 +75,15 @@
   outline-offset: -1px;
 }
 
+
+.auth-form__input_error {
+  color: #EE3465;
+}
+
+.auth-form__input_error:focus {
+  outline: 1px solid #EE3465;
+}
+
 .auth-form__wrapper {
   margin: auto 0 0 0;
   width: 100%;

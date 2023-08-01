@@ -22,3 +22,10 @@ export const loginFormSetting = {
   transitionPath: "/signup",
   transitionLinkText: "Регистрация",
 };
+
+export const INPUT_ERROR_NAME = {
+  name: "Имя не должно быть короче 2 букв",
+  email: "Введите корректный email",
+  password: "Пароль должен быть не короче 8 символов",
+  searchMovies: "Нужно ввести ключевое слово",
+};
