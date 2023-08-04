@@ -1,9 +1,9 @@
-import AuthForm from "../AuthForm/AuthForm.js";
+import AuthForm from "../AuthForm/AuthForm";
 import {
   ERROR_MESSAGE,
   REGISTER_FORM_SETTING,
   STORAGE_DATA_NAME,
-} from "../../utils/constants.js";
+} from "../../utils/constants";
 import mainApi from "../../utils/api";
 
 export default function Register({

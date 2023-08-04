@@ -1,4 +1,3 @@
-import { saveCardList } from "../../utils/saveCardList";
 import { durationTitles } from "../../utils/constants";
 import getEndLine from "../../utils/getEndLine";
 import { MOVIES_API } from "../../utils/config";
@@ -23,7 +22,7 @@ export default function MoviesCard({ movie, handleActionBtn, savedMovieBtn }) {
         rel="noreferrer"
       >
         <img
-          src={image.url ? `${MOVIES_API_SETTING.baseUrl}${image.url}` : image}
+          src={image.url ? `${MOVIES_API.baseUrl}${image.url}` : image}
           alt={name}
           className="card__img"
         />
@@ -32,13 +31,14 @@ export default function MoviesCard({ movie, handleActionBtn, savedMovieBtn }) {
         <h2 className="card__title">{name}</h2>
         <button
           className={`card__button ${
-            !typeCardBtn.save
+            !savedMovieBtn
               ? "card__button_type_delete"
-              : isSavedMovieCard
+              : isLiked
               ? "card__button_type_seved"
               : "card__button_type_like"
           }`}
-        ></button>
+          onClick={handleAction}
+        />
       </div>
       <p className="card__duration">{getDuration(duration, durationTitles)}</p>
     </li>

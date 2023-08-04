@@ -10,15 +10,13 @@ export default function MoviesCardList({
 }) {
   return (
     <section className="movies-card">
-      { isLoad || !moviesList
-        ?
-          <span className="movies-card__loader"/>
-        : error
-        ?
-          <p className="movies-card__error">{error}</p>
-        :
+      {isLoad || !moviesList ? (
+        <span className="movies-card__loader" />
+      ) : error ? (
+        <p className="movies-card__error">{error}</p>
+      ) : (
         <ul className="movies-card__list">
-          {cardLists.map((card) => (
+          {moviesList.map((card) => (
             <MoviesCard
               key={card.movieId || card.id}
               movie={card}
@@ -27,9 +25,11 @@ export default function MoviesCardList({
             />
           ))}
         </ul>
-      }
-      {(!isLoad && !!loadList && moviesList.length < loadList.length) && (
-        <button className="movies-card__more-button">Ещё</button>
+      )}
+      {!isLoad && !!loadList && moviesList.length < loadList.length && (
+        <button className="movies-card__more-button" onClick={handleBtnMore}>
+          Ещё
+        </button>
       )}
     </section>
   );
