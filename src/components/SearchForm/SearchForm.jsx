@@ -28,7 +28,7 @@ export default function SearchForm({
     onToggleShortMovie(!toggleShortMovie);
   };
   return (
-    <form className="search-form">
+    <form className="search-form"  onSubmit={handleSubmit}>
       <label className="search-form__wrapper search-form__wrapper_find">
         <img className="search-form__img" src={findIcon} alt="" />
         <input

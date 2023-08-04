@@ -36,7 +36,7 @@ export default function SavedMovies({
     }
 
     setIsLoad(false);
-  }, [saveMovies]);
+  }, [saveMovies, searchQuery, setError, setIsLoad, toggleShortSavedMovie]);
 
   useEffect(() => {
     setIsLoad(true);
@@ -69,7 +69,7 @@ export default function SavedMovies({
     }
 
     setIsLoad(false);
-  }, [searchQuery, toggleShortSavedMovie]);
+  }, [saveMovies, searchQuery, setError, setIsLoad, toggleShortSavedMovie]);
 
   return (
     <div className="layout">
