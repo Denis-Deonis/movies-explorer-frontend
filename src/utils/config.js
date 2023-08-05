@@ -1,8 +1,7 @@
 export const MAIN_API = {
   baseUrl: "http://api.deonis.nomoredomains.work/",
-  // baseUrl: 'http://localhost:3000',
   headers: {
-    authorization: "",
+    authorization: "bdecdc76-75a5-40e2-94d6-35ac4e7b5bcc",
     "Content-Type": "application/json",
   },
 };
