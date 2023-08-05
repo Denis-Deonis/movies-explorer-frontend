@@ -9,7 +9,7 @@ export default function AuthForm({
   handleSubmit,
   requestError,
 }) {
-  const { values, errors, isValid, handleChange, currentInputName } =
+  const { values, errors, isValid, handleChange } =
     useFormValidation();
 
   const handleSubmitForm = (evt) => {
@@ -42,6 +42,13 @@ export default function AuthForm({
               onChange={handleChange}
               required
             />
+            <span className="auth-form__span-error">
+              {errors["name"]
+                ? INPUT_ERROR_NAME["name"]
+                : ""
+                ? requestError
+                : requestError}
+            </span>
           </div>
         )}
 
@@ -57,6 +64,13 @@ export default function AuthForm({
             onChange={handleChange}
             required
           />
+          <span className="auth-form__span-error">
+            {errors["email"]
+              ? INPUT_ERROR_NAME["email"]
+              : ""
+              ? requestError
+              : requestError}
+          </span>
         </div>
 
         <div className="auth-form__box">
@@ -72,8 +86,8 @@ export default function AuthForm({
             required
           />
           <span className="auth-form__span-error">
-            {errors[currentInputName]
-              ? INPUT_ERROR_NAME[currentInputName]
+            {errors["password"]
+              ? INPUT_ERROR_NAME["password"]
               : ""
               ? requestError
               : requestError}

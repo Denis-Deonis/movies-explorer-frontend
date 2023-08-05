@@ -109,6 +109,12 @@
   opacity: .8;
 }
 
+.auth-form__submit:disabled {
+  opacity: .5;
+  background-color: #808080;
+  cursor: default;
+}
+
 
 .auth-form__transition {
   margin-top: 1rem;
