@@ -14,7 +14,8 @@
 
 1. - Repository [Movies Explorer (бэкенд-часть)](https://github.com/Denis-Deonis/movies-explorer-api)
 2. - Repository Movies Explorer (фронтенд-часть) ⬅ _этот репозиторий_
-   - Website [Movies Explorer] (http://denis777.nomoreparties.co/signup)
+
+Website [Ссылка на Movies Explorer](http://denis777.nomoreparties.co/signup)
 
 [Ссылка на макет в Figma](https://www.figma.com/file/g539FjnLn7pqXKfGw6nRv9/My_Diploma_Zykov?type=design&mode=design&t=WuSlqfjWnyBUwCJ3-7)
 
