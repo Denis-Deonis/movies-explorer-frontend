@@ -9,19 +9,16 @@ export default function AuthForm({
   handleSubmit,
   requestError,
 }) {
-  const { values, errors, isValid, handleChange } =
-    useFormValidation();
+  const { values, errors, isValid, handleChange } = useFormValidation();
 
   const handleSubmitForm = (evt) => {
     evt.preventDefault();
-
     handleSubmit(values);
   };
 
   return (
     <section className="auth-form">
       <Header theme={{ default: true }} />
-      {/* <Link to="/" className="auth-form__logo" /> */}
       <h2 className="auth-form__title">{setting.title}</h2>
       <form
         id="auth-form"
@@ -43,11 +40,7 @@ export default function AuthForm({
               required
             />
             <span className="auth-form__span-error">
-              {errors["name"]
-                ? INPUT_ERROR_NAME["name"]
-                : ""
-                ? requestError
-                : requestError}
+              {errors["name"] ? INPUT_ERROR_NAME["name"] : ""}
             </span>
           </div>
         )}
@@ -65,11 +58,7 @@ export default function AuthForm({
             required
           />
           <span className="auth-form__span-error">
-            {errors["email"]
-              ? INPUT_ERROR_NAME["email"]
-              : ""
-              ? requestError
-              : requestError}
+            {errors["email"] ? INPUT_ERROR_NAME["email"] : ""}
           </span>
         </div>
 
