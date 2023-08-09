@@ -35,6 +35,8 @@
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+
+  padding-top: 2.5rem;
 }
 
 .auth-form__form {
@@ -162,9 +164,6 @@
 @media (max-width: 1279px) {
   .auth-form__logo {
     margin-top: 14.5rem;
-  }
-  .auth-form__title {
-    padding-top: 2.5rem;
   }
 }
 
