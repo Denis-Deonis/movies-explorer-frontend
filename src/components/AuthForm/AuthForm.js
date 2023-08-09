@@ -12,7 +12,8 @@ export default function AuthForm({
   const { values, errors, isValid, handleChange } = useFormValidation();
 
   const handleSubmitForm = (evt) => {
-    evt.preventDefault();
+    evt.preventDefault()
+
     handleSubmit(values);
   };
 
@@ -82,6 +83,7 @@ export default function AuthForm({
               : requestError}
           </span>
         </div>
+
       </form>
 
       <div className="auth-form__wrapper">

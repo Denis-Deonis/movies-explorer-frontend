@@ -163,6 +163,9 @@
   .auth-form__logo {
     margin-top: 14.5rem;
   }
+  .auth-form__title {
+    padding-top: 2.5rem;
+  }
 }
 
 @media (max-width: 767px) {
@@ -178,6 +181,9 @@
   }
   .auth-form__form {
     margin-top: 5rem;
+  }
+  .auth-form__title {
+    padding-top: 4.375rem;
   }
 }
 
