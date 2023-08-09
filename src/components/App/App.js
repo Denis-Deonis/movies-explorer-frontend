@@ -16,7 +16,7 @@ import * as api from '../../utils/mainApi';
 
 function App() {
   const navigate = useNavigate(),
-    userIdInLocalStorage = localStorage.getItem(STORAGE_DATA_NAME.userId),
+
     [isLoad, setIsLoad] = useState(false),
     [currentUser, setCurrentUser] = useState({}),
     [movies, setMovies] = useState([]),
@@ -182,41 +182,6 @@ function App() {
       });
   }
 
-  // useEffect(() => {
-  //   if (userIdInLocalStorage) {
-  //     setIsLoad(true);
-
-  //     Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
-  //       .then((res) => {
-  //         const [apiSavedMovie, apiCurrentUser] = res;
-
-  //         setSaveMovies(apiSavedMovie);
-
-  //         return apiCurrentUser;
-  //       })
-  //       .then((apiCurrentUser) => {
-  //         setCurrentUser({ ...apiCurrentUser, loggeIn: true });
-  //       })
-  //       .catch(() => localStorage.removeItem(STORAGE_DATA_NAME.userId))
-  //       .finally(() => setIsLoad(false));
-  //   }
-  // }, [userIdInLocalStorage]);
-
-  // const handleDeleteSaveMovie = (movie) => {
-  //   const movieId = movie.movieId || movie.id;
-  //   const movieForDelete = saveMovies.find(
-  //     (movie) => movie.movieId === movieId || movie.id === movieId
-  //   );
-
-  //   mainApi
-  //     .deleteSavedMovie(movieForDelete)
-  //     .then(
-  //       setSaveMovies(
-  //         saveMovies.filter((c) => c.movieId !== movieId && c.id !== movieId)
-  //       )
-  //     )
-  //     .catch((err) => console.log(err));
-  // };
 
   const handleToggleShortMovie = (value) => {
     setToggleShortMovie(value);
