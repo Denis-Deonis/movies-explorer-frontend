@@ -14,37 +14,6 @@ class Api {
     return Promise.reject(res.status);
   }
 
-  async getRegistrationUser({ name, email, password }) {
-    const res = await fetch(`${this._baseUrl}/signup`, {
-      method: "POST",
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: name,
-        email: email,
-        password: password,
-      }),
-    });
-    return this._checkStatusRequest(res);
-  }
-
-  async getAuthorizationUser({ email, password }) {
-    const res = await fetch(`${this._baseUrl}/signin`, {
-      method: "POST",
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
-    return this._checkStatusRequest(res);
-  }
 
   async getLogoutUser() {
     const res = await fetch(`${this._baseUrl}/signout`, {

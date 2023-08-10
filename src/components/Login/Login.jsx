@@ -20,7 +20,6 @@ export default function Login(
         isLoad={isLoading}
         setting={LOGIN_FORM_SETTING}
         handleSubmit={handleAuthorizationUser}
-
       />
     </div>
   );
