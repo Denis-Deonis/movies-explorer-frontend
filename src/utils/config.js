@@ -1,5 +1,5 @@
 export const MAIN_API = {
-  baseUrl: "http://api.deonis.nomoredomains.work/",
+  baseUrl: "https://api.deonis.nomoredomains.work",
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,3 +11,5 @@ export const MOVIES_API = {
     "Content-Type": "application/json",
   },
 };
+
+export const BASE_URL = "https://api.deonis.nomoredomains.work";

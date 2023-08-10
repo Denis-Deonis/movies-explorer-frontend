@@ -1,4 +1,4 @@
-export const BASE_URL = "https://api.deonis.nomoredomains.work/";
+import BASE_URL from "./config";
 
 const handleResponse = (res) => {
   if (res.ok) {
