@@ -1,4 +1,4 @@
-export const BASE_URL = "http://api.deonis.nomoredomains.work/";
+export const BASE_URL = "https://api.deonis.nomoredomains.work/";
 
 const handleResponse = (res) => {
   if (res.ok) {
