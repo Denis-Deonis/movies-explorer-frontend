@@ -4,7 +4,7 @@ import {
   ERROR_MESSAGE,
   STORAGE_DATA_NAME,
 } from "../../utils/constants";
-import mainApi from "../../utils/api";
+import getAuthorizationUser from "../../utils/api";
 
 export default function Login({
   isLoad,
@@ -17,8 +17,7 @@ export default function Login({
   const handleAuthorizationUser = (userData) => {
     setIsLoad(true);
 
-    mainApi
-      .getAuthorizationUser(userData)
+    getAuthorizationUser(userData)
       .then((data) => {
         const { name, email, _id } = data;
 
