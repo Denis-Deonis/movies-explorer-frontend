@@ -1,5 +1,5 @@
 export const MAIN_API = {
-  baseUrl: "http://api.deonis.nomoredomains.work/",
+  baseUrl: "http://api.deonis.nomoredomains.work",
   headers: {
     "Content-Type": "application/json",
   },
