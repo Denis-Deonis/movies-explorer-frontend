@@ -3,7 +3,7 @@ import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import "./App.css";
 import mainApi from "../../utils/api";
-import { STORAGE_DATA_NAME } from "../../utils/constants";
+// import { STORAGE_DATA_NAME } from "../../utils/constants";
 import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
 import Main from "../Main/Main";
 import Register from "../Register/Register";
@@ -12,6 +12,12 @@ import Profile from "../Profile/Profile";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Page404 from "../Page404/Page404";
+
+import {
+  ERROR_MESSAGE,
+  STORAGE_DATA_NAME,
+} from "../../utils/constants";
+import  {getRegistrationUser, getAuthorizationUser} from "../../utils/api";
 
 function App() {
   const navigate = useNavigate(),
@@ -48,6 +54,24 @@ function App() {
         .finally(() => setIsLoad(false));
     }
   }, [userIdInLocalStorage]);
+
+  const handleRegister = (userData) => {
+  getRegistrationUser(userData)
+      .then(() => {
+        return getAuthorizationUser(userData);
+      })
+      .then((data) => {
+        const { name, email, _id } = data;
+
+        if (_id) {
+          localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
+          setCurrentUser((oldState) => ({ name, email, loggeIn: true }));
+          navigate("/movies");
+        }
+      })
+      .catch(() => setRequestError(ERROR_MESSAGE.repeatedEmail))
+      .finally(() => setIsLoad(false));
+  }
 
   const handleDeleteSaveMovie = (movie) => {
     const movieId = movie.movieId || movie.id;
@@ -185,6 +209,8 @@ function App() {
                   navigate={navigate}
                   requestError={requestError}
                   setRequestError={setRequestError}
+
+                  onRegister={handleRegister} 
                 />
               ) : (
                 <Navigate to="/movies" />

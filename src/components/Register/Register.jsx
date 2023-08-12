@@ -4,35 +4,36 @@ import {
   REGISTER_FORM_SETTING,
   STORAGE_DATA_NAME,
 } from "../../utils/constants";
-import mainApi from "../../utils/api";
+import  {getRegistrationUser, getAuthorizationUser} from "../../utils/api";
 
 export default function Register({
   isLoad,
-  setCurrentUser,
-  setIsLoad,
-  navigate,
   requestError,
-  setRequestError,
+  setIsLoad,
+  // setCurrentUser,
+  // navigate,
+  // setRequestError,
+  onRegister
 }) {
   const handleRegistrationUser = (userData) => {
     setIsLoad(true);
 
-    mainApi
-      .getRegistrationUser(userData)
-      .then(() => {
-        return mainApi.getAuthorizationUser(userData);
-      })
-      .then((data) => {
-        const { name, email, _id } = data;
+    onRegister(userData)
+    // getRegistrationUser(userData)
+    //   .then(() => {
+    //     return getAuthorizationUser(userData);
+    //   })
+    //   .then((data) => {
+    //     const { name, email, _id } = data;
 
-        if (_id) {
-          localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
-          setCurrentUser((oldState) => ({ name, email, loggeIn: true }));
-          navigate("/movies");
-        }
-      })
-      .catch(() => setRequestError(ERROR_MESSAGE.repeatedEmail))
-      .finally(() => setIsLoad(false));
+    //     if (_id) {
+    //       localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
+    //       setCurrentUser((oldState) => ({ name, email, loggeIn: true }));
+    //       navigate("/movies");
+    //     }
+    //   })
+    //   .catch(() => setRequestError(ERROR_MESSAGE.repeatedEmail))
+    //   .finally(() => setIsLoad(false));
   };
   return (
     <div className="register">
