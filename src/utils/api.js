@@ -14,25 +14,46 @@ class Api {
     return Promise.reject(res.status);
   }
 
+  getRegistrationUser({ name, email, password }) {
+    return fetch(`${this._baseUrl}/signup`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password,
+      }),
+    }).then((res) => this._checkStatusRequest(res));
+  }
 
-  async getLogoutUser() {
-    const res = await fetch(`${this._baseUrl}/signout`, {
+  getAuthorizationUser({ email, password }) {
+    return fetch(`${this._baseUrl}/signin`, {
+      method: "POST",
+      headers: this._headers,
+      credentials: "include",
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    }).then((res) => this._checkStatusRequest(res));
+  }
+
+  getLogoutUser() {
+    return fetch(`${this._baseUrl}/signout`, {
       method: "GET",
       credentials: "include",
-    });
-    return this._checkStatusRequest(res);
+    }).then((res) => this._checkStatusRequest(res));
   }
 
-  async getUserInfo() {
-    const res = await fetch(`${this._baseUrl}/users/me`, {
+  getUserInfo() {
+    return fetch(`${this._baseUrl}/users/me`, {
       credentials: "include",
       headers: this._headers,
-    });
-    return this._checkStatusRequest(res);
+    }).then((res) => this._checkStatusRequest(res));
   }
 
-  async setUserInfo({ name, email }) {
-    const res = await fetch(`${this._baseUrl}/users/me`, {
+  setUserInfo({ name, email }) {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
       credentials: "include",
@@ -40,19 +61,17 @@ class Api {
         name: name,
         email: email,
       }),
-    });
-    return this._checkStatusRequest(res);
+    }).then((res) => this._checkStatusRequest(res));
   }
 
-  async getAllSavedMovies() {
-    const res = await fetch(`${this._baseUrl}/movies`, {
+  getAllSavedMovies() {
+    return fetch(`${this._baseUrl}/movies`, {
       credentials: "include",
       headers: this._headers,
-    });
-    return this._checkStatusRequest(res);
+    }).then((res) => this._checkStatusRequest(res));
   }
 
-  async postNewSavedMovie(movieData) {
+  postNewSavedMovie(movieData) {
     const {
       country,
       director,
@@ -66,7 +85,7 @@ class Api {
       nameEN,
     } = movieData;
 
-    const res = await fetch(`${this._baseUrl}/movies`, {
+    return fetch(`${this._baseUrl}/movies`, {
       method: "POST",
       headers: this._headers,
       credentials: "include",
@@ -83,17 +102,15 @@ class Api {
         nameRU,
         nameEN,
       }),
-    });
-    return this._checkStatusRequest(res);
+    }).then((res) => this._checkStatusRequest(res));
   }
 
-  async deleteSavedMovie(movie) {
-    const err = await fetch(`${this._baseUrl}/movies/${movie._id}`, {
+  deleteSavedMovie(movie) {
+    return fetch(`${this._baseUrl}/movies/${movie._id}`, {
       method: "DELETE",
       credentials: "include",
       headers: this._headers,
-    });
-    return this._checkStatusRequest(err);
+    }).then((err) => this._checkStatusRequest(err));
   }
 }
 
