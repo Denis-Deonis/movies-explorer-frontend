@@ -17,7 +17,10 @@ class Api {
   getRegistrationUser({ name, email, password }) {
     return fetch(`${this._baseUrl}/signup`, {
       method: "POST",
-      headers: this._headers,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         name: name,
         email: email,
@@ -29,8 +32,10 @@ class Api {
   getAuthorizationUser({ email, password }) {
     return fetch(`${this._baseUrl}/signin`, {
       method: "POST",
-      headers: this._headers,
-      credentials: "include",
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         email: email,
         password: password,
@@ -41,22 +46,25 @@ class Api {
   getLogoutUser() {
     return fetch(`${this._baseUrl}/signout`, {
       method: "GET",
-      credentials: "include",
     }).then((res) => this._checkStatusRequest(res));
   }
 
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
-      credentials: "include",
-      headers: this._headers,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     }).then((res) => this._checkStatusRequest(res));
   }
 
   setUserInfo({ name, email }) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
-      headers: this._headers,
-      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         name: name,
         email: email,
@@ -66,8 +74,10 @@ class Api {
 
   getAllSavedMovies() {
     return fetch(`${this._baseUrl}/movies`, {
-      credentials: "include",
-      headers: this._headers,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     }).then((res) => this._checkStatusRequest(res));
   }
 
@@ -87,8 +97,10 @@ class Api {
 
     return fetch(`${this._baseUrl}/movies`, {
       method: "POST",
-      headers: this._headers,
-      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         country,
         director,
@@ -108,8 +120,10 @@ class Api {
   deleteSavedMovie(movie) {
     return fetch(`${this._baseUrl}/movies/${movie._id}`, {
       method: "DELETE",
-      credentials: "include",
-      headers: this._headers,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     }).then((err) => this._checkStatusRequest(err));
   }
 }
