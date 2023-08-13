@@ -9,7 +9,8 @@
 Это дипломный проект Яндекс.Практикума по специальности "Веб-разработчик".
 
 ## PR
-https://github.com/Denis-Deonis/movies-explorer-frontend/pull/5
+
+[PR](https://github.com/Denis-Deonis/movies-explorer-frontend/pull/5)
 
 ## Структура приложения
 
@@ -22,7 +23,8 @@ Website [Ссылка на Movies Explorer](http://denis777.nomoreparties.co/sig
 
 [Ссылка на макет в Figma](https://www.figma.com/file/g539FjnLn7pqXKfGw6nRv9/My_Diploma_Zykov?type=design&mode=design&t=WuSlqfjWnyBUwCJ3-7)
 
-## Установка и запуск проекта:
+## Установка и запуск проекта
+
 Клонировать репозиторий:
 
     git clone https://github.com/Denis-Deonis/movies-explorer-frontend
@@ -39,8 +41,10 @@ Website [Ссылка на Movies Explorer](http://denis777.nomoreparties.co/sig
 
     npm run dev
 
-## Языки:
+## Языки
+
 - JavaScript
 
-## Библиотеки:
+## Библиотеки
+
 - ReactJS
