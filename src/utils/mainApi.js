@@ -19,7 +19,7 @@ export const register = async (name, email, password) => {
   return checkStatusRequest(res);
 };
 
-export const authorization = async (email, password) => {
+export const login = async (email, password) => {
   const res = await fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
