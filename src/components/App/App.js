@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import "./App.css";
-import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import AuthorizedRoute from "../AuthorizedRoute/AuthorizedRoute";
 import Main from "../Main/Main";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
@@ -67,7 +68,7 @@ function App() {
         })
         .finally(() => setIsLoading(false));
     }
-  }, [isLoggedIn]);
+  }, [currentUser._id, isLoggedIn]);
 
   const handleAuthorize = (email, password) => {
     setIsLoading(true);
@@ -75,9 +76,9 @@ function App() {
       .login(email, password)
       .then((res) => {
         if (res) {
-          localStorage.setItem('jwt', res.token);
+          localStorage.setItem("jwt", res.token);
           setIsLoggedIn(true);
-          navigate('/movies');
+          navigate("/movies");
         }
       })
       .catch((err) => {
@@ -101,7 +102,6 @@ function App() {
       });
   };
 
-  
   function handleUpdateUser(newUserInfo) {
     setIsLoading(true);
     api
@@ -119,7 +119,6 @@ function App() {
         setIsLoading(false);
       });
   }
-
 
   function handleLike(movie) {
     api
@@ -153,7 +152,9 @@ function App() {
     api
       .deleteMovie({ id: movie._id })
       .then(() => {
-        setSavedMovies((state) => state.filter((item) => item._id !== movie._id));
+        setSavedMovies((state) =>
+          state.filter((item) => item._id !== movie._id)
+        );
       })
       .catch((err) => {
         setIsSuccess(false);
@@ -163,19 +164,19 @@ function App() {
   }
 
   function handleUnauthorized(err) {
-    if (err === 'Error: 401') {
+    if (err === "Error: 401") {
       handleSignOut();
     }
   }
 
   const handleSignOut = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('movies');
-    localStorage.removeItem('query');
-    localStorage.removeItem('shorts');
-    localStorage.removeItem('allMovies');
-    navigate('/');
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("movies");
+    localStorage.removeItem("query");
+    localStorage.removeItem("shorts");
+    localStorage.removeItem("allMovies");
+    navigate("/");
   };
 
   function closeTooltip() {
@@ -195,42 +196,64 @@ function App() {
 
         <Routes>
           <Route path="*" element={<Page404 />} />
-          <Route path="/" element={<Main />} />
-
-          <Route
-            path="/signup"
-            element={
-              !currentUser.loggeIn ? <Register /> : <Navigate to="/movies" />
-            }
-          />
-
+          <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
           <Route
             path="/signin"
             element={
-              !currentUser.loggeIn ? <Login /> : <Navigate to="/movies" />
+              <AuthorizedRoute
+                component={Login}
+                isLoggedIn={isLoggedIn}
+                onAuthorize={handleAuthorize}
+                isLoading={isLoading}
+              />
             }
           />
-
+          <Route
+            path="/signup"
+            element={
+              <AuthorizedRoute
+                component={Register}
+                isLoggedIn={isLoggedIn}
+                onRegister={handleRegister}
+                isLoading={isLoading}
+              />
+            }
+          />
           <Route
             path="/movies"
             element={
-              <ProtectedRouteElement
-                currentUser={currentUser}
-                element={Movies}
+              <ProtectedRoute
+                component={Movies}
+                isLoggedIn={isLoggedIn}
+                savedMovies={savedMovies}
+                onDislike={handleDislike}
+                onLike={handleLike}
               />
             }
           />
           <Route
             path="/saved-movies"
-            element={<ProtectedRouteElement element={SavedMovies} />}
+            element={
+              <ProtectedRoute
+                component={SavedMovies}
+                isLoggedIn={isLoggedIn}
+                savedMovies={savedMovies}
+                onDislike={handleDislike}
+              />
+            }
           />
-
           <Route
             path="/profile"
-            element={<ProtectedRouteElement element={Profile} />}
+            element={
+              <ProtectedRoute
+                component={Profile}
+                onSignOut={handleSignOut}
+                onUpdateUser={handleUpdateUser}
+                isLoggedIn={isLoggedIn}
+                isLoading={isLoading}
+              />
+            }
           />
-
-
         </Routes>
       </div>
     </CurrentUserContext.Provider>
