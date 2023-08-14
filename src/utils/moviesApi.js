@@ -1,27 +1,15 @@
-import { MOVIES_API } from "./config";
+const MOVIE_URL = 'https://api.nomoreparties.co';
 
-
-class MoviesApi {
-  constructor(options) {
-    this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
-  }
-
-  _checkStatusRequest(res) {
-    if (res.ok) {
-      return res.json();
-    }
-
-    return Promise.reject(res.status);
-  }
-
-  getMovies() {
-    return fetch(`${this._baseUrl}/beatfilm-movies`, {
-      headers: this._headers,
-    }).then((res) => this._checkStatusRequest(res));
-  }
+export function checkResponse(response) {
+  return response.ok ? response.json() : Promise.reject(`Ошибка ${response.status}`);
 }
 
-const moviesApi = new MoviesApi(MOVIES_API);
-
-export default moviesApi;
+export const getMovies = async () => {
+  const response = await fetch(`${MOVIE_URL}/beatfilm-movies`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return checkResponse(response);
+};
