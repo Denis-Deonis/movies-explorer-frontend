@@ -1,44 +1,18 @@
 import AuthForm from "../AuthForm/AuthForm";
-import {
-  LOGIN_FORM_SETTING,
-  ERROR_MESSAGE,
-  STORAGE_DATA_NAME,
-} from "../../utils/constants";
-import mainApi from "../../utils/api";
+import { LOGIN_FORM_SETTING } from "../../utils/constants";
 
-export default function Login({
-  isLoad,
-  setIsLoad,
-  setCurrentUser,
-  navigate,
-  requestError,
-  setRequestError,
-}) {
-  const handleAuthorizationUser = (userData) => {
-    setIsLoad(true);
+export default function Login({ onAuthorize, isLoading }) {
 
-    mainApi
-      .getAuthorizationUser(userData)
-      .then((data) => {
-        const { name, email, _id } = data;
-
-        if (_id) {
-          localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
-          setCurrentUser((oldState) => ({ name, email, loggeIn: true }));
-          navigate("/movies");
-        }
-      })
-      .catch(() => setRequestError(ERROR_MESSAGE.errorRequest))
-      .finally(() => setIsLoad(false));
+  const handleAuthorizationUser = (values) => {
+    onAuthorize(values.email, values.password);
   };
 
   return (
     <div className="login">
       <AuthForm
-        isLoad={isLoad}
+        isLoad={isLoading}
         setting={LOGIN_FORM_SETTING}
         handleSubmit={handleAuthorizationUser}
-        requestError={requestError}
       />
     </div>
   );

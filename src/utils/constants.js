@@ -5,6 +5,10 @@ export const birthDate = {
 
 export const durationTitles = ["минута", "минуты", "минут"];
 
+
+
+export const PATTERN_EMAIL = '[a-z0-9]+@[a-z]+\\.[a-z]{2,5}';
+
 export const REGISTER_FORM_SETTING = {
   type: 'register',
   title: 'Добро пожаловать!',

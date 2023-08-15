@@ -1,6 +1,5 @@
 import { durationTitles } from "../../utils/constants";
 import getEndLine from "../../utils/getEndLine";
-import { MOVIES_API } from "../../utils/config";
 
 export default function MoviesCard({ movie, handleActionBtn, savedMovieBtn }) {
   const { duration, image, trailerLink, name, isLiked } = movie;
@@ -22,7 +21,7 @@ export default function MoviesCard({ movie, handleActionBtn, savedMovieBtn }) {
         rel="noreferrer"
       >
         <img
-          src={image.url ? `${MOVIES_API.baseUrl}${image.url}` : image}
+          src={image.url ? `https://api.nomoreparties.co${image.url}` : image}
           alt={name}
           className="card__img"
         />

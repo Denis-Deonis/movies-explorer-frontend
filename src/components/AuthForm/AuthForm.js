@@ -1,18 +1,19 @@
 import { Link } from "react-router-dom";
 import Header from "../Header/Header";
-import useFormValidation from "../../hooks/useFormValidator";
-import { INPUT_ERROR_NAME } from "../../utils/constants";
+import useForm from "../../hooks/useForm";
+import { PATTERN_EMAIL } from "../../utils/constants";
 
 export default function AuthForm({
   setting,
   isLoad,
   handleSubmit,
-  requestError,
 }) {
-  const { values, errors, isValid, handleChange } = useFormValidation();
+  // const { values, errors, isValid, handleChange } = useFormValidation();
+
+  const { values, errors, handleChange, isFormValid } = useForm();
 
   const handleSubmitForm = (evt) => {
-    evt.preventDefault()
+    evt.preventDefault();
 
     handleSubmit(values);
   };
@@ -41,7 +42,7 @@ export default function AuthForm({
               required
             />
             <span className="auth-form__span-error">
-              {errors["name"] ? INPUT_ERROR_NAME["name"] : ""}
+              {errors.name}
             </span>
           </div>
         )}
@@ -54,12 +55,12 @@ export default function AuthForm({
             }`}
             type="email"
             name="email"
-            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+            pattern={PATTERN_EMAIL}
             onChange={handleChange}
             required
           />
           <span className="auth-form__span-error">
-            {errors["email"] ? INPUT_ERROR_NAME["email"] : ""}
+            {errors.email}
           </span>
         </div>
 
@@ -76,14 +77,9 @@ export default function AuthForm({
             required
           />
           <span className="auth-form__span-error">
-            {errors["password"]
-              ? INPUT_ERROR_NAME["password"]
-              : ""
-              ? requestError
-              : requestError}
+            {errors.password}
           </span>
         </div>
-
       </form>
 
       <div className="auth-form__wrapper">
@@ -91,7 +87,7 @@ export default function AuthForm({
           className="auth-form__submit"
           type="submit"
           form="auth-form"
-          disabled={isLoad || !isValid ? true : false}
+          disabled={isLoad || !isFormValid ? true : false}
         >
           {setting.submitText}
         </button>
