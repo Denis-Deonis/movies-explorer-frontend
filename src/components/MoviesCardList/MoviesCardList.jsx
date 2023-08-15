@@ -89,7 +89,7 @@ export default function MoviesCardList({
 
   return (
     <>
-      {isNotFound && !isLoading && <>Ничего не найдено</>}
+      {/* {isNotFound && !isLoading && <>Ничего не найдено</>} */}
       {isRequestError && !isLoading && (
         <>
           Во время запроса произошла ошибка. Возможно, проблема с соединением
