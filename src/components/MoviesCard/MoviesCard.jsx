@@ -1,70 +1,71 @@
-import { convertDuration } from "../../utils/config";
+import { useMemo } from "react";
+import { useLocation } from "react-router-dom";
+import { API__URL } from '../../utils/constants';
 
 export default function MoviesCard({
-  saved,
   card,
-  isSavedMovies,
-  onLike,
-  onDislike,
   savedMovies,
+  savedMovieList,
+  deleteMovieToList,
 }) {
-  const onButttonClick = () => {
-    if (saved) {
-      onDislike(savedMovies.filter((m) => m.movieId === card.id)[0]);
-    } else {
-      onLike(card);
+  const { pathname } = useLocation();
+
+  const convertTime = (length) => {
+    if (length >= 60) {
+      return `${Math.floor(length / 60)}ч ${length % 60}м`;
     }
+    return `${length}м`;
   };
 
-  const onButtonDeleteClick = () => {
-    onDislike(card);
-  };
+  const isLiked = useMemo(() => {
+    return savedMovies.some((m) => m.movieId === card.id);
+  }, [card, savedMovies]);
+
+  function handleLikeMovie() {
+    !isLiked ? savedMovieList(card) : deleteMovieToList(card);
+  }
+
+
+
+  function handleDeleteMovie() {
+    return deleteMovieToList(card);
+  }
 
   return (
     <li className="card">
       <a
         className="card__link"
-        href={card.trailerLink}
-        target="_blank"
-        rel="noreferrer"
+        href={card.trailerLink} target="_blank" rel="noreferrer noopener"
       >
         <img
-          src={
-            isSavedMovies
-              ? card.image
-              : `https://api.nomoreparties.co/${card.image.url}`
-          }
-          alt={card.nameRU}
           className="card__img"
+          alt={card.nameRU || card.nameEN}
+          src={
+            card.image.url
+              ? `${API__URL}${card.image.url}`
+              : card.image
+          }
         />
       </a>
       <div className="card__group">
-        <h2 className="card__title">{card.nameRU}</h2>
-        {isSavedMovies ? (
+        <h2 className="card__title">{card.nameRU || card.nameEN}</h2>
+        {pathname === "/movies" ? (
           <button
             className={`card__button ${
-              isSavedMovies
-                ? "card__button_type_delete"
-                : saved
-                ? "card__button_type_seved"
+              isLiked ? 
+                "card__button_type_seved"
                 : "card__button_type_like"
             }`}
-            onClick={onButtonDeleteClick}
+            onClick={handleLikeMovie}
           />
         ) : (
           <button
-            className={`card__button ${
-              !isSavedMovies
-                ? "card__button_type_delete"
-                : saved
-                ? "card__button_type_seved"
-                : "card__button_type_like"
-            }`}
-            onClick={onButttonClick}
+            className={`card__button card__button_type_delete`}
+            onClick={handleDeleteMovie}
           />
         )}
       </div>
-      <p className="card__duration">{convertDuration(card.duration)}</p>
+      <p className="card__duration">{convertTime(card.duration)}</p>
     </li>
   );
 }

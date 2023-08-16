@@ -1,50 +1,56 @@
-import { useEffect, useState } from "react";
-import { filterMovies, filterDuration } from '../../utils/config';
+import { useCallback, useMemo, useState } from "react";
+import { SHORT_MOVIES_DURATION } from "../../utils/constants";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 
-export default function SavedMovies({ savedMovies, onDislike }) {
-  const [filteredMovies, setFilteredMovies] = useState(savedMovies);
-  const [isShortMovies, setIsShortMovies] = useState(false);
-  const [isNotFound, setIsNotFound] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
 
-  const onSearch = (query) => {
-    setSearchQuery(query);
-  };
 
-  const handleShortMovies = () => {
-    setIsShortMovies(!isShortMovies);
-  };
+export default function SavedMovies({
+  isLoading,
+  savedMovieList,
+  savedMovies,
+  deleteMovieToList,
+}) {
+  const [isChecked, setIsChecked] = useState(true);
 
-  useEffect(() => {
-    const moviesList = filterMovies(savedMovies, searchQuery);
-    setFilteredMovies(isShortMovies ? filterDuration(moviesList) : moviesList);
-  }, [savedMovies, isShortMovies, searchQuery]);
+  const [moviesSearch, setMoviesSearch] = useState("");
 
-  useEffect(() => {
-    if (filteredMovies.length === 0) {
-      setIsNotFound(true);
-    } else {
-      setIsNotFound(false);
-    }
-  }, [filteredMovies]);
+  const [filterString, setFilterString] = useState("");
+
+  const handleSearchMovies = useCallback(async () => {
+    setFilterString(moviesSearch);
+  }, [moviesSearch]);
+
+  const filtredMovies = useMemo(() => {
+    return savedMovies.filter((movie) => {
+      const filtredMovieInclude =
+        movie.nameRU.toLowerCase().includes(filterString.toLowerCase()) ||
+        movie.nameEN.toLowerCase().includes(filterString.toLowerCase());
+      return isChecked
+        ? filtredMovieInclude
+        : movie.duration < SHORT_MOVIES_DURATION && filtredMovieInclude;
+    });
+  }, [filterString, isChecked, savedMovies]);
+
   return (
     <div className="layout">
       <Header theme={{ default: false }} />
       <SearchForm
-        onSearch={onSearch}
-        onCheckbox={handleShortMovies}
-        isShortMovies={isShortMovies}
+        moviesSearch={moviesSearch}
+        setMoviesSearch={setMoviesSearch}
+        handleSearchMovies={handleSearchMovies}
+        isChecked={isChecked}
+        setIsChecked={setIsChecked}
       />
       <MoviesCardList
-        isNotFound={isNotFound}
-        isSavedMovies={true}
-        cards={filteredMovies}
+        isLoading={isLoading}
+        filtredMovies={filtredMovies}
+        savedMovieList={savedMovieList}
         savedMovies={savedMovies}
-        onDislike={onDislike}
+        deleteMovieToList={deleteMovieToList}
+        handleSearchMovies={handleSearchMovies}
       />
       <Footer />
     </div>

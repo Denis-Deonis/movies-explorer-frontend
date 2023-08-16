@@ -1,156 +1,89 @@
 import React, { useState, useEffect } from "react";
 import MoviesCard from "../MoviesCard/MoviesCard";
+import { useLocation } from "react-router-dom";
+import Preloader from "../Preloader/Preloader";
 import {
-  MOVIES_COUNT_LG,
-  MOVIES_COUNT_MD,
-  MOVIES_COUNT_SM,
-  MOVIES_COUNT_XS,
-  MOVIES_INCREMENT_LG,
-  MOVIES_INCREMENT_MD,
-  MOVIES_INCREMENT_SM,
-  SCREE_LG,
-  SCREE_MD,
-  SCREE_SM,
+  MIN_BIG_SCREEN_SIZE,
+  MIN_SMALL_SCREEN_SIZE,
+  CARDS_QUANTITY_DESKTOP,
+  CARDS_QUANTITY_TABLET,
+  CARDS_QUANTITY_MOBILE,
+  CARDS_MORE_DESKTOP,
+  CARDS_MORE_MOBILE,
 } from "../../utils/constants";
 
 export default function MoviesCardList({
+  movies,
+  savedMovieList,
   savedMovies,
-  cards,
-  isSavedMovies,
+  deleteMovieToList,
+  filtredMovies,
   isLoading,
-  isRequestError,
-  isNotFound,
-  onLike,
-  onDislike,
 }) {
-  const [visibleMovies, setVisibleMovies] = useState(0);
-  const path = window.location.pathname;
+  const { pathname } = useLocation();
 
-  const visibleCount = () => {
-    const width = window.innerWidth;
-    if (width > SCREE_LG) {
-      return MOVIES_COUNT_LG;
-    } else if (width > SCREE_MD) {
-      return MOVIES_COUNT_MD;
-    } else if (width > SCREE_SM) {
-      return MOVIES_COUNT_SM;
-    } else if (width <= SCREE_SM) {
-      return MOVIES_COUNT_XS;
-    }
-  };
+  const cards = pathname === "/movies" ? movies : filtredMovies;
+
+  const [paginate, setPaginate] = useState(0);
+  const [paginateButton, setPaginateButton] = useState(false);
 
   useEffect(() => {
-    setVisibleMovies(visibleCount());
+    changePaginate();
   }, []);
 
   useEffect(() => {
-    const handleResize = () => {
-      setVisibleMovies(visibleCount());
-    };
-
-    const debouncedHandleResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(handleResize, 1000);
-    };
-
-    let resizeTimer;
-    window.addEventListener("resize", debouncedHandleResize);
-
-    return () => {
-      clearTimeout(resizeTimer);
-      window.removeEventListener("resize", debouncedHandleResize);
-    };
-  }, []);
-
-  const handleBtnMore = () => {
-    const width = window.innerWidth;
-    if (width > SCREE_LG) {
-      setVisibleMovies(
-        (prevVisibleMovies) => prevVisibleMovies + MOVIES_INCREMENT_LG
-      );
-    } else if (width > SCREE_MD) {
-      setVisibleMovies(
-        (prevVisibleMovies) => prevVisibleMovies + MOVIES_INCREMENT_MD
-      );
-    } else if (width > SCREE_SM) {
-      setVisibleMovies(
-        (prevVisibleMovies) => prevVisibleMovies + MOVIES_INCREMENT_SM
-      );
-    } else if (width <= SCREE_SM) {
-      setVisibleMovies(
-        (prevVisibleMovies) => prevVisibleMovies + MOVIES_INCREMENT_SM
-      );
+    if (cards.length === 0) {
+      setPaginateButton(false);
     }
-  };
+    if (paginate >= cards.length) setPaginateButton(false);
+    else return setPaginateButton(true);
+  }, [cards, paginate]);
 
-  const getCard = (savedMovies, card) => {
-    return savedMovies.find((savedMovie) => savedMovie.movieId === card.id);
-  };
+  function changePaginate() {
+    if (window.innerWidth >= MIN_BIG_SCREEN_SIZE)
+      return setPaginate(CARDS_QUANTITY_DESKTOP);
+    else if (
+      window.innerWidth < MIN_BIG_SCREEN_SIZE &&
+      window.innerWidth <= MIN_SMALL_SCREEN_SIZE
+    )
+      return setPaginate(CARDS_QUANTITY_TABLET);
+    else if (window.innerWidth < MIN_SMALL_SCREEN_SIZE)
+      return setPaginate(CARDS_QUANTITY_MOBILE);
+  }
+
+  function handlePaginate() {
+    if (window.innerWidth >= MIN_BIG_SCREEN_SIZE)
+      return setPaginate(paginate + CARDS_MORE_DESKTOP);
+    else if (window.innerWidth < MIN_BIG_SCREEN_SIZE)
+      return setPaginate(paginate + CARDS_MORE_MOBILE);
+  }
 
   return (
     <>
-      {/* {isNotFound && !isLoading && <>Ничего не найдено</>} */}
-      {isRequestError && !isLoading && (
-        <>
-          Во время запроса произошла ошибка. Возможно, проблема с соединением
-          или сервер недоступен. Подождите немного и попробуйте ещё раз.
-        </>
+      <section className="movies-card">
+        {isLoading && <Preloader />}
+        {cards.length === 0 ? (
+        <p className="movies-card__not-found">Ничего не найдено</p>
+      ) : (
+        <ul className="movies-card__list">
+          {cards.slice(0, paginate).map((card) => (
+            <MoviesCard
+              card={card}
+              filtredMovies={filtredMovies}
+              savedMovieList={savedMovieList}
+              savedMovies={savedMovies}
+              deleteMovieToList={deleteMovieToList}
+              key={card.id || card.movieId}
+            />
+          ))}
+        </ul>
       )}
-      {path === '/saved-movies' ? (
-        <>
-          <section className="movies-card">
-          <ul className="movies-card__list">
-                  {cards.map((card) => (
-                    <MoviesCard
-                      key={isSavedMovies ? card._id : card.id}
-                      saved={getCard(savedMovies, card)}
-                      cards={cards}
-                      card={card}
-                      isSavedMovies={isSavedMovies}
-                      onLike={onLike}
-                      onDislike={onDislike}
-                      savedMovies={savedMovies}
-                    />
-                  ))}
-                </ul>
-          </section> {cards.length > visibleMovies && (
-              <button
-                className="movies-card__more-button"
-                onClick={handleBtnMore}
-              >
-                Ещё
-              </button>
-            )}
-          </>
-          ) : (
-          <>
-            <section className="movies-card">
-                <ul className="movies-card__list">
-                  {cards.slice(0, visibleMovies).map((card) => (
-                    <MoviesCard
-                      key={isSavedMovies ? card._id : card.id}
-                      saved={getCard(savedMovies, card)}
-                      cards={cards}
-                      card={card}
-                      isSavedMovies={isSavedMovies}
-                      onLike={onLike}
-                      onDislike={onDislike}
-                      savedMovies={savedMovies}
-                    />
-                  ))}
-                </ul>
-          </section> {cards.length > visibleMovies && (
-                <button
-                  className="movies-card__more-button"
-                  onClick={handleBtnMore}
-                >
-                  Ещё
-                </button>
-              )}
-          </>
-          )
-        }
-
+      </section>
+      {paginateButton && (
+        <button className="movies-card__more-button" onClick={handlePaginate}>
+          Ещё
+        </button>
+      )}
     </>
   );
 }

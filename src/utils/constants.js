@@ -1,14 +1,15 @@
-export const SHORTS = 40;
-export const MOVIES_COUNT_LG = 12;
-export const MOVIES_COUNT_MD = 9;
-export const MOVIES_COUNT_SM = 8;
-export const MOVIES_COUNT_XS = 5;
-export const MOVIES_INCREMENT_LG = 4;
-export const MOVIES_INCREMENT_MD = 3;
-export const MOVIES_INCREMENT_SM = 2;
-export const SCREE_LG = 1174;
-export const SCREE_MD = 1023;
-export const SCREE_SM = 654;
+export const BASE__URL = "https://api.deonis.nomoredomains.work";
+export const API__URL = "https://api.nomoreparties.co/";
+export const MOVIES__URL = "https://api.nomoreparties.co/beatfilm-movies";
+
+export const SHORT_MOVIES_DURATION = 40;
+export const MIN_BIG_SCREEN_SIZE = 1191;
+export const MIN_SMALL_SCREEN_SIZE = 751;
+export const CARDS_QUANTITY_DESKTOP = 12;
+export const CARDS_QUANTITY_TABLET = 8;
+export const CARDS_QUANTITY_MOBILE = 5;
+export const CARDS_MORE_DESKTOP = 3;
+export  const CARDS_MORE_MOBILE = 2;
 
 export const birthDate = {
   birthDate: new Date(1993, 12, 19),

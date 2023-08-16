@@ -1,33 +1,53 @@
-import { Link } from "react-router-dom";
-import Header from "../Header/Header";
-import useForm from "../../hooks/useForm";
+import { Link, useNavigate,  useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import useFormWithValidation from "../../hooks/useFormWithValidation";
 import { PATTERN_EMAIL } from "../../utils/constants";
 
+import Header from "../Header/Header";
+
 export default function AuthForm({
-  setting,
-  isLoad,
-  handleSubmit,
+  title,
+  buttonText,
+  toLink,
+  link,
+  loggedIn,
+  onSubmit,
+  setting
 }) {
-  // const { values, errors, isValid, handleChange } = useFormValidation();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
-  const { values, errors, handleChange, isFormValid } = useForm();
+  const { values, handleChange, errors, isValid, resetForm } =
+    useFormWithValidation();
 
-  const handleSubmitForm = (evt) => {
-    evt.preventDefault();
-
-    handleSubmit(values);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isValid) {
+      onSubmit(values);
+    }
   };
+
+  useEffect(() => {
+    if (loggedIn) resetForm();
+  }, [loggedIn, resetForm]);
+
+  useEffect(() => {
+    if (loggedIn) {
+      navigate("/movies", { replace: true });
+    }
+  }, [navigate, loggedIn]);
 
   return (
     <section className="auth-form">
       <Header theme={{ default: true }} />
-      <h2 className="auth-form__title">{setting.title}</h2>
+
+      <h2 className="auth-form__title">{title}</h2>
       <form
         id="auth-form"
         className="auth-form__form"
-        onSubmit={handleSubmitForm}
+        onSubmit={handleSubmit}
       >
-        {setting.type === "register" && (
+        {pathname === "/signup" && (
           <div className="auth-form__box">
             <label className="auth-form__input-label">Имя</label>
             <input
@@ -38,8 +58,11 @@ export default function AuthForm({
               name="name"
               minLength={2}
               maxLength={30}
+              value={values.name || ""}
               onChange={handleChange}
+              placeholder="Имя"
               required
+              pattern="^[a-zA-Zа-яёА-ЯЁ -]+$"
             />
             <span className="auth-form__span-error">
               {errors.name}
@@ -56,7 +79,9 @@ export default function AuthForm({
             type="email"
             name="email"
             pattern={PATTERN_EMAIL}
+            value={values.email || ""}
             onChange={handleChange}
+            placeholder="Email"
             required
           />
           <span className="auth-form__span-error">
@@ -73,7 +98,9 @@ export default function AuthForm({
             type="password"
             name="password"
             minLength={8}
+            value={values.password || ""}
             onChange={handleChange}
+            placeholder="Пароль"
             required
           />
           <span className="auth-form__span-error">
@@ -87,17 +114,17 @@ export default function AuthForm({
           className="auth-form__submit"
           type="submit"
           form="auth-form"
-          disabled={isLoad || !isFormValid ? true : false}
+          disabled={!isValid}
         >
-          {setting.submitText}
+          {buttonText}
         </button>
         <div className="auth-form__transition">
           <p className="auth-form__transition-text">{setting.transitionText}</p>
           <Link
-            to={setting.transitionPath}
+            to={toLink}
             className="auth-form__transition-link"
           >
-            {setting.transitionLinkText}
+            {link}
           </Link>
         </div>
       </div>

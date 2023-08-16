@@ -1,31 +1,27 @@
 import findIcon from "./icon_find.svg";
-import { useState, useEffect } from "react";
 
-export default function SearchForm({ onSearch, onCheckbox, isShortMovies }) {
-  const [isQueryError, setIsQueryError] = useState(false);
-  const [query, setQuery] = useState("");
-  const path = window.location.pathname;
+export default function SearchForm({
+  moviesSearch,
+  setMoviesSearch,
+  isChecked,
+  setIsChecked,
+  handleSearchMovies,
+}) {
 
-  const handleChange = (evt) => {
-    setQuery(evt.target.value);
+  const handleChange = (e) => {
+    setMoviesSearch(e.target.value);
   };
 
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    if (query.trim().length === 0) {
-      setIsQueryError(true);
-    } else {
-      setIsQueryError(false);
-      onSearch(query);
-    }
+  const handleSubmit = (e) => {
+    if (!moviesSearch) return;
+    e.preventDefault();
+    handleSearchMovies(isChecked);
   };
 
-  useEffect(() => {
-    if (path === "/movies" && localStorage.getItem("query")) {
-      const localQuery = localStorage.getItem("query");
-      setQuery(localQuery);
-    }
-  }, [path]);
+  const handleCheckbox = () => {
+    handleSearchMovies(!isChecked);
+    setIsChecked(!isChecked);
+  };
 
   return (
     <form className="search-form" onSubmit={handleSubmit}>
@@ -36,14 +32,14 @@ export default function SearchForm({ onSearch, onCheckbox, isShortMovies }) {
           name="search-movies"
           type="text"
           placeholder="Фильм"
-          value={query || ""}
           onChange={handleChange}
+          value={moviesSearch}
         />
         <button className="search-form__button" type="submit" />
       </label>
-      {isQueryError && (
+      {/* {isQueryError && (
         <span className="search-form__error">Нужно ввести ключевое слово</span>
-      )}
+      )} */}
       <label className="search-form__wrapper search-form__wrapper_short-film">
         <span className="search-form__line"></span>
         <input
@@ -51,14 +47,14 @@ export default function SearchForm({ onSearch, onCheckbox, isShortMovies }) {
           className="search-form__checkbox"
           type="checkbox"
           name="short-film-toggle"
-          checked={isShortMovies}
-          onChange={onCheckbox}
+          checked={!isChecked}
+          onChange={handleCheckbox}
         />
         <label
           className="search-form__checkbox-label"
           htmlFor="short-film-toggle"
         />
-        <p className="search-form__short-film-text" onClick={onCheckbox}>
+        <p className="search-form__short-film-text" onClick={handleCheckbox}>
           Короткометражки
         </p>
       </label>

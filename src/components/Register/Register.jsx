@@ -1,24 +1,21 @@
 import AuthForm from "../AuthForm/AuthForm";
 import { REGISTER_FORM_SETTING } from "../../utils/constants";
-// import useForm from '../../hooks/useForm';
 
-export default function Register({ onRegister, isLoading }) {
+export default function Register({ handleSignUp, isLoading }) {
 
-  // const { values, errors, handleChange, isFormValid } = useForm();
-
-  const handleRegistrationUser = (values) => {
-    onRegister(values.name, values.email, values.password);
-  };
 
   return (
     <div className="register">
       <AuthForm
-        isLoad={isLoading}
         setting={REGISTER_FORM_SETTING}
-        handleSubmit={handleRegistrationUser}
-        // requestError={errors}
-        // inputChange={handleChange}
-        // isValid={isFormValid}
+        title="Добро пожаловать!"
+        buttonText="Зарегистрироваться"
+        quiestion="Уже зарегистрированы?"
+        link="Войти"
+        toLink="/signin"
+        registr={true}
+        onSubmit={handleSignUp}
+        isLoading={isLoading}
       />
     </div>
   );
