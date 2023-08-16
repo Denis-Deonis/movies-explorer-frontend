@@ -52,7 +52,7 @@ function App() {
     } else {
       signOut();
     }
-  }, [loggedIn]);
+  }, [loggedIn, signOut]);
 
   useEffect(() => {
     function loadAllMovies() {

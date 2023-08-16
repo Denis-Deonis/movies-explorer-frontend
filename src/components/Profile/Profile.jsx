@@ -41,7 +41,7 @@ export default function Profile({
       email = values.email === currentUser.email;
     }
     setIsSimilarValues(name && email);
-  }, [values.name, values.email]);
+  }, [values.name, values.email, currentUser.name, currentUser.email]);
 
   useEffect(() => {
     if (!isLoading) {
