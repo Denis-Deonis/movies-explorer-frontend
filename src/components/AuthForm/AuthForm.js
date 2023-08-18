@@ -4,15 +4,16 @@ import useFormValidation from "../../hooks/useFormValidator";
 import { INPUT_ERROR_NAME } from "../../utils/constants";
 
 export default function AuthForm({
-  setting,
   isLoad,
+  setting,
   handleSubmit,
   requestError,
 }) {
-  const { values, errors, isValid, handleChange } = useFormValidation();
+  const { values, errors, isValid, handleChange } =
+    useFormValidation();
 
-  const handleSubmitForm = (evt) => {
-    evt.preventDefault()
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
 
     handleSubmit(values);
   };
@@ -54,7 +55,7 @@ export default function AuthForm({
             }`}
             type="email"
             name="email"
-            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
             onChange={handleChange}
             required
           />
@@ -83,7 +84,6 @@ export default function AuthForm({
               : requestError}
           </span>
         </div>
-
       </form>
 
       <div className="auth-form__wrapper">

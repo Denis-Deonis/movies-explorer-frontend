@@ -1,22 +1,63 @@
-import { useContext } from "react";
-import { CurrentUserContext } from "../../context/CurrentUserContext.js";
+import { useContext, useEffect, useState } from "react";
+import { CurrentUserContext } from "../../context/CurrentUserContext";
 import Header from "../Header/Header";
+import mainApi from "../../utils/MainApi";
+import useFormValidation from "../../hooks/useFormValidator";
+import { INPUT_ERROR_NAME, ERROR_MESSAGE } from "../../utils/constants";
 
-export default function Profile() {
-  const { name, email } = useContext(CurrentUserContext);
+export default function Profile({
+  isLoad,
+  setIsLoad,
+  setCurrentUser,
+  navigate,
+  setClearValues,
+}) {
+  const { name, email } = useContext(CurrentUserContext),
+    { values, setValues, errors, isValid, setIsValid, handleChange } =
+      useFormValidation(),
+    [responseError, setResponseError] = useState(null),
+    [responseSuccess, setResponseSuccess] = useState(null);
 
-  function handleSubmit(evt) {
+  useEffect(() => {
+    if (name && email) {
+      setValues({
+        name: name,
+        email: email,
+      });
+    }
+  }, [name, email, setValues]);
+
+  useEffect(() => {
+    if (name === values["name"] && email === values["email"]) {
+      setIsValid(false);
+    }
+  }, [email, name, setIsValid, values]);
+
+  const handleSubmit = (evt) => {
     evt.preventDefault();
-    console.log("Submit");
-  }
 
-  function handleChange() {
-    console.log("Change");
-  }
+    setIsLoad(true);
 
-  function handleLogout() {
-    console.log("Logout");
-  }
+    mainApi
+      .setUserInfo({ name: values["name"], email: values["email"] })
+      .then((data) => {
+        setCurrentUser({ ...data, loggeIn: true });
+        setResponseSuccess("Данные успешно изменены");
+        setIsValid(true);
+      })
+      .catch((err) => setResponseError(ERROR_MESSAGE.repeatedEmail))
+      .finally(() => setIsLoad(false));
+  };
+
+  const handleLogout = () => {
+    mainApi
+      .getLogoutUser()
+      .then(() => {
+        setClearValues();
+        navigate("/", { replace: true });
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div>
@@ -32,11 +73,13 @@ export default function Profile() {
             <span className="profile__input-label">Имя</span>
             <input
               id="profile-input-name"
-              className="profile__input"
+              className={`profile__input ${
+                errors.name ? "profile__input_error" : ""
+              }`}
               type="text"
               name="profile-input-name"
               placeholder="Имя"
-              value={name}
+              value={values?.name || ""}
               onChange={handleChange}
               minLength={2}
               maxLength={30}

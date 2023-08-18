@@ -4,13 +4,13 @@ import Footer from "../Footer/Footer";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import { ERROR_MESSAGE, STORAGE_DATA_NAME } from "../../utils/constants";
-import mainApi from "../../utils/api";
-import moviesApi from "../../utils/moviesApi";
+import moviesApi from "../../utils/MoviesApi";
+import mainApi from "../../utils/MainApi";
 import findMovies from "../../utils/findMovies";
 import selectShortMovies from "../../utils/selectShortMovies";
+import getWindowDimensions from "../../utils/getWindowDimensions";
 import getTypeCardList from "../../utils/getTypeCardList";
 import getFilterMovie from "../../utils/getFilterMovie";
-import getWindowDimensions from "../../utils/getWindowDimensions";
 
 export default function Movies({
   currentUser,
@@ -26,28 +26,34 @@ export default function Movies({
   error,
   setError,
 }) {
-  const [ windowDimensions, setWindowDimensions ] = useState(getWindowDimensions()),
-        [ searchQuery, setSearchQuery ] = useState(null),
-        [ loadList, setLoadList ] = useState([]),
-        typeContainer = getTypeCardList(windowDimensions),
-        [ savedMoviesInLS, setSavedMoviesInLS ] = useState(null);
+  const [windowDimensions, setWindowDimensions] = useState(
+      getWindowDimensions()
+    ),
+    [searchQuery, setSearchQuery] = useState(null),
+    [loadList, setLoadList] = useState([]),
+    typeContainer = getTypeCardList(windowDimensions),
+    [savedMoviesInLS, setSavedMoviesInLS] = useState(null);
 
   useEffect(() => {
     function handleResize() {
       setWindowDimensions(getWindowDimensions());
     }
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [windowDimensions]);
 
   useEffect(() => {
     setSearchQuery(sessionStorage.getItem(STORAGE_DATA_NAME.searchQuery));
-    onToggleShortMovie(JSON.parse(sessionStorage.getItem(STORAGE_DATA_NAME.toggleShortMovie)));
-    setSavedMoviesInLS(JSON.parse(localStorage.getItem(STORAGE_DATA_NAME.movies)));
+    onToggleShortMovie(
+      JSON.parse(sessionStorage.getItem(STORAGE_DATA_NAME.toggleShortMovie))
+    );
+    setSavedMoviesInLS(
+      JSON.parse(localStorage.getItem(STORAGE_DATA_NAME.movies))
+    );
   }, [onToggleShortMovie]);
 
-  useEffect(() => setError(null), [setError]);
+  useEffect(() => setError(null), []);
 
   useEffect(() => {
     if (searchQuery) {
@@ -55,17 +61,25 @@ export default function Movies({
 
       const findMoviesList = findMovies(savedMoviesInLS, searchQuery);
 
-      findMoviesList.forEach(movie => {
+      findMoviesList.forEach((movie) => {
         const savedMovie = saveMovies.find(
-          savedMovie => savedMovie.movieId === movie.id || savedMovie.id === movie.id
+          (savedMovie) =>
+            savedMovie.movieId === movie.id || savedMovie.id === movie.id
         );
-        savedMovie ? movie.isLiked = true : movie.isLiked = false;
+        savedMovie ? (movie.isLiked = true) : (movie.isLiked = false);
       });
 
-      setLoadList(toggleShortMovie
-        ? selectShortMovies(findMoviesList)
-        : findMoviesList);
-      setMovies(getFilterMovie(findMoviesList, typeContainer, toggleShortMovie, setError));
+      setLoadList(
+        toggleShortMovie ? selectShortMovies(findMoviesList) : findMoviesList
+      );
+      setMovies(
+        getFilterMovie(
+          findMoviesList,
+          typeContainer,
+          toggleShortMovie,
+          setError
+        )
+      );
 
       setIsLoad(false);
     }
@@ -79,50 +93,70 @@ export default function Movies({
 
       handleDeleteSaveMovie(movieData);
 
-      const findMovie = savedMoviesInLS.find(movie => movie.id === movieId)
-      setMovies(movies => movies.map(movie => movie.movieId === movieId ? findMovie : movie));
+      const findMovie = savedMoviesInLS.find((movie) => movie.id === movieId);
+      setMovies((movies) =>
+        movies.map((movie) => (movie.movieId === movieId ? findMovie : movie))
+      );
     } else {
-      mainApi.postNewSavedMovie(movieData)
-        .then(savedMovie => {
+      mainApi
+        .postNewSavedMovie(movieData)
+        .then((savedMovie) => {
           savedMovie.isLiked = true;
-          setMovies(movies => movies.map(movie => movie.id === savedMovie.movieId ? savedMovie : movie));
+          setMovies((movies) =>
+            movies.map((movie) =>
+              movie.id === savedMovie.movieId ? savedMovie : movie
+            )
+          );
           setSaveMovies([...saveMovies, savedMovie]);
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err));
     }
   };
 
   const handleBtnMore = () => {
-    const loadedMovies = loadList.slice(movies.length, movies.length + typeContainer.moreCards);
+    const loadedMovies = loadList.slice(
+      movies.length,
+      movies.length + typeContainer.moreCards
+    );
 
     setMovies([...movies, ...loadedMovies]);
-  }
+  };
 
   const handleSubmit = (search) => {
     setIsLoad(true);
 
     if (!savedMoviesInLS) {
-      moviesApi.getMovies()
-        .then(allMoviesArr => {
+      moviesApi
+        .getMovies()
+        .then((allMoviesArr) => {
           sessionStorage.setItem(STORAGE_DATA_NAME.searchQuery, search);
-          setSearchQuery(search)
+          setSearchQuery(search);
 
-          sessionStorage.setItem(STORAGE_DATA_NAME.toggleShortMovie, toggleShortMovie);
+          sessionStorage.setItem(
+            STORAGE_DATA_NAME.toggleShortMovie,
+            toggleShortMovie
+          );
 
-          localStorage.setItem(STORAGE_DATA_NAME.movies, JSON.stringify(allMoviesArr));
+          localStorage.setItem(
+            STORAGE_DATA_NAME.movies,
+            JSON.stringify(allMoviesArr)
+          );
           setSavedMoviesInLS(allMoviesArr);
         })
         .catch(() => setError(ERROR_MESSAGE.tryAgainLater))
-        .finally(() => setIsLoad(false))
+        .finally(() => setIsLoad(false));
     } else {
       sessionStorage.setItem(STORAGE_DATA_NAME.searchQuery, search);
-      setSearchQuery(search)
+      setSearchQuery(search);
 
-      sessionStorage.setItem(STORAGE_DATA_NAME.toggleShortMovie, toggleShortMovie);
+      sessionStorage.setItem(
+        STORAGE_DATA_NAME.toggleShortMovie,
+        toggleShortMovie
+      );
 
       setIsLoad(false);
     }
-  }
+  };
 
   return (
     <div>

@@ -54,6 +54,10 @@
   line-height: normal;
 }
 
+.profile__input_error {
+  color: #fa255e;
+}
+
 .profile__input::placeholder {
   color: #FFF;
   font-size: 11px;

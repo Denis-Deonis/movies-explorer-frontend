@@ -1,15 +1,15 @@
-import selectShortMovies from "./selectShortMovies";
-import { ERROR_MESSAGE } from "./constants";
+import selectShortMovies from './selectShortMovies.js';
+import { ERROR_MESSAGE } from '../utils/constants.js';
 
 const getFilterMovie = (movieArr, typeContainer, toggle, setError) => {
   let movieNewArr,
-    shorMovietNewArr = selectShortMovies(movieArr);
+      shorMovietNewArr = selectShortMovies(movieArr);
 
   if (!movieArr.length) {
     setError(ERROR_MESSAGE.notFound);
 
-    return (movieNewArr = []);
-  }
+    return movieNewArr = [];
+  };
 
   if (!typeContainer) {
     if (toggle) {
@@ -23,7 +23,7 @@ const getFilterMovie = (movieArr, typeContainer, toggle, setError) => {
 
       return movieNewArr;
     }
-  }
+  };
 
   if (!toggle && movieArr.length > typeContainer.loadCards) {
     movieNewArr = movieArr.slice(0, typeContainer.loadCards);
@@ -35,7 +35,7 @@ const getFilterMovie = (movieArr, typeContainer, toggle, setError) => {
     if (!shorMovietNewArr.length) {
       setError(ERROR_MESSAGE.notFound);
 
-      return (movieNewArr = []);
+      return movieNewArr = [];
     } else if (toggle && shorMovietNewArr.length > typeContainer.loadCards) {
       movieNewArr = shorMovietNewArr.slice(0, typeContainer.loadCards);
       setError(null);
@@ -43,9 +43,9 @@ const getFilterMovie = (movieArr, typeContainer, toggle, setError) => {
       movieNewArr = shorMovietNewArr;
       setError(null);
     }
-  }
+  };
 
   return movieNewArr;
-};
+}
 
 export default getFilterMovie;

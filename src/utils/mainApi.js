@@ -1,103 +1,127 @@
-import {BASE_URL} from "./config";
+import { MAIN_API_SETTING, MOVIES_API_SETTING } from './config';
 
-const handleResponse = (res) => {
-  if (res.ok) {
-    return res.json();
+class MainApi {
+  constructor(options) {
+    this._baseUrl = options.baseUrl;
+    this._headers = options.headers;
+  };
+
+  _checkStatusRequest(res) {
+    if(res.ok) {
+      return res.json()
+    }
+
+    return Promise.reject(res.status)
+  };
+
+  getRegistrationUser({ name, email, password }) {
+    return fetch(`${this._baseUrl}/signup`, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        password: password,
+      })
+    })
+    .then(res => this._checkStatusRequest(res))
   }
-  return Promise.reject(`Err: ${res.status}`);
-};
 
-export const register = async (name, email, password) => {
-  const res = await fetch(`${BASE_URL}/signup`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name, email, password }),
-  });
-  return handleResponse(res);
-};
+  getAuthorizationUser({ email, password }) {
+    return fetch(`${this._baseUrl}/signin`, {
+      method: 'POST',
+      headers: this._headers,
+      credentials: 'include',
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      })
+    })
+    .then(res => this._checkStatusRequest(res))
+  }
 
-export const authorize = async (email, password) => {
-  const res = await fetch(`${BASE_URL}/signin`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }),
-  });
-  return handleResponse(res);
-};
+  getLogoutUser() {
+    return fetch(`${this._baseUrl}/signout`, {
+      method: 'GET',
+      credentials: 'include',
+    })
+    .then(res => this._checkStatusRequest(res))
+  }
 
-export const getContent = async (token) => {
-  const res = await fetch(`${BASE_URL}/users/me`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return handleResponse(res);
-};
+  getUserInfo() {
+    return fetch(`${this._baseUrl}/users/me`, {
+      credentials: 'include',
+      headers: this._headers
+    })
+    .then(res => this._checkStatusRequest(res));
+  };
 
-export const getUserInfo = () => {
-  return fetch(`${BASE_URL}/users/me`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      'Content-Type': 'application/json',
-    },
-  }).then((res) => handleResponse(res));
-};
+  setUserInfo({ name, email }) {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: 'PATCH',
+      headers: this._headers,
+      credentials: 'include',
+      body: JSON.stringify({
+        name: name,
+        email: email,
+      })
+    })
+    .then(res => this._checkStatusRequest(res));
+  };
 
-export const patchUserInfo = async ({ name }) => {
-  const res = await fetch(`${BASE_URL}/users/me`, {
-    method: 'PATCH',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-    },
-    body: JSON.stringify({
-      name: name,
-    }),
-  });
-  return handleResponse(res);
-};
+  getAllSavedMovies() {
+    return fetch(`${this._baseUrl}/movies`, {
+      credentials: 'include',
+      headers: this._headers
+    })
+    .then(res => this._checkStatusRequest(res));
+  };
 
-export const saveMovie = async ({ movieData }) => {
-  const res = await fetch(`${BASE_URL}/movies`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-    },
-    body: JSON.stringify(movieData),
-  });
-  return handleResponse(res);
-};
+  postNewSavedMovie(movieData) {
+    const {
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailerLink,
+      id,
+      nameRU,
+      nameEN,
+    } = movieData;
 
-export const getSavedMovies = async () => {
-  const res = await fetch(`${BASE_URL}/movies`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-    },
-  });
-  return handleResponse(res);
-};
+    return fetch(`${this._baseUrl}/movies`, {
+      method: 'POST',
+      headers: this._headers,
+      credentials: 'include',
+      body: JSON.stringify({
+        country,
+        director,
+        duration,
+        year,
+        description,
+        image: MOVIES_API_SETTING.baseUrl + image.url,
+        trailerLink,
+        thumbnail: MOVIES_API_SETTING.baseUrl + image.formats.thumbnail.url,
+        movieId: id,
+        nameRU,
+        nameEN,
+      })
+    })
+    .then(res => this._checkStatusRequest(res));
+  };
 
-export const deleteMovie = async ({ id }) => {
-  const res = await fetch(`${BASE_URL}/movies/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-    },
-  });
-  return handleResponse(res);
-};
+  deleteSavedMovie(movie) {
+    return fetch(`${this._baseUrl}/movies/${movie._id}`, {
+      method: 'DELETE',
+      credentials: 'include',
+      headers: this._headers,
+    })
+    .then(err => this._checkStatusRequest(err));
+  };
+}
+
+const mainApi = new MainApi(MAIN_API_SETTING);
+
+export default mainApi;

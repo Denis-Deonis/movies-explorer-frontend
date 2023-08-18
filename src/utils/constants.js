@@ -1,30 +1,30 @@
-export const birthDate = {
-  birthDate: new Date(1993, 12, 19),
+export const DATE_BIRTH = {
+  birthDate: new Date(1992, 6, 28),
   dateTitles: ["год", "года", "лет"],
 };
 
-export const durationTitles = ["минута", "минуты", "минут"];
-
-export const REGISTER_FORM_SETTING = {
-  type: 'register',
-  title: 'Добро пожаловать!',
-  submitText: 'Зарегистрироваться',
-  transitionText: 'Уже зарегистрированы?',
-  transitionPath: '/signin',
-  transitionLinkText: 'Войти',
-}
+export const DURATION_TITLES = ["минута", "минуты", "минут"];
 
 export const LOGIN_FORM_SETTING = {
   type: "login",
   title: "Рады видеть!",
-  submitText: "Войти",
+  btnSubmitText: "Войти",
   transitionText: "Ещё не зарегистрированы?",
   transitionPath: "/signup",
   transitionLinkText: "Регистрация",
 };
 
+export const REGISTER_FORM_SETTING = {
+  type: "register",
+  title: "Добро пожаловать!",
+  submitText: "Зарегистрироваться",
+  transitionText: "Уже зарегистрированы?",
+  transitionPath: "/signin",
+  transitionLinkText: "Войти",
+};
+
 export const INPUT_ERROR_NAME = {
-  name: "Имя не должно быть короче 2 символов",
+  name: "Имя не должно быть короче 2 букв",
   email: "Введите корректный email",
   password: "Пароль должен быть не короче 8 символов",
   searchMovies: "Нужно ввести ключевое слово",
@@ -44,3 +44,5 @@ export const STORAGE_DATA_NAME = {
   searchQuery: "sQ",
   toggleShortMovie: "toggleSM",
 };
+
+export const DURATION_SHORTMOVIE = 40;

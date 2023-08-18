@@ -8,6 +8,7 @@ export default function MoviesCardList({
   handleBtnMore,
   handleActionBtn,
 }) {
+
   return (
     <section className="movies-card">
       {isLoad || !moviesList ? (
@@ -18,10 +19,10 @@ export default function MoviesCardList({
         <ul className="movies-card__list">
           {moviesList.map((card) => (
             <MoviesCard
-              key={card.movieId || card.id}
-              movie={card}
-              handleActionBtn={handleActionBtn}
-              savedMovieBtn={!!loadList}
+            key={card.id || card.movieId}
+            movie={card}
+            handleActionBtn={handleActionBtn}
+            savedMovieBtn={!!loadList}
             />
           ))}
         </ul>

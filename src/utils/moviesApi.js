@@ -1,5 +1,4 @@
-import { MOVIES_API } from "./config";
-
+import { MOVIES_API_SETTING } from './constants.js'
 
 class MoviesApi {
   constructor(options) {
@@ -8,20 +7,21 @@ class MoviesApi {
   }
 
   _checkStatusRequest(res) {
-    if (res.ok) {
+    if(res.ok) {
       return res.json();
     }
 
-    return Promise.reject(res.status);
+    return Promise.reject(res.status)
   }
 
   getMovies() {
     return fetch(`${this._baseUrl}/beatfilm-movies`, {
-      headers: this._headers,
-    }).then((res) => this._checkStatusRequest(res));
-  }
+      headers: this._headers
+    })
+    .then(res => this._checkStatusRequest(res));
+  };
 }
 
-const moviesApi = new MoviesApi(MOVIES_API);
+const moviesApi = new MoviesApi(MOVIES_API_SETTING);
 
 export default moviesApi;
