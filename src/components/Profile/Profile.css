@@ -107,6 +107,13 @@
   opacity: .5;
 }
 
+.profile__submit:disabled {
+  opacity: .5;
+  background-color: #808080;
+  cursor: default;
+
+}
+
 .profile__btn-exit {
   color: #EE3465;
   text-align: center;
