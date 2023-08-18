@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import findMovies from "../../utils/findMovies";
-import selectShortMovies from '../../utils/selectShortMovies';
-import getFilterMovie from '../../utils/getFilterMovie';
+import selectShortMovies from "../../utils/selectShortMovies";
+import getFilterMovie from "../../utils/getFilterMovie";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";

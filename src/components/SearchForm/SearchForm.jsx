@@ -1,6 +1,6 @@
 import findIcon from "./icon_find.svg";
-import { useEffect } from "react";
-import useFormValidation from "../../hooks/useFormValidator";
+import { useEffect } from 'react';
+import useFormValidation from '../../hooks/useFormValidator';
 
 export default function SearchForm({
   isLoad,
@@ -10,6 +10,7 @@ export default function SearchForm({
   toggleShortMovie,
   onToggleShortMovie,
 }) {
+
   const { values, setValues, handleChange } = useFormValidation();
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function SearchForm({
   const handleChecked = () => {
     onToggleShortMovie(!toggleShortMovie);
   };
+
   return (
     <form className="search-form"  onSubmit={handleSubmit}>
       <label className="search-form__wrapper search-form__wrapper_find">

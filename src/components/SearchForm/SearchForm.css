@@ -84,6 +84,11 @@
   transform: scale(.9);
 }
 
+.search-form__button:disabled {
+  opacity: .5;
+  /* background-color: #808080; */
+  cursor: default;
+}
 
 .search-form__short-film-text {
   margin: 0;
