@@ -1,5 +1,5 @@
 import { DURATION_TITLES } from "../../utils/constants";
-import { MOVIES_API_SETTING } from "../../utils/constants";
+import { MOVIES_API_SETTING } from "../../utils/config";
 import getEndLine from "../../utils/getEndLine";
 
 export default function MoviesCard({ movie, handleActionBtn, savedMovieBtn }) {

@@ -1,19 +1,18 @@
 import SectionTitle from "../SectionTitle/SectionTitle";
-import { birthDate } from "../../../utils/constants.js";
-import getEndLine from "../../../utils/getEndLine.js";
+import  {DATE_BIRTH}  from "../../../utils/constants";
+import getEndLine from "../../../utils/getEndLine";
 import myPhoto from "./my_photo.png";
 
 export default function Student() {
-  function getAge({ birthDate, dateTitles }) {
+  const getAge = ({ birthDate, dateTitles }) => {
     const nowDate = new Date(),
-      addOne =
-        nowDate.getMonth() - birthDate.getMonth() >= 0 &&
-        nowDate.getDate() - birthDate.getDate() >= 0,
-      diff = nowDate.getFullYear() - birthDate.getFullYear(),
-      res = diff - 1 + (addOne ? 1 : 0);
+          addOne = nowDate.getMonth() - birthDate.getMonth() >= 0
+            && nowDate.getDate() - birthDate.getDate() >= 0,
+          diff = nowDate.getFullYear() - birthDate.getFullYear(),
+          res = diff - 1 + (addOne ? 1 : 0);
 
     return getEndLine(res, dateTitles);
-  }
+  };
 
   return (
     <section id="student" className="student">
@@ -22,7 +21,7 @@ export default function Student() {
         <div className="student__column">
           <h3 className="student__title">Денис Зыков</h3>
           <p className="student__subtitle">
-            Фронтенд-разработчик, {getAge(birthDate)}
+            Фронтенд-разработчик, {getAge(DATE_BIRTH)}
           </p>
           <p className="student__text">
             Системный администратор в школе. Фронтенд-разработка моё хобби. С

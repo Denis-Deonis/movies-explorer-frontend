@@ -1,4 +1,4 @@
-import { MOVIES_API_SETTING } from './constants.js'
+import { MOVIES_API_SETTING } from './config';
 
 class MoviesApi {
   constructor(options) {

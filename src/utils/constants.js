@@ -1,5 +1,5 @@
 export const DATE_BIRTH = {
-  birthDate: new Date(1992, 6, 28),
+  birthDate: new Date(1993, 12, 19),
   dateTitles: ["год", "года", "лет"],
 };
 
