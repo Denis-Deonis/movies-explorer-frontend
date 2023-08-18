@@ -33,10 +33,15 @@
 
 .profile__input-label {
   width: 141px;
+  color: #FFF;
   font-size: 11px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+}
+
+.profile__input-label_error {
+  color: #EE3465;
 }
 
 .profile__input {
@@ -55,7 +60,7 @@
 }
 
 .profile__input_error {
-  color: #fa255e;
+  color: #EE3465;
 }
 
 .profile__input::placeholder {
@@ -118,6 +123,25 @@
 
 .profile__btn-exit:hover {
   opacity: .9;
+}
+
+.profile__info {
+  margin: 0;
+  padding: 20px 0 0 0;
+  width: 100%;
+  height: 12px;
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.profile__info_type_success {
+  color: #3DDC84;
+}
+
+.profile__info_type_error {
+  color: #EE3465;
 }
 
 

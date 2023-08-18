@@ -70,7 +70,13 @@ export default function Profile({
           onSubmit={handleSubmit}
         >
           <label className="profile__input-container">
-            <span className="profile__input-label">Имя</span>
+            <span
+              className={`profile__input-label ${
+                errors.name ? "profile__input-label_error" : ""
+              }`}
+            >
+              {errors.name ? INPUT_ERROR_NAME.name : "Имя"}
+            </span>
             <input
               id="profile-input-name"
               className={`profile__input ${
@@ -88,24 +94,44 @@ export default function Profile({
           </label>
           <span className="profile__divider" />
           <label className="profile__input-container">
-            <span className="profile__input-label">E-mail</span>
+            <span
+              className={`profile__input-label ${
+                errors.email ? "profile__input-label_error" : ""
+              }`}
+            >
+              {errors.email ? INPUT_ERROR_NAME.email : "E-mail"}
+            </span>
             <input
               id="profile-input-name"
-              className="profile__input"
+              className={`profile__input ${
+                errors.email ? "profile__input_error" : ""
+              }`}
               type="email"
               name="profile-input-name"
               placeholder="Имя"
-              value={email}
+              value={values?.email || ""}
               onChange={handleChange}
               required={true}
             />
           </label>
+          <span
+            className={`profile__info ${
+              responseSuccess
+                ? "profile__info_type_success"
+                : responseError
+                ? "profile__info_type_error"
+                : ""
+            }`}
+          >
+            {(responseSuccess ?? "") || (responseError ?? "")}
+          </span>
         </form>
         <div className="profile__wrapper">
           <button
             type="submit"
             form="profile__form"
             className="profile__submit"
+            disabled={(isLoad || !isValid) ? true : false}
           >
             Редактировать
           </button>
