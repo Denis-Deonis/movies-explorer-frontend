@@ -109,6 +109,12 @@
 
 .auth-form__submit:hover {
   opacity: .8;
+  background-color: #3DDC84;
+}
+
+.auth-form__submit:active {
+  opacity: .8;
+  background-color: #3DDC84;
 }
 
 .auth-form__submit:disabled {
