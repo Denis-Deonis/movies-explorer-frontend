@@ -51,7 +51,7 @@ export default function Movies({
     setSavedMoviesInLS(
       JSON.parse(localStorage.getItem(STORAGE_DATA_NAME.movies))
     );
-  }, [onToggleShortMovie]);
+  }, []);
 
   useEffect(() => setError(null), []);
 
@@ -83,7 +83,7 @@ export default function Movies({
 
       setIsLoad(false);
     }
-  }, [currentUser, searchQuery, typeContainer.loadCards, toggleShortMovie, setIsLoad, savedMoviesInLS, setMovies, typeContainer, setError, saveMovies]);
+  }, [currentUser, searchQuery, typeContainer.loadCards, toggleShortMovie]);
 
   const handleMovieBtnClick = (movieData) => {
     const movieId = movieData.id || movieData.movieId;

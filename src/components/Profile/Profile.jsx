@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import Header from "../Header/Header";
-import mainApi from "../../utils/mainApi";
+import mainApi from "../../utils/MainApi";
 import useFormValidation from "../../hooks/useFormValidator";
 import { INPUT_ERROR_NAME, ERROR_MESSAGE } from "../../utils/constants";
 
