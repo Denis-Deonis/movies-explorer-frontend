@@ -8,7 +8,7 @@ export const DURATION_TITLES = ["минута", "минуты", "минут"];
 export const LOGIN_FORM_SETTING = {
   type: "login",
   title: "Рады видеть!",
-  btnSubmitText: "Войти",
+  submitText: "Войти",
   transitionText: "Ещё не зарегистрированы?",
   transitionPath: "/signup",
   transitionLinkText: "Регистрация",

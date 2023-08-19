@@ -13,10 +13,15 @@ export default function Profile({
   setClearValues,
 }) {
   const { name, email } = useContext(CurrentUserContext),
-    { values, setValues, errors, isValid, setIsValid, handleChange } =
-      useFormValidation(),
-    [responseError, setResponseError] = useState(null),
-    [responseSuccess, setResponseSuccess] = useState(null);
+        { values,
+          setValues,
+          errors,
+          isValid,
+          setIsValid,
+          handleChange,
+        } = useFormValidation(),
+        [ responseError, setResponseError ] = useState(null),
+        [ responseSuccess, setResponseSuccess ] = useState(null);
 
   useEffect(() => {
     if (name && email) {
@@ -28,36 +33,34 @@ export default function Profile({
   }, [name, email, setValues]);
 
   useEffect(() => {
-    if (name === values["name"] && email === values["email"]) {
+    if (name === values['name'] && email === values['email']) {
       setIsValid(false);
     }
-  }, [email, name, setIsValid, values]);
+  }, [values])
 
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    setIsLoad(true);
+    setIsLoad(true)
 
-    mainApi
-      .setUserInfo({ name: values["name"], email: values["email"] })
-      .then((data) => {
-        setCurrentUser({ ...data, loggeIn: true });
-        setResponseSuccess("Данные успешно изменены");
-        setIsValid(true);
+    mainApi.setUserInfo({ name: values['name'], email: values['email'], })
+      .then(data => {
+        setCurrentUser({ ...data, loggeIn: true })
+        setResponseSuccess('Данные успешно изменены')
+        setIsValid(true)
       })
-      .catch((err) => setResponseError(ERROR_MESSAGE.repeatedEmail))
-      .finally(() => setIsLoad(false));
+      .catch(err => setResponseError(ERROR_MESSAGE.repeatedEmail))
+      .finally(() => setIsLoad(false))
   };
 
   const handleLogout = () => {
-    mainApi
-      .getLogoutUser()
+    mainApi.getLogoutUser()
       .then(() => {
         setClearValues();
-        navigate("/", { replace: true });
+        navigate("/", {replace: true});
       })
-      .catch((err) => console.log(err));
-  };
+      .catch(err => console.log(err))
+  }
 
   return (
     <div>
@@ -78,14 +81,14 @@ export default function Profile({
               {errors.name ? INPUT_ERROR_NAME.name : "Имя"}
             </span>
             <input
-              id="profile-input-name"
               className={`profile__input ${
                 errors.name ? "profile__input_error" : ""
               }`}
               type="text"
-              name="profile-input-name"
+              name="name"
+              id="profile-input-name"
               placeholder="Имя"
-              value={values?.name || ""}
+              value={values.name || ""}
               onChange={handleChange}
               minLength={2}
               maxLength={30}
@@ -102,14 +105,14 @@ export default function Profile({
               {errors.email ? INPUT_ERROR_NAME.email : "E-mail"}
             </span>
             <input
-              id="profile-input-name"
               className={`profile__input ${
                 errors.email ? "profile__input_error" : ""
               }`}
               type="email"
-              name="profile-input-name"
-              placeholder="Имя"
-              value={values?.email || ""}
+              name="email"
+              id="profile-input-email"
+              placeholder="Email"
+              value={values.email || ""}
               onChange={handleChange}
               required={true}
             />
