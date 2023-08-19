@@ -166,12 +166,10 @@
   color: #EE3465;
 }
 
+
 @media (max-width: 1279px) {
   .auth-form__logo {
     margin-top: 14.5rem;
-  }
-    .auth-form__title {
-    padding-top: 2.5rem;
   }
 }
 
@@ -185,10 +183,12 @@
   }
   .auth-form__title {
     text-align: center;
-    padding-top: 4.375rem;
   }
   .auth-form__form {
     margin-top: 5rem;
+  }
+  .auth-form__title {
+    padding-top: 4.375rem;
   }
 }
 

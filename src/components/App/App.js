@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import "./App.css";
 import { STORAGE_DATA_NAME } from "../../utils/constants";
