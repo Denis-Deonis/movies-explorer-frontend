@@ -38,9 +38,7 @@ export default function MoviesCard({ movie, handleActionBtn, savedMovieBtn }) {
               : "card__button_type_like"
           }`}
           onClick={handleAction}
-        >
-          {!savedMovieBtn ? "" : isLiked ? "" : "Сохранить"}
-        </button>
+        />
       </div>
       <p className="card__duration">{getDuration(duration, DURATION_TITLES)}</p>
     </li>
