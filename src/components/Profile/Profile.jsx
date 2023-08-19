@@ -1,21 +1,65 @@
-import { useContext } from "react";
-import { CurrentUserContext } from "../../context/CurrentUserContext.js";
+import { useContext, useEffect, useState } from "react";
+import { CurrentUserContext } from "../../context/CurrentUserContext";
 import Header from "../Header/Header";
+import mainApi from "../../utils/MainApi";
+import useFormValidation from "../../hooks/useFormValidator";
+import { INPUT_ERROR_NAME, ERROR_MESSAGE } from "../../utils/constants";
 
-export default function Profile() {
-  const { name, email } = useContext(CurrentUserContext);
+export default function Profile({
+  isLoad,
+  setIsLoad,
+  setCurrentUser,
+  navigate,
+  setClearValues,
+}) {
+  const { name, email } = useContext(CurrentUserContext),
+        { values,
+          setValues,
+          errors,
+          isValid,
+          setIsValid,
+          handleChange,
+        } = useFormValidation(),
+        [ responseError, setResponseError ] = useState(null),
+        [ responseSuccess, setResponseSuccess ] = useState(null);
 
-  function handleSubmit(evt) {
-    evt.preventDefault();
-    console.log("Submit");
-  }
+  useEffect(() => {
+    if (name && email) {
+      setValues({
+        name: name,
+        email: email,
+      });
+    }
+  }, [name, email, setValues]);
 
-  function handleChange() {
-    console.log("Change");
-  }
+  useEffect(() => {
+    if (name === values['name'] && email === values['email']) {
+      setIsValid(false);
+    }
+  }, [values])
 
-  function handleLogout() {
-    console.log("Logout");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    setIsLoad(true)
+
+    mainApi.setUserInfo({ name: values['name'], email: values['email'], })
+      .then(data => {
+        setCurrentUser({ ...data, loggeIn: true })
+        setResponseSuccess('Данные успешно изменены')
+        setIsValid(true)
+      })
+      .catch(err => setResponseError(ERROR_MESSAGE.repeatedEmail))
+      .finally(() => setIsLoad(false))
+  };
+
+  const handleLogout = () => {
+    mainApi.getLogoutUser()
+      .then(() => {
+        setClearValues();
+        navigate("/", {replace: true});
+      })
+      .catch(err => console.log(err))
   }
 
   return (
@@ -29,14 +73,22 @@ export default function Profile() {
           onSubmit={handleSubmit}
         >
           <label className="profile__input-container">
-            <span className="profile__input-label">Имя</span>
+            <span
+              className={`profile__input-label ${
+                errors.name ? "profile__input-label_error" : ""
+              }`}
+            >
+              {errors.name ? INPUT_ERROR_NAME.name : "Имя"}
+            </span>
             <input
-              id="profile-input-name"
-              className="profile__input"
+              className={`profile__input ${
+                errors.name ? "profile__input_error" : ""
+              }`}
               type="text"
-              name="profile-input-name"
+              name="name"
+              id="profile-input-name"
               placeholder="Имя"
-              value={name}
+              value={values.name || ""}
               onChange={handleChange}
               minLength={2}
               maxLength={30}
@@ -45,24 +97,44 @@ export default function Profile() {
           </label>
           <span className="profile__divider" />
           <label className="profile__input-container">
-            <span className="profile__input-label">E-mail</span>
+            <span
+              className={`profile__input-label ${
+                errors.email ? "profile__input-label_error" : ""
+              }`}
+            >
+              {errors.email ? INPUT_ERROR_NAME.email : "E-mail"}
+            </span>
             <input
-              id="profile-input-name"
-              className="profile__input"
+              className={`profile__input ${
+                errors.email ? "profile__input_error" : ""
+              }`}
               type="email"
-              name="profile-input-name"
-              placeholder="Имя"
-              value={email}
+              name="email"
+              id="profile-input-email"
+              placeholder="Email"
+              value={values.email || ""}
               onChange={handleChange}
               required={true}
             />
           </label>
+          <span
+            className={`profile__info ${
+              responseSuccess
+                ? "profile__info_type_success"
+                : responseError
+                ? "profile__info_type_error"
+                : ""
+            }`}
+          >
+            {(responseSuccess ?? "") || (responseError ?? "")}
+          </span>
         </form>
         <div className="profile__wrapper">
           <button
             type="submit"
             form="profile__form"
             className="profile__submit"
+            disabled={(isLoad || !isValid) ? true : false}
           >
             Редактировать
           </button>

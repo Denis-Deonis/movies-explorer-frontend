@@ -1,50 +1,92 @@
 import { useEffect, useState } from "react";
-import { filterMovies, filterDuration } from '../../utils/config';
+import findMovies from "../../utils/findMovies";
+import selectShortMovies from "../../utils/selectShortMovies";
+import getFilterMovie from "../../utils/getFilterMovie";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 
-export default function SavedMovies({ savedMovies, onDislike }) {
-  const [filteredMovies, setFilteredMovies] = useState(savedMovies);
-  const [isShortMovies, setIsShortMovies] = useState(false);
-  const [isNotFound, setIsNotFound] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const onSearch = (query) => {
-    setSearchQuery(query);
-  };
-
-  const handleShortMovies = () => {
-    setIsShortMovies(!isShortMovies);
-  };
-
-  useEffect(() => {
-    const moviesList = filterMovies(savedMovies, searchQuery);
-    setFilteredMovies(isShortMovies ? filterDuration(moviesList) : moviesList);
-  }, [savedMovies, isShortMovies, searchQuery]);
+export default function SavedMovies({
+  isLoad,
+  setIsLoad,
+  saveMovies,
+  handleDeleteSaveMovie,
+  toggleShortSavedMovie,
+  onToggleShortSavedMovie,
+  error,
+  setError,
+}) {
+  const [filterList, setFilterList] = useState([]),
+    [searchQuery, setSearchQuery] = useState(null);
 
   useEffect(() => {
-    if (filteredMovies.length === 0) {
-      setIsNotFound(true);
+    setIsLoad(true);
+
+    if (searchQuery) {
+      const findSearchMovies = findMovies(saveMovies, searchQuery);
+
+      setFilterList(
+        getFilterMovie(findSearchMovies, false, toggleShortSavedMovie, setError)
+      );
     } else {
-      setIsNotFound(false);
+      setFilterList(
+        getFilterMovie(saveMovies, false, toggleShortSavedMovie, setError)
+      );
     }
-  }, [filteredMovies]);
+
+    setIsLoad(false);
+  }, [saveMovies, searchQuery, setError, setIsLoad, toggleShortSavedMovie]);
+
+  useEffect(() => {
+    setIsLoad(true);
+    setError(false);
+
+    if (searchQuery) {
+      const findSearchMovies = findMovies(saveMovies, searchQuery);
+
+      setFilterList(
+        toggleShortSavedMovie
+          ? selectShortMovies(
+              getFilterMovie(
+                findSearchMovies,
+                false,
+                toggleShortSavedMovie,
+                setError
+              )
+            )
+          : getFilterMovie(
+              findSearchMovies,
+              false,
+              toggleShortSavedMovie,
+              setError
+            )
+      );
+    } else {
+      setFilterList(
+        getFilterMovie(saveMovies, false, toggleShortSavedMovie, setError)
+      );
+    }
+
+    setIsLoad(false);
+  }, [saveMovies, searchQuery, setError, setIsLoad, toggleShortSavedMovie]);
+
   return (
     <div className="layout">
       <Header theme={{ default: false }} />
       <SearchForm
-        onSearch={onSearch}
-        onCheckbox={handleShortMovies}
-        isShortMovies={isShortMovies}
+        isLoad={isLoad}
+        savedMoviesType={true}
+        onSubmit={setSearchQuery}
+        toggleShortMovie={toggleShortSavedMovie}
+        onToggleShortMovie={onToggleShortSavedMovie}
       />
       <MoviesCardList
-        isNotFound={isNotFound}
-        isSavedMovies={true}
-        cards={filteredMovies}
-        savedMovies={savedMovies}
-        onDislike={onDislike}
+        isLoad={isLoad}
+        moviesList={filterList}
+        error={error}
+        savedMovieBtn={true}
+        handleActionBtn={handleDeleteSaveMovie}
       />
       <Footer />
     </div>

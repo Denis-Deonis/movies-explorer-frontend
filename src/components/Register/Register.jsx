@@ -1,24 +1,46 @@
 import AuthForm from "../AuthForm/AuthForm";
-import { REGISTER_FORM_SETTING } from "../../utils/constants";
-// import useForm from '../../hooks/useForm';
+import mainApi from "../../utils/MainApi";
+import {
+  ERROR_MESSAGE,
+  REGISTER_FORM_SETTING,
+  STORAGE_DATA_NAME,
+} from "../../utils/constants";
 
-export default function Register({ onRegister, isLoading }) {
+export default function Register({
+  isLoad,
+  setCurrentUser,
+  setIsLoad,
+  navigate,
+  requestError,
+  setRequestError,
+}) {
+  const handleRegistrationUser = (userData) => {
+    setIsLoad(true);
 
-  // const { values, errors, handleChange, isFormValid } = useForm();
+    mainApi
+      .getRegistrationUser(userData)
+      .then(() => {
+        return mainApi.getAuthorizationUser(userData);
+      })
+      .then((data) => {
+        const { name, email, _id } = data;
 
-  const handleRegistrationUser = (values) => {
-    onRegister(values.name, values.email, values.password);
+        if (_id) {
+          localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
+          setCurrentUser((oldState) => ({ name, email, loggeIn: true }));
+          navigate("/movies");
+        }
+      })
+      .catch(() => setRequestError(ERROR_MESSAGE.repeatedEmail))
+      .finally(() => setIsLoad(false));
   };
-
   return (
     <div className="register">
       <AuthForm
-        isLoad={isLoading}
+        isLoad={isLoad}
         setting={REGISTER_FORM_SETTING}
         handleSubmit={handleRegistrationUser}
-        // requestError={errors}
-        // inputChange={handleChange}
-        // isValid={isFormValid}
+        requestError={requestError}
       />
     </div>
   );

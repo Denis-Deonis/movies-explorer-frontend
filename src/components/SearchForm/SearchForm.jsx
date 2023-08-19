@@ -1,34 +1,36 @@
 import findIcon from "./icon_find.svg";
-import { useState, useEffect } from "react";
+import { useEffect } from 'react';
+import useFormValidation from '../../hooks/useFormValidator';
 
-export default function SearchForm({ onSearch, onCheckbox, isShortMovies }) {
-  const [isQueryError, setIsQueryError] = useState(false);
-  const [query, setQuery] = useState("");
-  const path = window.location.pathname;
+export default function SearchForm({
+  isLoad,
+  savedMoviesType,
+  onSubmit,
+  savedSearch,
+  toggleShortMovie,
+  onToggleShortMovie,
+}) {
 
-  const handleChange = (evt) => {
-    setQuery(evt.target.value);
-  };
+  const { values, setValues, handleChange } = useFormValidation();
+
+  useEffect(() => {
+    const name = "search-movies";
+
+    setValues({ [name]: savedSearch });
+  }, [setValues, savedSearch]);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    if (query.trim().length === 0) {
-      setIsQueryError(true);
-    } else {
-      setIsQueryError(false);
-      onSearch(query);
-    }
+
+    onSubmit(values["search-movies"]);
   };
 
-  useEffect(() => {
-    if (path === "/movies" && localStorage.getItem("query")) {
-      const localQuery = localStorage.getItem("query");
-      setQuery(localQuery);
-    }
-  }, [path]);
+  const handleChecked = () => {
+    onToggleShortMovie(!toggleShortMovie);
+  };
 
   return (
-    <form className="search-form" onSubmit={handleSubmit}>
+    <form className="search-form"  onSubmit={handleSubmit}>
       <label className="search-form__wrapper search-form__wrapper_find">
         <img className="search-form__img" src={findIcon} alt="" />
         <input
@@ -36,14 +38,15 @@ export default function SearchForm({ onSearch, onCheckbox, isShortMovies }) {
           name="search-movies"
           type="text"
           placeholder="Фильм"
-          value={query || ""}
           onChange={handleChange}
+          value={values["search-movies"] || ""}
+          required={!savedMoviesType ?? false}
         />
-        <button className="search-form__button" type="submit" />
+        <button
+          className="search-form__button"
+          disabled={isLoad ? true : false}
+        />
       </label>
-      {isQueryError && (
-        <span className="search-form__error">Нужно ввести ключевое слово</span>
-      )}
       <label className="search-form__wrapper search-form__wrapper_short-film">
         <span className="search-form__line"></span>
         <input
@@ -51,16 +54,14 @@ export default function SearchForm({ onSearch, onCheckbox, isShortMovies }) {
           className="search-form__checkbox"
           type="checkbox"
           name="short-film-toggle"
-          checked={isShortMovies}
-          onChange={onCheckbox}
+          checked={!!toggleShortMovie}
+          onChange={handleChecked}
         />
         <label
           className="search-form__checkbox-label"
           htmlFor="short-film-toggle"
         />
-        <p className="search-form__short-film-text" onClick={onCheckbox}>
-          Короткометражки
-        </p>
+        <p className="search-form__short-film-text">Короткометражки</p>
       </label>
     </form>
   );

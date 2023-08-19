@@ -20,9 +20,9 @@
 .profile__form {
   display: flex;
   width: 100%;
-  margin: 123px auto 0;
+  margin: 7.6875rem auto 0;
   flex-direction: column;
-  gap: 17px;
+  gap: 1.0625rem;
 }
 
 .profile__input-container {
@@ -32,11 +32,18 @@
 }
 
 .profile__input-label {
-  width: 141px;
-  font-size: 11px;
+  width: 8.8125rem;
+  color: #FFF;
+  font-size: .6875rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+}
+
+.profile__input-label_error {
+  color: #EE3465;
+  font-size: .5rem;
+  width: 9.8125rem;
 }
 
 .profile__input {
@@ -48,16 +55,21 @@
   color: #FFF;
   text-align: right;
   font-family: Inter;
-  font-size: 11px;
+  font-size: .6875rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
 
+.profile__input_error {
+  color: #EE3465;
+  font-size: .5rem;
+}
+
 .profile__input::placeholder {
   color: #FFF;
-  font-size: 11px;
-  line-height: 13px;
+  font-size: .6875rem;
+  line-height: .8125rem;
   font-weight: 500;
   text-align: left;
 }
@@ -73,7 +85,7 @@
 }
 
 .profile__wrapper {
-  margin: auto 0 70px 0;
+  margin: auto 0 4.375rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -83,7 +95,7 @@
 .profile__submit {
   color: #FFF;
   text-align: center;
-  font-size: 13px;
+  font-size: .8125rem;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -98,10 +110,17 @@
   opacity: .5;
 }
 
+.profile__submit:disabled {
+  opacity: .5;
+  background-color: #808080;
+  cursor: default;
+
+}
+
 .profile__btn-exit {
   color: #EE3465;
   text-align: center;
-  font-size: 13px;
+  font-size: .8125rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -114,6 +133,25 @@
 
 .profile__btn-exit:hover {
   opacity: .9;
+}
+
+.profile__info {
+  margin: 0;
+  padding: 1.25rem 0 0 0;
+  width: 100%;
+  height: .75rem;
+  font-size: .625rem;
+  line-height: .75rem;
+  font-weight: 400;
+  text-align: center;
+}
+
+.profile__info_type_success {
+  color: #3DDC84;
+}
+
+.profile__info_type_error {
+  color: #EE3465;
 }
 
 

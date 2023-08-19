@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom";
 import Header from "../Header/Header";
-import useForm from "../../hooks/useForm";
-import { PATTERN_EMAIL } from "../../utils/constants";
+import useFormValidation from "../../hooks/useFormValidator";
+import { INPUT_ERROR_NAME } from "../../utils/constants";
 
 export default function AuthForm({
-  setting,
   isLoad,
+  setting,
   handleSubmit,
+  requestError,
 }) {
-  // const { values, errors, isValid, handleChange } = useFormValidation();
+  const { values, errors, isValid, handleChange } =
+    useFormValidation();
 
-  const { values, errors, handleChange, isFormValid } = useForm();
-
-  const handleSubmitForm = (evt) => {
-    evt.preventDefault();
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
 
     handleSubmit(values);
   };
@@ -42,7 +42,7 @@ export default function AuthForm({
               required
             />
             <span className="auth-form__span-error">
-              {errors.name}
+              {errors["name"] ? INPUT_ERROR_NAME["name"] : ""}
             </span>
           </div>
         )}
@@ -55,12 +55,11 @@ export default function AuthForm({
             }`}
             type="email"
             name="email"
-            pattern={PATTERN_EMAIL}
             onChange={handleChange}
             required
           />
           <span className="auth-form__span-error">
-            {errors.email}
+            {errors["email"] ? INPUT_ERROR_NAME["email"] : ""}
           </span>
         </div>
 
@@ -77,7 +76,11 @@ export default function AuthForm({
             required
           />
           <span className="auth-form__span-error">
-            {errors.password}
+            {errors["password"]
+              ? INPUT_ERROR_NAME["password"]
+              : ""
+              ? requestError
+              : requestError}
           </span>
         </div>
       </form>
@@ -87,7 +90,7 @@ export default function AuthForm({
           className="auth-form__submit"
           type="submit"
           form="auth-form"
-          disabled={isLoad || !isFormValid ? true : false}
+          disabled={isLoad || !isValid ? true : false}
         >
           {setting.submitText}
         </button>

@@ -1,21 +1,16 @@
-import { SHORTS } from './constants';
-
-export const filterMovies = (movies, query) => {
-  const moviesByQuery = movies.filter((movie) => {
-    const movieRu = String(movie.nameRU).toLowerCase().trim();
-    const movieEn = String(movie.nameEN).toLowerCase().trim();
-    const userQuery = query.toLowerCase().trim();
-    return movieRu.indexOf(userQuery) !== -1 || movieEn.indexOf(userQuery) !== -1;
-  });
-  return moviesByQuery;
+export const MAIN_API_SETTING = {
+  baseUrl: "https://api.deonis.nomoredomains.work",
+  headers: {
+    authorization: "bdecdc76-75a5-40e2-94d6-35ac4e7b5bcc",
+    "Content-Type": "application/json",
+  },
 };
 
-export const filterDuration = (movies) => {
-  return movies.filter((movie) => movie.duration < SHORTS);
+export const MOVIES_API_SETTING = {
+  baseUrl: "https://api.nomoreparties.co",
+  headers: {
+    "Content-Type": "application/json",
+  },
 };
 
-export const convertDuration = (duration) => {
-  const hours = Math.floor(duration / 60);
-  const minutes = duration % 60;
-  return `${hours}ч ${minutes}мин`;
-};
+export const BASE_URL = "https://api.deonis.nomoredomains.work";
