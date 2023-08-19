@@ -4,7 +4,7 @@ import {
   LOGIN_FORM_SETTING,
   STORAGE_DATA_NAME,
 } from "../../utils/constants";
-import mainApi from "../../utils/MainApi";
+import mainApi from "../../utils/mainApi";
 
 export default function Login({
   isLoad,

@@ -1,5 +1,5 @@
 import AuthForm from "../AuthForm/AuthForm";
-import mainApi from "../../utils/MainApi";
+import mainApi from "../../utils/mainApi";
 import {
   ERROR_MESSAGE,
   REGISTER_FORM_SETTING,

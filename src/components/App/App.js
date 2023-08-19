@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import "./App.css";
-import mainApi from '../../utils/MainApi';
+import mainApi from '../../utils/mainApi';
 import { STORAGE_DATA_NAME } from "../../utils/constants";
 import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
 import Main from "../Main/Main";
