@@ -4,8 +4,8 @@ import Footer from "../Footer/Footer";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import { ERROR_MESSAGE, STORAGE_DATA_NAME } from "../../utils/constants";
-import moviesApi from "../../utils/MoviesApi";
-import mainApi from "../../utils/MainApi";
+import moviesApi from "../../utils/moviesApi";
+import mainApi from "../../utils/mainApi";
 import findMovies from "../../utils/findMovies";
 import selectShortMovies from "../../utils/selectShortMovies";
 import getWindowDimensions from "../../utils/getWindowDimensions";
@@ -51,7 +51,7 @@ export default function Movies({
     setSavedMoviesInLS(
       JSON.parse(localStorage.getItem(STORAGE_DATA_NAME.movies))
     );
-  }, [onToggleShortMovie]);
+  }, []);
 
   useEffect(() => setError(null), []);
 
@@ -83,7 +83,7 @@ export default function Movies({
 
       setIsLoad(false);
     }
-  }, [currentUser, searchQuery, typeContainer.loadCards, toggleShortMovie, setIsLoad, savedMoviesInLS, setMovies, typeContainer, setError, saveMovies]);
+  }, [currentUser, searchQuery, typeContainer.loadCards, toggleShortMovie]);
 
   const handleMovieBtnClick = (movieData) => {
     const movieId = movieData.id || movieData.movieId;

@@ -1,5 +1,6 @@
 import { MAIN_API_SETTING, MOVIES_API_SETTING } from './config';
 
+
 class MainApi {
   constructor(options) {
     this._baseUrl = options.baseUrl;

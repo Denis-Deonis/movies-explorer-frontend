@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import Header from "../Header/Header";
-import mainApi from "../../utils/MainApi";
+import mainApi from "../../utils/mainApi";
 import useFormValidation from "../../hooks/useFormValidator";
 import { INPUT_ERROR_NAME, ERROR_MESSAGE } from "../../utils/constants";
 
@@ -38,8 +38,8 @@ export default function Profile({
     }
   }, [values])
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
 
     setIsLoad(true)
 
