@@ -36,7 +36,7 @@ export default function Profile({
     if (name === values['name'] && email === values['email']) {
       setIsValid(false);
     }
-  }, [values])
+  }, [email, name, setIsValid, values])
 
   const handleSubmit = (evt) => {
     evt.preventDefault();

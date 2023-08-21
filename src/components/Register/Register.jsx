@@ -17,19 +17,18 @@ export default function Register({
   const handleRegistrationUser = (userData) => {
     setIsLoad(true);
 
-    mainApi
-      .getRegistrationUser(userData)
+    mainApi.getRegistrationUser(userData)
       .then(() => {
         return mainApi.getAuthorizationUser(userData);
       })
-      .then((data) => {
+      .then(data => {
         const { name, email, _id } = data;
 
         if (_id) {
           localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
-          setCurrentUser((oldState) => ({ name, email, loggeIn: true }));
-          navigate("/movies");
-        }
+          setCurrentUser(oldState => ({ name, email, loggeIn: true }));
+          navigate('/movies');
+        };
       })
       .catch(() => setRequestError(ERROR_MESSAGE.repeatedEmail))
       .finally(() => setIsLoad(false));

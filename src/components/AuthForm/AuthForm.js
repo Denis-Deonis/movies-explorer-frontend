@@ -56,6 +56,7 @@ export default function AuthForm({
             type="email"
             name="email"
             onChange={handleChange}
+            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
             required
           />
           <span className="auth-form__span-error">

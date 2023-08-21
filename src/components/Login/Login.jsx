@@ -17,20 +17,19 @@ export default function Login({
   const handleAuthorizationUser = (userData) => {
     setIsLoad(true);
 
-    mainApi
-      .getAuthorizationUser(userData)
-      .then((data) => {
+    mainApi.getAuthorizationUser(userData)
+      .then(data => {
         const { name, email, _id } = data;
 
         if (_id) {
           localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
-          setCurrentUser((oldState) => ({ name, email, loggeIn: true }));
-          navigate("/movies");
-        }
+          setCurrentUser(oldState => ({ name, email, loggeIn: true }));
+          navigate('/movies');
+        };
       })
       .catch(() => setRequestError(ERROR_MESSAGE.errorRequest))
       .finally(() => setIsLoad(false));
-  };
+  }
 
   return (
     <div className="login">
