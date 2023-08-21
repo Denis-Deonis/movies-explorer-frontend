@@ -1,7 +1,7 @@
 export const MAIN_API_SETTING = {
   baseUrl: "https://api.deonis.nomoredomains.work",
   headers: {
-    authorization: "bdecdc76-75a5-40e2-94d6-35ac4e7b5bcc",
+    // authorization: "bdecdc76-75a5-40e2-94d6-35ac4e7b5bcc",
     "Content-Type": "application/json",
   },
 };

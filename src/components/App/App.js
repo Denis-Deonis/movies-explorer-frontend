@@ -29,20 +29,38 @@ function App() {
     [error, setError] = useState(null),
     [requestError, setRequestError] = useState(null);
 
+    useEffect(() => {
+      handleCheckToken();
+    }, []);
+
+    function handleCheckToken() {
+      const jwt = localStorage.getItem('jwt');
+  
+      if (jwt) {
+        mainApi
+          .getUser(jwt)
+          .then((userData) => {
+            setCurrentUser({ ...userData, loggeIn: true });
+            setIsLoad(true);
+            console.log(userData)
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {});
+      } else {
+        setIsLoad(false);
+      }
+    }
+
   useEffect(() => {
     if (userIdInLocalStorage) {
       setIsLoad(true);
 
-      Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
+      mainApi.getAllSavedMovies()
         .then((res) => {
-          const [apiSavedMovie, apiCurrentUser] = res;
-
+          const [apiSavedMovie] = res;
           setSaveMovies(apiSavedMovie);
-
-          return apiCurrentUser;
-        })
-        .then((apiCurrentUser) => {
-          setCurrentUser({ ...apiCurrentUser, loggeIn: true });
         })
         .catch(() => localStorage.removeItem(STORAGE_DATA_NAME.userId))
         .finally(() => setIsLoad(false));

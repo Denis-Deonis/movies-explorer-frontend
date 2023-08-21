@@ -49,18 +49,34 @@ class MainApi {
     .then(res => this._checkStatusRequest(res))
   }
 
-  getUserInfo() {
-    return fetch(`${this._baseUrl}/users/me`, {
-      credentials: 'include',
-      headers: this._headers
+  // getUserInfo() {
+  //   return fetch(`${this._baseUrl}/users/me`, {
+  //     credentials: 'include',
+  //     headers: this._headers
+  //   })
+  //   .then(res => this._checkStatusRequest(res));
+  // };
+
+  getUser(token) {
+    return fetch(`${this.baseUrl}/users/me`, {
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
+      method: "GET",
     })
     .then(res => this._checkStatusRequest(res));
-  };
+  }
 
   setUserInfo({ name, email }) {
+    const token = localStorage.getItem('jwt');
+
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
       credentials: 'include',
       body: JSON.stringify({
         name: name,
@@ -71,9 +87,14 @@ class MainApi {
   };
 
   getAllSavedMovies() {
+    const token = localStorage.getItem('jwt');
+
     return fetch(`${this._baseUrl}/movies`, {
       credentials: 'include',
-      headers: this._headers
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
     })
     .then(res => this._checkStatusRequest(res));
   };
@@ -92,9 +113,14 @@ class MainApi {
       nameEN,
     } = movieData;
 
+    const token = localStorage.getItem('jwt');
+
     return fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
-      headers: this._headers,
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
       credentials: 'include',
       body: JSON.stringify({
         country,
@@ -114,10 +140,15 @@ class MainApi {
   };
 
   deleteSavedMovie(movie) {
+    const token = localStorage.getItem('jwt');
+
     return fetch(`${this._baseUrl}/movies/${movie._id}`, {
       method: 'DELETE',
       credentials: 'include',
-      headers: this._headers,
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${token}`,
+      },
     })
     .then(err => this._checkStatusRequest(err));
   };
