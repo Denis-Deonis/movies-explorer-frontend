@@ -57,17 +57,16 @@ function App() {
       }
     }
 
-    const handleAuthorize = ({email, password, name}) => {
+    const handleAuthorize = ({email, password, name,}) => {
       setIsLoad(true);
       mainApi.getAuthorizationUser({email, password})
         .then((res) => {
           if (res) {
             localStorage.setItem('jwt', res.token);
             setIsLoggedIn(true);
-            setCurrentUser(oldState => ({ name, email, loggeIn: true }));
             navigate('/movies');
-
-            // localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
+              // localStorage.setItem(STORAGE_DATA_NAME.userId, idUser);
+              setCurrentUser(oldState => ({ name, email, loggeIn: true }));
           }
         })
         .catch((err) => {
@@ -78,8 +77,19 @@ function App() {
         });
     };
 
+    const handleRegister = ({name, email, password}) => {
+      mainApi.getRegistrationUser({name, email, password})
+        .then(() => {
+          handleAuthorize({email, password});
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+
   useEffect(() => {
-    if (userIdInLocalStorage && isLoggedIn) {
+    if (isLoggedIn) {
       setIsLoad(true);
       Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
         .then(res => {
@@ -95,7 +105,7 @@ function App() {
       .catch(() => localStorage.removeItem(STORAGE_DATA_NAME.userId))
       .finally(() => setIsLoad(false))
     }
-  }, [isLoggedIn, userIdInLocalStorage]);
+  }, [isLoggedIn]);
 
   const handleDeleteSaveMovie = (movie) => {
     const movieId = movie.movieId || movie.id;
@@ -177,6 +187,7 @@ function App() {
                   navigate={navigate}
                   requestError={requestError}
                   setRequestError={setRequestError}
+                  onRegister={handleRegister}
                 />
               ) : (
                 <Navigate to="/movies" />

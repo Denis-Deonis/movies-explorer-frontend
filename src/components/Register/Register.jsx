@@ -1,38 +1,22 @@
 import AuthForm from "../AuthForm/AuthForm";
-import mainApi from "../../utils/mainApi";
-import {
-  ERROR_MESSAGE,
-  REGISTER_FORM_SETTING,
-  STORAGE_DATA_NAME,
-} from "../../utils/constants";
+import { REGISTER_FORM_SETTING } from "../../utils/constants";
 
 export default function Register({
   isLoad,
-  setCurrentUser,
   setIsLoad,
-  navigate,
   requestError,
-  setRequestError,
+  onRegister,
 }) {
   const handleRegistrationUser = (userData) => {
     setIsLoad(true);
 
-    mainApi.getRegistrationUser(userData)
-      .then(() => {
-        return mainApi.getAuthorizationUser(userData);
-      })
-      .then(data => {
-        const { name, email, _id } = data;
+    const email = userData.email;
+    const password = userData.password;
+    const name = userData.name;
 
-        if (_id) {
-          localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
-          setCurrentUser(oldState => ({ name, email, loggeIn: true }));
-          navigate('/movies');
-        };
-      })
-      .catch(() => setRequestError(ERROR_MESSAGE.repeatedEmail))
-      .finally(() => setIsLoad(false));
+    onRegister({ email, password, name });
   };
+
   return (
     <div className="register">
       <AuthForm

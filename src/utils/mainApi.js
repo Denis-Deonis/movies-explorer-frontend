@@ -60,18 +60,6 @@ class MainApi {
     .then(res => this._checkStatusRequest(res));
   };
 
-  authorize(email, password) {
-    return fetch(`${this._baseUrl}/signin`, {
-      method: 'POST',
-      headers: this._headers,
-      credentials: 'include',
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      })
-    })
-    .then(res => this._checkStatusRequest(res));
-  };
 
   getUser(token) {
     return fetch(`${this.baseUrl}/users/me`, {
