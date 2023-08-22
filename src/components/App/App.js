@@ -30,32 +30,32 @@ function App() {
     [requestError, setRequestError] = useState(null),
     [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const jwt = localStorage.getItem('jwt');
+    // const jwt = localStorage.getItem('jwt');
 
-    useEffect(() => {
-      handleCheckToken();
-    }, []);
+    // useEffect(() => {
+    //   handleCheckToken();
+    // }, []);
 
-    async function handleCheckToken() {
-      if (jwt) {
-        setIsLoad(true);
-        try {
-          const res = await mainApi.getUserInfo();
-          if (res) {
-            setIsLoggedIn(true);
-            setCurrentUser({ ...res, loggeIn: true });
-            // localStorage.removeItem('allMovies');
-            // navigate(path);
-          }
-        } catch (err) {
-          console.log(err);
-        } finally {
-          setIsLoad(false);
-        }
-      } else {
-        setIsLoad(false);
-      }
-    }
+    // async function handleCheckToken() {
+    //   if (jwt) {
+    //     setIsLoad(true);
+    //     try {
+    //       const res = await mainApi.getUserInfo();
+    //       if (res) {
+    //         setIsLoggedIn(true);
+    //         setCurrentUser({ ...res, loggeIn: true });
+    //         // localStorage.removeItem('allMovies');
+    //         // navigate(path);
+    //       }
+    //     } catch (err) {
+    //       console.log(err);
+    //     } finally {
+    //       setIsLoad(false);
+    //     }
+    //   } else {
+    //     setIsLoad(false);
+    //   }
+    // }
 
     const handleAuthorize = ({email, password, name,}) => {
       setIsLoad(true);
@@ -87,25 +87,26 @@ function App() {
         });
     };
 
+    useEffect(() => {
+      if (userIdInLocalStorage) {
+        setIsLoad(true)
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      setIsLoad(true);
-      Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
-        .then(res => {
-          const [ apiSavedMovie, apiCurrentUser ] = res;
+        Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
+          .then(res => {
+            const [ apiSavedMovie, apiCurrentUser ] = res;
 
-          setSaveMovies(apiSavedMovie);
+            setSaveMovies(apiSavedMovie);
 
-          return apiCurrentUser
+            return apiCurrentUser
+          })
+        .then(apiCurrentUser => {
+          setCurrentUser({ ...apiCurrentUser, loggeIn: true });
         })
-      .then(apiCurrentUser => {
-        setCurrentUser({ ...apiCurrentUser, loggeIn: true });
-      })
-      .catch(() => localStorage.removeItem(STORAGE_DATA_NAME.userId))
-      .finally(() => setIsLoad(false))
-    }
-  }, [isLoggedIn]);
+        .catch(() => localStorage.removeItem(STORAGE_DATA_NAME.userId))
+        .finally(() => setIsLoad(false))
+      }
+    }, [userIdInLocalStorage]);
+
 
   const handleDeleteSaveMovie = (movie) => {
     const movieId = movie.movieId || movie.id;

@@ -51,7 +51,6 @@ class MainApi {
 
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
-      credentials: 'include',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json',
@@ -64,7 +63,7 @@ class MainApi {
   getUser(token) {
     return fetch(`${this.baseUrl}/users/me`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       method: "GET",
@@ -90,7 +89,6 @@ class MainApi {
 
   getAllSavedMovies() {
     return fetch(`${this._baseUrl}/movies`, {
-      credentials: 'include',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json',
