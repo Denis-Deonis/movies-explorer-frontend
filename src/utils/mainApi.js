@@ -49,19 +49,35 @@ class MainApi {
     .then(res => this._checkStatusRequest(res))
   }
 
-  // getUserInfo() {
-  //   return fetch(`${this._baseUrl}/users/me`, {
-  //     credentials: 'include',
-  //     headers: this._headers
-  //   })
-  //   .then(res => this._checkStatusRequest(res));
-  // };
+  getUserInfo() {
+    return fetch(`${this._baseUrl}/users/me`, {
+      credentials: 'include',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(res => this._checkStatusRequest(res));
+  };
+
+  authorize(email, password) {
+    return fetch(`${this._baseUrl}/signin`, {
+      method: 'POST',
+      headers: this._headers,
+      credentials: 'include',
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      })
+    })
+    .then(res => this._checkStatusRequest(res));
+  };
 
   getUser(token) {
     return fetch(`${this.baseUrl}/users/me`, {
       headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`,
       },
       method: "GET",
     })
@@ -69,13 +85,11 @@ class MainApi {
   }
 
   setUserInfo({ name, email }) {
-    const token = localStorage.getItem('jwt');
-
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`,
       },
       credentials: 'include',
       body: JSON.stringify({
@@ -87,13 +101,11 @@ class MainApi {
   };
 
   getAllSavedMovies() {
-    const token = localStorage.getItem('jwt');
-
     return fetch(`${this._baseUrl}/movies`, {
       credentials: 'include',
       headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`,
       },
     })
     .then(res => this._checkStatusRequest(res));
@@ -113,13 +125,12 @@ class MainApi {
       nameEN,
     } = movieData;
 
-    const token = localStorage.getItem('jwt');
 
     return fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
       headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`,
       },
       credentials: 'include',
       body: JSON.stringify({
@@ -140,14 +151,12 @@ class MainApi {
   };
 
   deleteSavedMovie(movie) {
-    const token = localStorage.getItem('jwt');
-
     return fetch(`${this._baseUrl}/movies/${movie._id}`, {
       method: 'DELETE',
       credentials: 'include',
       headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json',
-        authorization: `Bearer ${token}`,
       },
     })
     .then(err => this._checkStatusRequest(err));

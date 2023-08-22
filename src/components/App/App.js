@@ -27,45 +27,75 @@ function App() {
     [toggleShortSavedMovie, setToggleShortSavedMovie] = useState(false),
     [saveMovies, setSaveMovies] = useState([]),
     [error, setError] = useState(null),
-    [requestError, setRequestError] = useState(null);
+    [requestError, setRequestError] = useState(null),
+    [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const jwt = localStorage.getItem('jwt');
 
     useEffect(() => {
       handleCheckToken();
     }, []);
 
-    function handleCheckToken() {
-      const jwt = localStorage.getItem('jwt');
-  
+    async function handleCheckToken() {
       if (jwt) {
-        mainApi
-          .getUser(jwt)
-          .then((userData) => {
-            setCurrentUser({ ...userData, loggeIn: true });
-            setIsLoad(true);
-            console.log(userData)
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-          .finally(() => {});
+        setIsLoad(true);
+        try {
+          const res = await mainApi.getUserInfo();
+          if (res) {
+            setIsLoggedIn(true);
+            setCurrentUser({ ...res, loggeIn: true });
+            // localStorage.removeItem('allMovies');
+            // navigate(path);
+          }
+        } catch (err) {
+          console.log(err);
+        } finally {
+          setIsLoad(false);
+        }
       } else {
         setIsLoad(false);
       }
     }
 
-  useEffect(() => {
-    if (userIdInLocalStorage) {
+    const handleAuthorize = ({email, password, name}) => {
       setIsLoad(true);
-
-      mainApi.getAllSavedMovies()
+      mainApi.getAuthorizationUser({email, password})
         .then((res) => {
-          const [apiSavedMovie] = res;
-          setSaveMovies(apiSavedMovie);
+          if (res) {
+            localStorage.setItem('jwt', res.token);
+            setIsLoggedIn(true);
+            setCurrentUser(oldState => ({ name, email, loggeIn: true }));
+            navigate('/movies');
+
+            // localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
+          }
         })
-        .catch(() => localStorage.removeItem(STORAGE_DATA_NAME.userId))
-        .finally(() => setIsLoad(false));
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setIsLoad(false);
+        });
+    };
+
+  useEffect(() => {
+    if (userIdInLocalStorage && isLoggedIn) {
+      setIsLoad(true);
+      Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
+        .then(res => {
+          const [ apiSavedMovie, apiCurrentUser ] = res;
+
+          setSaveMovies(apiSavedMovie);
+
+          return apiCurrentUser
+        })
+      .then(apiCurrentUser => {
+        setCurrentUser({ ...apiCurrentUser, loggeIn: true });
+      })
+      .catch(() => localStorage.removeItem(STORAGE_DATA_NAME.userId))
+      .finally(() => setIsLoad(false))
     }
-  }, [userIdInLocalStorage]);
+  }, [isLoggedIn, userIdInLocalStorage]);
 
   const handleDeleteSaveMovie = (movie) => {
     const movieId = movie.movieId || movie.id;
@@ -165,6 +195,7 @@ function App() {
                   navigate={navigate}
                   requestError={requestError}
                   setRequestError={setRequestError}
+                  onAuthorize={handleAuthorize}
                 />
               ) : (
                 <Navigate to="/movies" />

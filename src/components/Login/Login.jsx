@@ -1,10 +1,10 @@
 import AuthForm from "../AuthForm/AuthForm";
 import {
-  ERROR_MESSAGE,
+  // ERROR_MESSAGE,
   LOGIN_FORM_SETTING,
-  STORAGE_DATA_NAME,
+  // STORAGE_DATA_NAME,
 } from "../../utils/constants";
-import mainApi from "../../utils/mainApi";
+// import mainApi from "../../utils/mainApi";
 
 export default function Login({
   isLoad,
@@ -13,22 +13,32 @@ export default function Login({
   navigate,
   requestError,
   setRequestError,
+  onAuthorize,
 }) {
+
+
   const handleAuthorizationUser = (userData) => {
     setIsLoad(true);
+    
+    const email = userData.email;
+    const password = userData.password;
+    const name = userData.name;
 
-    mainApi.getAuthorizationUser(userData)
-      .then(data => {
-        const { name, email, _id } = data;
+    onAuthorize({email, password, name});
 
-        if (_id) {
-          localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
-          setCurrentUser(oldState => ({ name, email, loggeIn: true }));
-          navigate('/movies');
-        };
-      })
-      .catch(() => setRequestError(ERROR_MESSAGE.errorRequest))
-      .finally(() => setIsLoad(false));
+
+    // mainApi.getAuthorizationUser(userData)
+    //   .then(data => {
+    //     const { name, email, _id } = data;
+
+    //     if (_id) {
+    //       localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
+    //       setCurrentUser(oldState => ({ name, email, loggeIn: true }));
+    //       navigate('/movies');
+    //     };
+    //   })
+    //   .catch(() => setRequestError(ERROR_MESSAGE.errorRequest))
+    //   .finally(() => setIsLoad(false));
   }
 
   return (
