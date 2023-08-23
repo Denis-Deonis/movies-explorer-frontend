@@ -51,6 +51,7 @@ class MainApi {
   async getUserInfo() {
     const res = await fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json',
@@ -62,6 +63,7 @@ class MainApi {
   async setUserInfo({ name, email }) {
     const res = await fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
+      credentials: 'include',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -77,6 +79,8 @@ class MainApi {
 
   async getAllSavedMovies() {
     const res = await fetch(`${this._baseUrl}/movies`, {
+      credentials: 'include',
+      method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -102,6 +106,7 @@ class MainApi {
 
     const res = await fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
@@ -126,6 +131,7 @@ class MainApi {
   async deleteSavedMovie(movie) {
     const err = await fetch(`${this._baseUrl}/movies/${movie._id}`, {
       method: 'DELETE',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
