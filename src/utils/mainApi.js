@@ -50,8 +50,11 @@ class MainApi {
 
   async getUserInfo() {
     const res = await fetch(`${this._baseUrl}/users/me`, {
-      credentials: 'include',
-      headers: this._headers
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        'Content-Type': 'application/json',
+      },
     });
     return this._checkStatusRequest(res);
   };
@@ -59,8 +62,11 @@ class MainApi {
   async setUserInfo({ name, email }) {
     const res = await fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
-      credentials: 'include',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
       body: JSON.stringify({
         name: name,
         email: email,
@@ -71,8 +77,11 @@ class MainApi {
 
   async getAllSavedMovies() {
     const res = await fetch(`${this._baseUrl}/movies`, {
-      credentials: 'include',
-      headers: this._headers
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
     });
     return this._checkStatusRequest(res);
   };
@@ -93,8 +102,10 @@ class MainApi {
 
     const res = await fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
-      headers: this._headers,
-      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
       body: JSON.stringify({
         country,
         director,
@@ -115,8 +126,10 @@ class MainApi {
   async deleteSavedMovie(movie) {
     const err = await fetch(`${this._baseUrl}/movies/${movie._id}`, {
       method: 'DELETE',
-      credentials: 'include',
-      headers: this._headers,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
     });
     return this._checkStatusRequest(err);
   };
