@@ -14,11 +14,11 @@ class MoviesApi {
     return Promise.reject(res.status)
   }
 
-  getMovies() {
-    return fetch(`${this._baseUrl}/beatfilm-movies`, {
+  async getMovies() {
+    const res = await fetch(`${this._baseUrl}/beatfilm-movies`, {
       headers: this._headers
-    })
-    .then(res => this._checkStatusRequest(res));
+    });
+    return this._checkStatusRequest(res);
   };
 }
 
