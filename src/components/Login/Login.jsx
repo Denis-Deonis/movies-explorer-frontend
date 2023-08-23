@@ -20,9 +20,10 @@ export default function Login({
     mainApi
       .getAuthorizationUser(userData)
       .then((data) => {
-        const { name, email, _id } = data;
+        const { name, email, _id, jwt } = data;
 
         if (_id) {
+          localStorage.setItem('jwt', jwt);
           localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
           setCurrentUser((oldState) => ({ name, email, loggeIn: true }));
           navigate("/movies");
