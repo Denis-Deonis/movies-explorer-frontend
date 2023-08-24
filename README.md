@@ -10,7 +10,7 @@
 
 ## Pull requests
 
-[PR для ревью](https://github.com/Denis-Deonis/movies-explorer-frontend/pull/9)
+[PR для ревью](https://github.com/Denis-Deonis/movies-explorer-frontend/pull/10)
 
 ## Структура приложения
 
