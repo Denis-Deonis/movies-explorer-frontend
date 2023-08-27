@@ -5,9 +5,14 @@ import { CHECK_EMAIL, INPUT_ERROR_NAME } from "../../utils/constants";
 
 export default function AuthForm({
   isLoad,
-  setting,
   handleSubmit,
   requestError,
+  title,
+  typeForm,
+  submitText,
+  transitionText,
+  transitionPath,
+  transitionLinkText
 }) {
   const { values, errors, isValid, handleChange } =
     useFormValidation();
@@ -21,13 +26,13 @@ export default function AuthForm({
   return (
     <section className="auth-form">
       <Header theme={{ default: true }} />
-      <h2 className="auth-form__title">{setting.title}</h2>
+      <h2 className="auth-form__title">{title}</h2>
       <form
         id="auth-form"
         className="auth-form__form"
         onSubmit={handleSubmitForm}
       >
-        {setting.type === "register" && (
+        {typeForm === "register" && (
           <div className="auth-form__box">
             <label className="auth-form__input-label">Имя</label>
             <input
@@ -93,15 +98,15 @@ export default function AuthForm({
           form="auth-form"
           disabled={isLoad || !isValid ? true : false}
         >
-          {setting.submitText}
+          {submitText}
         </button>
         <div className="auth-form__transition">
-          <p className="auth-form__transition-text">{setting.transitionText}</p>
+          <p className="auth-form__transition-text">{transitionText}</p>
           <Link
-            to={setting.transitionPath}
+            to={transitionPath}
             className="auth-form__transition-link"
           >
-            {setting.transitionLinkText}
+            {transitionLinkText}
           </Link>
         </div>
       </div>

@@ -42,9 +42,6 @@ function App() {
 
           setSaveMovies(apiSavedMovie);
 
-          return apiCurrentUser;
-        })
-        .then((apiCurrentUser) => {
           setCurrentUser({ ...apiCurrentUser, loggeIn: true });
         })
         .catch(() => localStorage.removeItem(STORAGE_DATA_NAME.userId))

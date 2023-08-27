@@ -1,7 +1,6 @@
 import AuthForm from "../AuthForm/AuthForm";
 import {
   ERROR_MESSAGE,
-  LOGIN_FORM_SETTING,
   STORAGE_DATA_NAME,
 } from "../../utils/constants";
 import mainApi from "../../utils/mainApi";
@@ -40,9 +39,14 @@ export default function Login({
     <div className="login">
       <AuthForm
         isLoad={isLoad}
-        setting={LOGIN_FORM_SETTING}
         handleSubmit={handleAuthorizationUser}
         requestError={requestError}
+        typeForm="login"
+        title={"Рады видеть!"}
+        submitText="Войти"
+        transitionText="Ещё не зарегистрированы?"
+        transitionPath="/signup"
+        transitionLinkText="Регистрация"
       />
     </div>
   );

@@ -2,7 +2,6 @@ import AuthForm from "../AuthForm/AuthForm";
 import mainApi from "../../utils/mainApi";
 import {
   ERROR_MESSAGE,
-  REGISTER_FORM_SETTING,
   STORAGE_DATA_NAME,
 } from "../../utils/constants";
 
@@ -42,9 +41,15 @@ export default function Register({
     <div className="register">
       <AuthForm
         isLoad={isLoad}
-        setting={REGISTER_FORM_SETTING}
         handleSubmit={handleRegistrationUser}
         requestError={requestError}
+        typeForm= "register"
+        title={"Добро пожаловать!"}
+        submitText="Зарегистрироваться"
+        transitionText="Уже зарегистрированы?"
+        transitionPath="/signin"
+        transitionLinkText="Войти"
+
       />
     </div>
   );
