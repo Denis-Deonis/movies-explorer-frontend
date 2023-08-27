@@ -5,7 +5,7 @@ export default function MoviesCardList({
   moviesList,
   loadList,
   error,
-  handleBtnMore,
+  handleButtonMore,
   handleToggleLike,
 }) {
 
@@ -28,7 +28,7 @@ export default function MoviesCardList({
         </ul>
       )}
       {!isLoad && !!loadList && moviesList.length < loadList.length && (
-        <button className="movies-card__more-button" onClick={handleBtnMore}>
+        <button className="movies-card__more-button" onClick={handleButtonMore}>
           Ещё
         </button>
       )}

@@ -126,13 +126,13 @@ export default function Movies({
     }
   };
 
-  const handleBtnMore = () => {
-    const loadedMovies = loadList.slice(
+  const handleButtonMore = () => {
+    const loadMovies = loadList.slice(
       movies.length,
       movies.length + typeContainer.moreCards
     );
 
-    setMovies([...movies, ...loadedMovies]);
+    setMovies([...movies, ...loadMovies]);
   };
 
   const handleSubmit = (search) => {
@@ -186,7 +186,7 @@ export default function Movies({
         moviesList={movies}
         loadList={loadList}
         error={error}
-        handleBtnMore={handleBtnMore}
+        handleButtonMore={handleButtonMore}
         handleToggleLike={handleMovieClickButton}
       />
       <Footer />
