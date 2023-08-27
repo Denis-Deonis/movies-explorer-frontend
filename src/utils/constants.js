@@ -5,6 +5,8 @@ export const DATE_BIRTH = {
 
 export const DURATION_TITLES = ["минута", "минуты", "минут"];
 
+export const CHECK_EMAIL = '[A-Za-z0-9]+@[a-z]+\\.[a-z]{2,5}';
+
 export const LOGIN_FORM_SETTING = {
   type: "login",
   title: "Рады видеть!",

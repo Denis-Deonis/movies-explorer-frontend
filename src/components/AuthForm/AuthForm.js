@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Header from "../Header/Header";
 import useFormValidation from "../../hooks/useFormValidator";
-import { INPUT_ERROR_NAME } from "../../utils/constants";
+import { CHECK_EMAIL, INPUT_ERROR_NAME } from "../../utils/constants";
 
 export default function AuthForm({
   isLoad,
@@ -55,6 +55,7 @@ export default function AuthForm({
             }`}
             type="email"
             name="email"
+            pattern={CHECK_EMAIL}
             onChange={handleChange}
             required
           />
