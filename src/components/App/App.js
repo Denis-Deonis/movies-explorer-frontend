@@ -3,7 +3,6 @@ import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import "./App.css";
 import mainApi from '../../utils/mainApi';
-import { STORAGE_DATA_NAME } from "../../utils/constants";
 import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
 import Main from "../Main/Main";
 import Register from "../Register/Register";
@@ -12,6 +11,7 @@ import Profile from "../Profile/Profile";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Page404 from "../Page404/Page404";
+import { STORAGE_DATA_NAME } from "../../utils/constants";
 
 
 function App() {
@@ -50,37 +50,87 @@ function App() {
       }
     }, [isLoggedIn]);
 
-  const handleDeleteSaveMovie = (movie) => {
-    const movieId = movie.movieId || movie.id;
-    const movieForDelete = saveMovies.find(
-      (movie) => movie.movieId === movieId || movie.id === movieId
-    );
+    const handleErrorUnauthorized = (err) => {
+      if (err.includes('401')) {
+        handelClearAllValues();
+        navigate('/', { replace: true })
+      }
+    }
 
-    mainApi
-      .deleteSavedMovie(movieForDelete)
-      .then(
-        setSaveMovies(
-          saveMovies.filter((c) => c.movieId !== movieId && c.id !== movieId)
+    const handleDeleteSaveMovie = (movie) => {
+      const movieId = movie.movieId || movie.id;
+      const movieForDelete = saveMovies.find(
+        (movie) => movie.movieId === movieId || movie.id === movieId
+      );
+
+      mainApi
+        .deleteSavedMovie(movieForDelete)
+        .then(
+          setSaveMovies(
+            saveMovies.filter((c) => c.movieId !== movieId && c.id !== movieId)
+          )
         )
-      )
-      .catch((err) => console.log(err));
-  };
+        .catch((err) => console.log(err));
+    };
 
-  const handleToggleShortMovie = (value) => {
-    setToggleShortMovie(value);
+    const handleToggleShortMovie = (value) => {
+      setToggleShortMovie(value);
 
-    sessionStorage.setItem(STORAGE_DATA_NAME.toggleShortMovie, value);
-  };
+      sessionStorage.setItem(STORAGE_DATA_NAME.toggleShortMovie, value);
+    };
 
-  const handleToggleShortSavedMovie = (value) => {
-    setToggleShortSavedMovie(value);
-  };
+    const handleToggleShortSavedMovie = (value) => {
+      setToggleShortSavedMovie(value);
+    };
 
-  const handleToggleIsLoad = (value) => {
-    setIsLoading(value);
-  };
+    const handleToggleIsLoad = (value) => {
+      setIsLoading(value);
+    };
 
-  const setClearValues = () => {
+
+    function handleLike(movie) {
+      mainApi
+        .saveMovie({
+          movieData: {
+            country: movie.country,
+            director: movie.director,
+            duration: movie.duration,
+            year: movie.year,
+            description: movie.description,
+            image: `https://api.nomoreparties.co${movie.image.url}`,
+            trailerLink: movie.trailerLink,
+            nameRU: movie.nameRU,
+            nameEN: movie.nameEN,
+            thumbnail: `https://api.nomoreparties.co${movie.image.url}`,
+            movieId: movie.id,
+          },
+        })
+        .then((newMovie) => {
+          setSavedMovies([newMovie, ...savedMovies]);
+        })
+        .catch((err) => {
+          console.log(err);
+          handleErrorUnauthorized(err);
+        });
+    }
+
+
+
+  function handleDislike(movie) {
+    console.log(movie);
+    mainApi
+      .deleteMovie({ id: movie._id })
+      .then(() => {
+        setSavedMovies((state) => state.filter((item) => item._id !== movie._id));
+      })
+      .catch((err) => {
+        console.log(err);
+        handleErrorUnauthorized(err);
+      });
+  }
+
+
+  const handelClearAllValues = () => {
     const movieArrs = [setMovies, setSaveMovies],
       valueArrs = [setIsLoading, setToggleShortMovie, setError, setRequestError];
 
@@ -92,10 +142,12 @@ function App() {
       loggeIn: false,
     });
 
-    localStorage.clear(STORAGE_DATA_NAME.userId);
-    sessionStorage.clear(STORAGE_DATA_NAME.movies);
-    sessionStorage.clear(STORAGE_DATA_NAME.searchQuery);
-    sessionStorage.clear(STORAGE_DATA_NAME.toggleShortMovie);
+    setIsLoggedIn(false);
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('movies');
+    localStorage.removeItem('query');
+    localStorage.removeItem('shorts');
+    localStorage.removeItem('allMovies');
   };
 
   return (
@@ -114,7 +166,7 @@ function App() {
                 element={Profile}
                 setCurrentUser={setCurrentUser}
                 navigate={navigate}
-                setClearValues={setClearValues}
+                setClearValues={handelClearAllValues}
               />
             }
           />
@@ -174,6 +226,7 @@ function App() {
                 onToggleShortMovie={handleToggleShortMovie}
                 error={error}
                 setError={setError}
+                isLoggedIn={isLoggedIn} savedMovies={savedMovies} onDislike={handleDislike} onLike={handleLike}
               />
             }
           />

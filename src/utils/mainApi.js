@@ -139,6 +139,41 @@ class MainApi {
     });
     return this._checkStatusRequest(err);
   };
+
+
+  async saveMovie({ movieData }){
+    const res = await fetch(`${this._baseUrl}/movies`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
+      body: JSON.stringify(movieData),
+    });
+    return this._checkStatusRequest(res);
+  };
+
+  async getSavedMovies() {
+    const res = await fetch(`${this._baseUrl}/movies`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
+    });
+    return this._checkStatusRequest(res);
+  };
+
+  async deleteMovie({ id }) {
+    const res = await fetch(`${this._baseUrl}/movies/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+      },
+    });
+    return this._checkStatusRequest(res);
+  };
 }
 
 const mainApi = new MainApi(MAIN_API_SETTING);
