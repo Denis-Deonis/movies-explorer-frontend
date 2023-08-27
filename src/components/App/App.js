@@ -57,6 +57,25 @@ function App() {
       }
     }
 
+    const handleToggleSaveMovie = (movieData) => {
+      const movieId = movieData.movieId || movieData.id;
+      const movieForDelete = saveMovies.find(
+        (movie) => movie.movieId === movieId || movie.id === movieId
+      );
+
+      mainApi
+        .deleteSavedMovie(movieForDelete)
+        .then(
+          setSaveMovies(
+            saveMovies.filter((cardItem) => cardItem.movieId !== movieId && cardItem.id !== movieId)
+          )
+        )
+        .catch((err) => {
+          console.log(err)
+          handleErrorUnauthorized(err)
+        });
+    };
+
 
     const handleToggleShortMovie = (value) => {
       setToggleShortMovie(value);
@@ -169,6 +188,7 @@ function App() {
                 error={error}
                 setError={setError}
                 isLoggedIn={isLoggedIn} savedMovies={savedMovies}
+                handleToggleSaveMovie={handleToggleSaveMovie}
               />
             }
           />
@@ -186,6 +206,7 @@ function App() {
                 onToggleShortSavedMovie={handleToggleShortSavedMovie}
                 error={error}
                 setError={setError}
+                handleToggleSaveMovie={handleToggleSaveMovie}
               />
             }
           />

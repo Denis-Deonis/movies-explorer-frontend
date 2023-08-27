@@ -22,6 +22,7 @@ export default function Movies({
   setSaveMovies,
   toggleShortMovie,
   onToggleShortMovie,
+  handleToggleSaveMovie,
   error,
   setError,
 }) {
@@ -84,26 +85,34 @@ export default function Movies({
     }
   }, [currentUser, searchQuery, typeContainer.loadCards, toggleShortMovie]);
 
-  const handleMovieClickButton = (card) => {
-    const movieId = card.movieId || card.id;
+  const handleMovieClickButton = (movieData) => {
+    const movieId = movieData.id || movieData.movieId;
 
-    if (card.isLiked) {
-      card.isLiked = false;
-      const findCardMovie = savedMoviesInLS.find((movie) => movie.id === movieId);
+    if (movieData.isLiked) {
+      movieData.isLiked = false;
+
+      const findMovie = savedMoviesInLS.find((movie) => movie.id === movieId);
       setMovies((movies) =>
-        movies.map((movieItem) => (movieItem.movieId === movieId ? findCardMovie : movieItem))
+        movies.map((movie) => (movie.movieId === movieId ? findMovie : movie))
       );
-      mainApi
-        .deleteSavedMovie(findCardMovie)
-        .then(
-          setSaveMovies(
-            saveMovies.filter((cardItem) => cardItem.movieId !== movieId && cardItem.id !== movieId)
-          )
-        )
-        .catch((err) => console.log(err));
+      handleToggleSaveMovie(movieData)
     } else {
       mainApi
-        .postNewSavedMovie(card)
+        .postNewSavedMovie({
+          movieDatas: {
+            country: movieData.country,
+            director: movieData.director,
+            duration: movieData.duration,
+            year: movieData.year,
+            description: movieData.description,
+            image: `https://api.nomoreparties.co${movieData.image.url}`,
+            trailerLink: movieData.trailerLink,
+            nameRU: movieData.nameRU,
+            nameEN: movieData.nameEN,
+            thumbnail: `https://api.nomoreparties.co${movieData.image.url}`,
+            movieId: movieData.id,
+          },
+        })
         .then((savedMovie) => {
           savedMovie.isLiked = true;
           setMovies((movies) =>

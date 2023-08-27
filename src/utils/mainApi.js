@@ -85,39 +85,14 @@ class MainApi {
     return this._checkStatusRequest(res);
   };
 
-  async postNewSavedMovie(movieData) {
-    const {
-      country,
-      director,
-      duration,
-      year,
-      description,
-      image,
-      trailerLink,
-      id,
-      nameRU,
-      nameEN,
-    } = movieData;
-
+  async postNewSavedMovie({movieDatas}) {
     const res = await fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
       },
-      body: JSON.stringify({
-        country,
-        director,
-        duration,
-        year,
-        description,
-        image: MOVIES_API_SETTING.baseUrl + image.url,
-        trailerLink,
-        thumbnail: MOVIES_API_SETTING.baseUrl + image.formats.thumbnail.url,
-        movieId: id,
-        nameRU,
-        nameEN,
-      })
+      body: JSON.stringify(movieDatas),
     });
     return this._checkStatusRequest(res);
   };

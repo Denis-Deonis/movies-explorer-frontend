@@ -6,7 +6,6 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
-import mainApi from "../../utils/mainApi";
 
 export default function SavedMovies({
   isLoad,
@@ -15,28 +14,13 @@ export default function SavedMovies({
   setSaveMovies,
   toggleShortSavedMovie,
   onToggleShortSavedMovie,
+  handleToggleSaveMovie,
   error,
   setError,
 }) {
   const [filterList, setFilterList] = useState([]),
     [searchQuery, setSearchQuery] = useState(null);
 
-
-    const handleCardDeleteSaveMovie = (cardMovie) => {
-      const movieId = cardMovie.movieId || cardMovie.id;
-      const movieCardForDelete = saveMovies.find(
-        (movie) => movie.movieId === movieId || movie.id === movieId
-      );
-
-      mainApi
-        .deleteSavedMovie(movieCardForDelete)
-        .then(
-          setSaveMovies(
-            saveMovies.filter((cardItem) => cardItem.movieId !== movieId && cardItem.id !== movieId)
-          )
-        )
-        .catch((err) => console.log(err));
-    };
 
   useEffect(() => {
     setIsLoad(true);
@@ -104,7 +88,7 @@ export default function SavedMovies({
         moviesList={filterList}
         error={error}
         savedMovieBtn={true}
-        handleToggleLike={handleCardDeleteSaveMovie}
+        handleToggleLike={handleToggleSaveMovie}
       />
       <Footer />
     </div>
