@@ -20,7 +20,6 @@ export default function Movies({
   setMovies,
   saveMovies,
   setSaveMovies,
-  handleDeleteSaveMovie,
   toggleShortMovie,
   onToggleShortMovie,
   error,
@@ -85,26 +84,31 @@ export default function Movies({
     }
   }, [currentUser, searchQuery, typeContainer.loadCards, toggleShortMovie]);
 
-  const handleMovieBtnClick = (movieData) => {
-    const movieId = movieData.id || movieData.movieId;
+  const handleMovieClickButton = (card) => {
+    const movieId = card.movieId || card.id;
 
-    if (movieData.isLiked) {
-      movieData.isLiked = false;
-
-      handleDeleteSaveMovie(movieData);
-
-      const findMovie = savedMoviesInLS.find((movie) => movie.id === movieId);
+    if (card.isLiked) {
+      card.isLiked = false;
+      const findCardMovie = savedMoviesInLS.find((movie) => movie.id === movieId);
       setMovies((movies) =>
-        movies.map((movie) => (movie.movieId === movieId ? findMovie : movie))
+        movies.map((movieItem) => (movieItem.movieId === movieId ? findCardMovie : movieItem))
       );
+      mainApi
+        .deleteSavedMovie(findCardMovie)
+        .then(
+          setSaveMovies(
+            saveMovies.filter((cardItem) => cardItem.movieId !== movieId && cardItem.id !== movieId)
+          )
+        )
+        .catch((err) => console.log(err));
     } else {
       mainApi
-        .postNewSavedMovie(movieData)
+        .postNewSavedMovie(card)
         .then((savedMovie) => {
           savedMovie.isLiked = true;
           setMovies((movies) =>
-            movies.map((movie) =>
-              movie.id === savedMovie.movieId ? savedMovie : movie
+            movies.map((card) =>
+              card.id === savedMovie.movieId ? savedMovie : card
             )
           );
           setSaveMovies([...saveMovies, savedMovie]);
@@ -174,7 +178,7 @@ export default function Movies({
         loadList={loadList}
         error={error}
         handleBtnMore={handleBtnMore}
-        handleActionBtn={handleMovieBtnClick}
+        handleToggleLike={handleMovieClickButton}
       />
       <Footer />
     </div>

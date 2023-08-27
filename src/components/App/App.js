@@ -57,21 +57,6 @@ function App() {
       }
     }
 
-    const handleDeleteSaveMovie = (movie) => {
-      const movieId = movie.movieId || movie.id;
-      const movieForDelete = saveMovies.find(
-        (movie) => movie.movieId === movieId || movie.id === movieId
-      );
-
-      mainApi
-        .deleteSavedMovie(movieForDelete)
-        .then(
-          setSaveMovies(
-            saveMovies.filter((c) => c.movieId !== movieId && c.id !== movieId)
-          )
-        )
-        .catch((err) => console.log(err));
-    };
 
     const handleToggleShortMovie = (value) => {
       setToggleShortMovie(value);
@@ -86,48 +71,6 @@ function App() {
     const handleToggleIsLoad = (value) => {
       setIsLoading(value);
     };
-
-
-    function handleLike(movie) {
-      mainApi
-        .saveMovie({
-          movieData: {
-            country: movie.country,
-            director: movie.director,
-            duration: movie.duration,
-            year: movie.year,
-            description: movie.description,
-            image: `https://api.nomoreparties.co${movie.image.url}`,
-            trailerLink: movie.trailerLink,
-            nameRU: movie.nameRU,
-            nameEN: movie.nameEN,
-            thumbnail: `https://api.nomoreparties.co${movie.image.url}`,
-            movieId: movie.id,
-          },
-        })
-        .then((newMovie) => {
-          setSavedMovies([newMovie, ...savedMovies]);
-        })
-        .catch((err) => {
-          console.log(err);
-          handleErrorUnauthorized(err);
-        });
-    }
-
-
-
-  function handleDislike(movie) {
-    console.log(movie);
-    mainApi
-      .deleteMovie({ id: movie._id })
-      .then(() => {
-        setSavedMovies((state) => state.filter((item) => item._id !== movie._id));
-      })
-      .catch((err) => {
-        console.log(err);
-        handleErrorUnauthorized(err);
-      });
-  }
 
 
   const handelClearAllValues = () => {
@@ -221,12 +164,11 @@ function App() {
                 setMovies={setMovies}
                 saveMovies={saveMovies}
                 setSaveMovies={setSaveMovies}
-                handleDeleteSaveMovie={handleDeleteSaveMovie}
                 toggleShortMovie={toggleShortMovie}
                 onToggleShortMovie={handleToggleShortMovie}
                 error={error}
                 setError={setError}
-                isLoggedIn={isLoggedIn} savedMovies={savedMovies} onDislike={handleDislike} onLike={handleLike}
+                isLoggedIn={isLoggedIn} savedMovies={savedMovies}
               />
             }
           />
@@ -240,7 +182,6 @@ function App() {
                 element={SavedMovies}
                 saveMovies={saveMovies}
                 setSaveMovies={setSaveMovies}
-                handleDeleteSaveMovie={handleDeleteSaveMovie}
                 toggleShortSavedMovie={toggleShortSavedMovie}
                 onToggleShortSavedMovie={handleToggleShortSavedMovie}
                 error={error}

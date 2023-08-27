@@ -6,7 +6,7 @@ export default function MoviesCardList({
   loadList,
   error,
   handleBtnMore,
-  handleActionBtn,
+  handleToggleLike,
 }) {
 
   return (
@@ -21,7 +21,7 @@ export default function MoviesCardList({
             <MoviesCard
             key={card.id || card.movieId}
             movie={card}
-            handleActionBtn={handleActionBtn}
+            handleToggleLike={handleToggleLike}
             savedMovieBtn={!!loadList}
             />
           ))}
