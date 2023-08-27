@@ -10,6 +10,7 @@ export default function Login({
   isLoad,
   setIsLoad,
   setCurrentUser,
+  setIsLoggedIn,
   navigate,
   requestError,
   setRequestError,
@@ -24,9 +25,11 @@ export default function Login({
 
         if (_id) {
           localStorage.setItem('jwt', jwt);
+          setIsLoggedIn(true);
+          navigate("/movies");
           localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
           setCurrentUser((oldState) => ({ name, email, loggeIn: true }));
-          navigate("/movies");
+
         }
       })
       .catch(() => setRequestError(ERROR_MESSAGE.errorRequest))

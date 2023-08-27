@@ -16,24 +16,25 @@ import Page404 from "../Page404/Page404";
 
 function App() {
   const navigate = useNavigate(),
-    userIdInLocalStorage = localStorage.getItem(STORAGE_DATA_NAME.userId),
-    [isLoad, setIsLoad] = useState(false),
-    [currentUser, setCurrentUser] = useState({
-      name: null,
-      email: null,
-      loggeIn: !!userIdInLocalStorage,
-    }),
     [movies, setMovies] = useState([]),
     [toggleShortMovie, setToggleShortMovie] = useState(false),
     [toggleShortSavedMovie, setToggleShortSavedMovie] = useState(false),
-    [saveMovies, setSaveMovies] = useState([]),
-    [error, setError] = useState(null),
-    [requestError, setRequestError] = useState(null);
-    
+    [saveMovies, setSaveMovies] = useState([]);
+
+
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [requestError, setRequestError] = useState(null);
+    const [error, setError] = useState(null);
+    const [currentUser, setCurrentUser] = useState({});
+
+
+
 
   useEffect(() => {
-    if (userIdInLocalStorage) {
-      setIsLoad(true);
+    if (isLoggedIn) {
+      setIsLoading(true);
 
       Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
         .then((res) => {
@@ -47,9 +48,9 @@ function App() {
           setCurrentUser({ ...apiCurrentUser, loggeIn: true });
         })
         .catch(() => localStorage.removeItem(STORAGE_DATA_NAME.userId))
-        .finally(() => setIsLoad(false));
+        .finally(() => setIsLoading(false));
     }
-  }, [userIdInLocalStorage]);
+  }, [isLoggedIn]);
 
   const handleDeleteSaveMovie = (movie) => {
     const movieId = movie.movieId || movie.id;
@@ -78,12 +79,12 @@ function App() {
   };
 
   const handleToggleIsLoad = (value) => {
-    setIsLoad(value);
+    setIsLoading(value);
   };
 
   const setClearValues = () => {
     const movieArrs = [setMovies, setSaveMovies],
-      valueArrs = [setIsLoad, setToggleShortMovie, setError, setRequestError];
+      valueArrs = [setIsLoading, setToggleShortMovie, setError, setRequestError];
 
     movieArrs.forEach((i) => i([]));
     valueArrs.forEach((i) => i(null));
@@ -110,8 +111,8 @@ function App() {
             path="/profile"
             element={
               <ProtectedRouteElement
-                isLoad={isLoad}
-                setIsLoad={setIsLoad}
+                isLoad={isLoading}
+                setIsLoad={setIsLoading}
                 element={Profile}
                 setCurrentUser={setCurrentUser}
                 navigate={navigate}
@@ -125,8 +126,9 @@ function App() {
             element={
               !currentUser.loggeIn ? (
                 <Register
-                  isLoad={isLoad}
-                  setIsLoad={setIsLoad}
+                  isLoad={isLoading}
+                  setIsLoad={setIsLoading}
+                  setIsLoggedIn={setIsLoggedIn}
                   setCurrentUser={setCurrentUser}
                   navigate={navigate}
                   requestError={requestError}
@@ -143,8 +145,9 @@ function App() {
             element={
               !currentUser.loggeIn ? (
                 <Login
-                  isLoad={isLoad}
-                  setIsLoad={setIsLoad}
+                  isLoad={isLoading}
+                  setIsLoad={setIsLoading}
+                  setIsLoggedIn={setIsLoggedIn}
                   setCurrentUser={setCurrentUser}
                   navigate={navigate}
                   requestError={requestError}
@@ -161,7 +164,7 @@ function App() {
             element={
               <ProtectedRouteElement
                 currentUser={currentUser}
-                isLoad={isLoad}
+                isLoad={isLoading}
                 setIsLoad={handleToggleIsLoad}
                 element={Movies}
                 movies={movies}
@@ -181,7 +184,7 @@ function App() {
             path="/saved-movies"
             element={
               <ProtectedRouteElement
-                isLoad={isLoad}
+                isLoad={isLoading}
                 setIsLoad={handleToggleIsLoad}
                 element={SavedMovies}
                 saveMovies={saveMovies}

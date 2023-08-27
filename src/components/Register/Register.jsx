@@ -10,6 +10,7 @@ export default function Register({
   isLoad,
   setCurrentUser,
   setIsLoad,
+  setIsLoggedIn,
   navigate,
   requestError,
   setRequestError,
@@ -27,9 +28,11 @@ export default function Register({
 
         if (_id) {
           localStorage.setItem('jwt', jwt);
+          setIsLoggedIn(true);
+          navigate("/movies");
           localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
           setCurrentUser((oldState) => ({ name, email, loggeIn: true }));
-          navigate("/movies");
+
         }
       })
       .catch(() => setRequestError(ERROR_MESSAGE.repeatedEmail))
