@@ -1,8 +1,4 @@
 import AuthForm from "../AuthForm/AuthForm";
-import {
-  ERROR_MESSAGE,
-  STORAGE_DATA_NAME,
-} from "../../utils/constants";
 import mainApi from "../../utils/mainApi";
 
 export default function Login({
@@ -26,12 +22,12 @@ export default function Login({
           localStorage.setItem('jwt', jwt);
           setIsLoggedIn(true);
           navigate("/movies");
-          localStorage.setItem(STORAGE_DATA_NAME.userId, data._id);
+          localStorage.setItem("uI", data._id);
           setCurrentUser((oldState) => ({ name, email, loggeIn: true }));
 
         }
       })
-      .catch(() => setRequestError(ERROR_MESSAGE.errorRequest))
+      .catch(() => setRequestError("Неверный email или пароль"))
       .finally(() => setIsLoad(false));
   };
 

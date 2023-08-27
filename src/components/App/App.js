@@ -28,26 +28,27 @@ function App() {
     const [requestError, setRequestError] = useState(null);
     const [error, setError] = useState(null);
     const [currentUser, setCurrentUser] = useState({});
+    const [savedMovies, setSavedMovies] = useState([]);
 
+    useEffect(() => {
+      if (isLoggedIn) {
+        setIsLoading(true);
 
-
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      setIsLoading(true);
-
-      Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
-        .then((res) => {
-          const [apiSavedMovie, apiCurrentUser] = res;
-
-          setSaveMovies(apiSavedMovie);
-
-          setCurrentUser({ ...apiCurrentUser, loggeIn: true });
-        })
-        .catch(() => localStorage.removeItem(STORAGE_DATA_NAME.userId))
-        .finally(() => setIsLoading(false));
-    }
-  }, [isLoggedIn]);
+        Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
+          .then((res) => {
+            const [dataMovies, dataUser] = res;
+            setSavedMovies(
+              dataMovies
+                .filter((movie) => movie.owner === currentUser._id)
+                .reverse()
+            );
+            // setSaveMovies(dataMovies);
+            setCurrentUser({ ...dataUser, loggeIn: true });
+          })
+          .catch((err) => console.log(err))
+          .finally(() => setIsLoading(false));
+      }
+    }, [isLoggedIn]);
 
   const handleDeleteSaveMovie = (movie) => {
     const movieId = movie.movieId || movie.id;
