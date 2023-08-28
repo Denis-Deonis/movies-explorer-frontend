@@ -5,7 +5,6 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import { ERROR_MESSAGE } from "../../utils/constants";
 import moviesApi from "../../utils/moviesApi";
-import mainApi from "../../utils/mainApi";
 
 import findMovies from "../../utils/findMovies";
 import selectShortMovies from "../../utils/selectShortMovies";
@@ -21,20 +20,31 @@ export default function Movies({
   setMovies,
   saveMovies,
   setSaveMovies,
-  handleToggleSaveMovie,
+  handleDeleteSaveMovie,
   toggleShortMovie,
   onToggleShortMovie,
   error,
   setError,
-  handleLike
+  handleLike,
+  setSavedMoviesInLS,
+  savedMoviesInLS
 }) {
   const [windowDimensions, setWindowDimensions] = useState(
       getWindowDimensions()
     ),
     [searchQuery, setSearchQuery] = useState(null),
     [loadList, setLoadList] = useState([]),
-    typeContainer = getTypeCardList(windowDimensions),
-    [savedMoviesInLS, setSavedMoviesInLS] = useState(null);
+    typeContainer = getTypeCardList(windowDimensions);
+
+    useEffect(() => setError(null), []);
+
+    const handleToggleSaveMovie = (movieData) => {
+      if (movieData.isLiked) {
+        handleDeleteSaveMovie(movieData);
+      } else {
+        handleLike(movieData)
+      }
+    };
 
     useEffect(() => {
       setSearchQuery(sessionStorage.getItem("query"));
@@ -52,8 +62,6 @@ export default function Movies({
   }, [windowDimensions]);
 
 
-
-  useEffect(() => setError(null), []);
 
   useEffect(() => {
     if (searchQuery) {
@@ -108,34 +116,6 @@ export default function Movies({
     }
   };
 
-  const handleMovieBtnClick = (movieData) => {
-    const movieId = movieData.id || movieData.movieId;
-
-    if (movieData.isLiked) {
-      movieData.isLiked = false;
-      handleToggleSaveMovie(movieData);
-      const findMovie = savedMoviesInLS.find((movie) => movie.id === movieId);
-      setMovies((movies) =>
-        movies.map((movie) => (movie.movieId === movieId ? findMovie : movie))
-      );
-    } else {
-      handleLike(movieData)
-      // mainApi
-      //   .postNewSavedMovie(movieData)
-      //   .then((savedMovie) => {
-      //     console.log(movieData)
-      //     savedMovie.isLiked = true;
-      //     setMovies((movies) =>
-      //       movies.map((movie) =>
-      //         movie.id === savedMovie.movieId ? savedMovie : movie
-      //       )
-      //     );
-      //     setSaveMovies([...saveMovies, savedMovie]);
-      //   })
-      //   .catch((err) => console.log(err));
-    }
-  };
-
   const handleBtnMore = () => {
     const loadedMovies = loadList.slice(
       movies.length,
@@ -163,7 +143,7 @@ export default function Movies({
         loadList={loadList}
         error={error}
         handleBtnMore={handleBtnMore}
-        handleToggleAction={handleMovieBtnClick}
+        handleToggleAction={handleToggleSaveMovie}
       />
       <Footer />
     </div>

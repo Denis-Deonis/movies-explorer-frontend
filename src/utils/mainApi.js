@@ -1,4 +1,4 @@
-import { MAIN_API_SETTING, MOVIES_API_SETTING } from './config';
+import { MAIN_API_SETTING } from './config';
 
 class MainApi {
   constructor(options) {
@@ -93,43 +93,6 @@ class MainApi {
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
       },
       body: JSON.stringify(movieData),
-    });
-    return this._checkStatusRequest(res);
-  };
-
-  async postNewSavedMovie(movieData) {
-    const {
-      country,
-      director,
-      duration,
-      year,
-      description,
-      image,
-      trailerLink,
-      id,
-      nameRU,
-      nameEN,
-    } = movieData;
-
-    const res = await fetch(`${this._baseUrl}/movies`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-      },
-      body: JSON.stringify({
-        country,
-        director,
-        duration,
-        year,
-        description,
-        image: MOVIES_API_SETTING.baseUrl + image.url,
-        trailerLink,
-        thumbnail: MOVIES_API_SETTING.baseUrl + image.formats.thumbnail.url,
-        movieId: id,
-        nameRU,
-        nameEN,
-      })
     });
     return this._checkStatusRequest(res);
   };

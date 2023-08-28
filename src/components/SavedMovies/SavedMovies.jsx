@@ -11,7 +11,7 @@ export default function SavedMovies({
   isLoad,
   setIsLoad,
   saveMovies,
-  handleToggleSaveMovie,
+  handleDeleteSaveMovie,
   toggleShortSavedMovie,
   onToggleShortSavedMovie,
   error,
@@ -86,7 +86,7 @@ export default function SavedMovies({
         moviesList={filterList}
         error={error}
         savedMovieBtn={true}
-        handleToggleAction={handleToggleSaveMovie}
+        handleToggleAction={handleDeleteSaveMovie}
       />
       <Footer />
     </div>

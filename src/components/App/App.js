@@ -21,6 +21,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [movies, setMovies] = useState([]);
   const [saveMovies, setSaveMovies] = useState([]);
+
+  const [savedMoviesInLS, setSavedMoviesInLS] = useState(null);
+
   const navigate = useNavigate(),
 
     [toggleShortMovie, setToggleShortMovie] = useState(false),
@@ -43,16 +46,27 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  const handleToggleSaveMovie  = (movie) => {
+  const handleDeleteSaveMovie  = (movie) => {
     const movieId = movie.movieId || movie.id;
     const movieForDelete = saveMovies.find((movie) => movie.movieId === movieId || movie.id === movieId );
+    if (movie.isLiked) {
+      movie.isLiked = false;
+      const findMovie = savedMoviesInLS.find((movie) => movie.id === movieId);
+      setMovies((movies) =>
+        movies.map((movie) => (movie.movieId === movieId ? findMovie : movie))
+      );
+      mainApi
+      .deleteSavedMovie(movieForDelete)
+      .then( setSaveMovies(saveMovies.filter((item) => item.movieId !== movieId && item.id !== movieId)))
+      .catch((err) => console.log(err));
+    }
     mainApi
       .deleteSavedMovie(movieForDelete)
       .then( setSaveMovies(saveMovies.filter((item) => item.movieId !== movieId && item.id !== movieId)))
       .catch((err) => console.log(err));
   };
 
-  function handleLike(movie) {
+  const handleSaveMovie = (movie) => {
     mainApi
       .saveMovie({
           movieData: {
@@ -176,12 +190,14 @@ function App() {
                 setMovies={setMovies}
                 saveMovies={saveMovies}
                 setSaveMovies={setSaveMovies}
-                handleToggleSaveMovie={handleToggleSaveMovie }
+                handleDeleteSaveMovie={handleDeleteSaveMovie}
                 toggleShortMovie={toggleShortMovie}
                 onToggleShortMovie={handleToggleShortMovie}
                 error={error}
                 setError={setError}
-                handleLike={handleLike}
+                handleLike={handleSaveMovie}
+                savedMoviesInLS={savedMoviesInLS}
+                setSavedMoviesInLS={setSavedMoviesInLS}
               />
             }
           />
@@ -195,7 +211,7 @@ function App() {
                 element={SavedMovies}
                 saveMovies={saveMovies}
                 setSaveMovies={setSaveMovies}
-                handleToggleSaveMovie={handleToggleSaveMovie }
+                handleDeleteSaveMovie={handleDeleteSaveMovie}
                 toggleShortSavedMovie={toggleShortSavedMovie}
                 onToggleShortSavedMovie={handleToggleShortSavedMovie}
                 error={error}
