@@ -86,7 +86,7 @@ export default function SavedMovies({
         moviesList={filterList}
         error={error}
         savedMovieBtn={true}
-        handleActionBtn={handleDeleteSaveMovie}
+        handleToggleAction={handleDeleteSaveMovie}
       />
       <Footer />
     </div>

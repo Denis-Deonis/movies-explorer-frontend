@@ -1,10 +1,10 @@
 import { MOVIES_API_SETTING } from "../../utils/config";
 import { convertDuration } from '../../utils/duration';
 
-export default function MoviesCard({ movie, handleActionBtn, savedMovieBtn }) {
+export default function MoviesCard({ movie, handleToggleAction, savedMovieBtn }) {
   const { duration, image, trailerLink, nameRU, isLiked } = movie;
 
-  const handleAction = () =>  handleActionBtn(movie);;
+  const handleToggleButton = () =>  handleToggleAction(movie);;
 
   return (
     <li className="card">
@@ -30,7 +30,7 @@ export default function MoviesCard({ movie, handleActionBtn, savedMovieBtn }) {
               ? "card__button_type_seved"
               : "card__button_type_like"
           }`}
-          onClick={handleAction}
+          onClick={handleToggleButton}
         />
       </div>
       <p className="card__duration">{convertDuration(duration)}</p>

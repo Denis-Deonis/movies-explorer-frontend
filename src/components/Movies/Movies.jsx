@@ -174,7 +174,7 @@ export default function Movies({
         loadList={loadList}
         error={error}
         handleBtnMore={handleBtnMore}
-        handleActionBtn={handleMovieBtnClick}
+        handleToggleAction={handleMovieBtnClick}
       />
       <Footer />
     </div>
