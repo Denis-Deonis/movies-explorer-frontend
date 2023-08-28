@@ -23,11 +23,6 @@ export const ERROR_MESSAGE = {
   repeatedEmail: "Пользователь с таким email уже зарегистрирован",
 };
 
-export const STORAGE_DATA_NAME = {
-  userId: "uI",
-  movies: "movies",
-  searchQuery: "sQ",
-  toggleShortMovie: "toggleSM",
-};
+
 
 export const DURATION_SHORTMOVIE = 40;

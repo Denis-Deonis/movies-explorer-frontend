@@ -3,7 +3,6 @@ import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import "./App.css";
 import mainApi from '../../utils/mainApi';
-import { STORAGE_DATA_NAME } from "../../utils/constants";
 import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
 import Main from "../Main/Main";
 import Register from "../Register/Register";
@@ -38,13 +37,11 @@ function App() {
 
       Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
         .then((res) => {
-          const [apiSavedMovie, apiCurrentUser] = res;
-
-          setSaveMovies(apiSavedMovie);
-
-          setCurrentUser({ ...apiCurrentUser, loggeIn: true });
+          const [dataMovie, dataCurrentUser] = res;
+          setSaveMovies(dataMovie);
+          setCurrentUser({ ...dataCurrentUser, loggeIn: true });
         })
-        .catch(() => localStorage.removeItem(STORAGE_DATA_NAME.userId))
+        .catch(() => localStorage.removeItem("userID"))
         .finally(() => setIsLoading(false));
     }
   }, [isLoggedIn]);
@@ -67,8 +64,7 @@ function App() {
 
   const handleToggleShortMovie = (value) => {
     setToggleShortMovie(value);
-
-    sessionStorage.setItem(STORAGE_DATA_NAME.toggleShortMovie, value);
+    sessionStorage.setItem("shorts", value);
   };
 
   const handleToggleShortSavedMovie = (value) => {
@@ -91,10 +87,10 @@ function App() {
       loggeIn: false,
     });
 
-    // localStorage.clear(STORAGE_DATA_NAME.userId);
-    // sessionStorage.clear(STORAGE_DATA_NAME.movies);
-    sessionStorage.clear(STORAGE_DATA_NAME.searchQuery);
-    sessionStorage.clear(STORAGE_DATA_NAME.toggleShortMovie);
+    // localStorage.clear("userID");
+    sessionStorage.clear("movies");
+    sessionStorage.clear("query");
+    sessionStorage.clear("shorts");
   };
 
   return (
