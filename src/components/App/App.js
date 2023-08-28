@@ -14,27 +14,24 @@ import Page404 from "../Page404/Page404";
 
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [requestError, setRequestError] = useState(null);
+  const [error, setError] = useState(null);
+  const [currentUser, setCurrentUser] = useState({});
+  const [movies, setMovies] = useState([]);
+  const [saveMovies, setSaveMovies] = useState([]);
   const navigate = useNavigate(),
-    [movies, setMovies] = useState([]),
+
     [toggleShortMovie, setToggleShortMovie] = useState(false),
-    [toggleShortSavedMovie, setToggleShortSavedMovie] = useState(false),
-    [saveMovies, setSaveMovies] = useState([]);
+    [toggleShortSavedMovie, setToggleShortSavedMovie] = useState(false);
 
-
-
-    const [isLoading, setIsLoading] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [requestError, setRequestError] = useState(null);
-    const [error, setError] = useState(null);
-    const [currentUser, setCurrentUser] = useState({});
-
-
-
+    const handleToggleShortSavedMovie = (value) => setToggleShortSavedMovie(value);
+    const handleToggleIsLoad = (value) =>  setIsLoading(value);
 
   useEffect(() => {
     if (isLoggedIn) {
       setIsLoading(true);
-
       Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
         .then((res) => {
           const [dataMovie, dataCurrentUser] = res;
@@ -48,31 +45,16 @@ function App() {
 
   const handleDeleteSaveMovie = (movie) => {
     const movieId = movie.movieId || movie.id;
-    const movieForDelete = saveMovies.find(
-      (movie) => movie.movieId === movieId || movie.id === movieId
-    );
-
+    const movieForDelete = saveMovies.find((movie) => movie.movieId === movieId || movie.id === movieId );
     mainApi
       .deleteSavedMovie(movieForDelete)
-      .then(
-        setSaveMovies(
-          saveMovies.filter((c) => c.movieId !== movieId && c.id !== movieId)
-        )
-      )
+      .then( setSaveMovies(saveMovies.filter((item) => item.movieId !== movieId && item.id !== movieId)))
       .catch((err) => console.log(err));
   };
 
   const handleToggleShortMovie = (value) => {
     setToggleShortMovie(value);
     sessionStorage.setItem("shorts", value);
-  };
-
-  const handleToggleShortSavedMovie = (value) => {
-    setToggleShortSavedMovie(value);
-  };
-
-  const handleToggleIsLoad = (value) => {
-    setIsLoading(value);
   };
 
   const setClearValues = () => {

@@ -6,6 +6,7 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import { ERROR_MESSAGE } from "../../utils/constants";
 import moviesApi from "../../utils/moviesApi";
 import mainApi from "../../utils/mainApi";
+
 import findMovies from "../../utils/findMovies";
 import selectShortMovies from "../../utils/selectShortMovies";
 import getWindowDimensions from "../../utils/getWindowDimensions";

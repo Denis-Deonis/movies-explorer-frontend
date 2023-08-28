@@ -12,21 +12,16 @@ export default function SearchForm({
 }) {
 
   const { values, setValues, handleChange } = useFormValidation();
+  const handleChecked = () => onToggleShortMovie(!toggleShortMovie);
 
   useEffect(() => {
-    const name = "search-movies";
-
+    const name = "search-films";
     setValues({ [name]: savedSearch });
   }, [setValues, savedSearch]);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-
-    onSubmit(values["search-movies"]);
-  };
-
-  const handleChecked = () => {
-    onToggleShortMovie(!toggleShortMovie);
+    onSubmit(values["search-films"]);
   };
 
   return (
@@ -35,11 +30,11 @@ export default function SearchForm({
         <img className="search-form__img" src={findIcon} alt="" />
         <input
           className="search-form__input"
-          name="search-movies"
+          name="search-films"
           type="text"
           placeholder="Фильм"
           onChange={handleChange}
-          value={values["search-movies"] || ""}
+          value={values["search-films"] || ""}
           required={!savedMoviesType ?? false}
         />
         <button
