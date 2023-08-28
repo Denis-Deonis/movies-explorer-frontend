@@ -3,14 +3,14 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import { ERROR_MESSAGE } from "../../utils/constants";
+import { ERROR_MESSAGE, STORAGE_DATA_NAME } from "../../utils/constants";
 import moviesApi from "../../utils/moviesApi";
 import mainApi from "../../utils/mainApi";
-import {findFilterMovie} from "../../utils/utils";
-import { getShortMovies } from "../../utils/getFilterDuration";
+import findMovies from "../../utils/findMovies";
+import selectShortMovies from "../../utils/selectShortMovies";
+import getWindowDimensions from "../../utils/getWindowDimensions";
 import getTypeCardList from "../../utils/getTypeCardList";
 import getFilterMovie from "../../utils/getFilterMovie";
-import { getWindow } from "../../utils/utils";
 
 export default function Movies({
   currentUser,
@@ -20,39 +20,48 @@ export default function Movies({
   setMovies,
   saveMovies,
   setSaveMovies,
+  handleDeleteSaveMovie,
   toggleShortMovie,
   onToggleShortMovie,
-  handleToggleSaveMovie,
   error,
   setError,
 }) {
-  const [windowSize, setWindowSize] = useState(getWindow());
-  const [searchQuery, setSearchQuery] = useState(null);
-  const [loadList, setLoadList] = useState([]);
-  const typeMoviesContainer = getTypeCardList(windowSize);
-  const [savedMoviesList, setSavedMoviesList] = useState(null);
+  const [windowDimensions, setWindowDimensions] = useState(
+      getWindowDimensions()
+    ),
+    [searchQuery, setSearchQuery] = useState(null),
+    [loadList, setLoadList] = useState([]),
+    typeContainer = getTypeCardList(windowDimensions),
+    [savedMoviesInLS, setSavedMoviesInLS] = useState(null);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [windowDimensions]);
+
+  useEffect(() => {
+    setSearchQuery(sessionStorage.getItem(STORAGE_DATA_NAME.searchQuery));
+    onToggleShortMovie(
+      JSON.parse(sessionStorage.getItem(STORAGE_DATA_NAME.toggleShortMovie))
+    );
+    setSavedMoviesInLS(
+      JSON.parse(localStorage.getItem(STORAGE_DATA_NAME.movies))
+    );
+  }, []);
 
   useEffect(() => setError(null), []);
-
-  useEffect(() => {
-    const handleWindowResize = () => setWindowSize(getWindow());
-    window.addEventListener("resize", handleWindowResize);
-    return () => window.removeEventListener("resize", handleWindowResize);
-  }, [windowSize]);
-
-  useEffect(() => {
-    setSearchQuery(sessionStorage.getItem("sQ"));
-    onToggleShortMovie(JSON.parse(sessionStorage.getItem("toggleSM")));
-    setSavedMoviesList(JSON.parse(localStorage.getItem("movies")));
-  }, []);
 
   useEffect(() => {
     if (searchQuery) {
       setIsLoad(true);
 
-      const findList = findFilterMovie(savedMoviesList, searchQuery);
+      const findMoviesList = findMovies(savedMoviesInLS, searchQuery);
 
-      findList.forEach((movie) => {
+      findMoviesList.forEach((movie) => {
         const savedMovie = saveMovies.find(
           (savedMovie) =>
             savedMovie.movieId === movie.id || savedMovie.id === movie.id
@@ -61,12 +70,12 @@ export default function Movies({
       });
 
       setLoadList(
-        toggleShortMovie ? getShortMovies(findList) : findList
+        toggleShortMovie ? selectShortMovies(findMoviesList) : findMoviesList
       );
       setMovies(
         getFilterMovie(
-          findList,
-          typeMoviesContainer,
+          findMoviesList,
+          typeContainer,
           toggleShortMovie,
           setError
         )
@@ -74,41 +83,28 @@ export default function Movies({
 
       setIsLoad(false);
     }
-  }, [currentUser, searchQuery, typeMoviesContainer.loadCards, toggleShortMovie]);
+  }, [currentUser, searchQuery, typeContainer.loadCards, toggleShortMovie]);
 
-  const handleMovieClickButton = (movieData) => {
+  const handleMovieBtnClick = (movieData) => {
     const movieId = movieData.id || movieData.movieId;
 
     if (movieData.isLiked) {
       movieData.isLiked = false;
 
-      const findMovie = savedMoviesList.find((movie) => movie.id === movieId);
+      handleDeleteSaveMovie(movieData);
+
+      const findMovie = savedMoviesInLS.find((movie) => movie.id === movieId);
       setMovies((movies) =>
         movies.map((movie) => (movie.movieId === movieId ? findMovie : movie))
       );
-      handleToggleSaveMovie(movieData);
     } else {
       mainApi
-        .postNewSavedMovie({
-          movieDatas: {
-            country: movieData.country,
-            director: movieData.director,
-            duration: movieData.duration,
-            year: movieData.year,
-            description: movieData.description,
-            image: `https://api.nomoreparties.co${movieData.image.url}`,
-            trailerLink: movieData.trailerLink,
-            nameRU: movieData.nameRU,
-            nameEN: movieData.nameEN,
-            thumbnail: `https://api.nomoreparties.co${movieData.image.url}`,
-            movieId: movieData.id,
-          },
-        })
+        .postNewSavedMovie(movieData)
         .then((savedMovie) => {
           savedMovie.isLiked = true;
           setMovies((movies) =>
-            movies.map((card) =>
-              card.id === savedMovie.movieId ? savedMovie : card
+            movies.map((movie) =>
+              movie.id === savedMovie.movieId ? savedMovie : movie
             )
           );
           setSaveMovies([...saveMovies, savedMovie]);
@@ -117,34 +113,47 @@ export default function Movies({
     }
   };
 
-  const handleButtonMore = () => {
-    const loadMovies = loadList.slice(
+  const handleBtnMore = () => {
+    const loadedMovies = loadList.slice(
       movies.length,
-      movies.length + typeMoviesContainer.moreCards
+      movies.length + typeContainer.moreCards
     );
 
-    setMovies([...movies, ...loadMovies]);
+    setMovies([...movies, ...loadedMovies]);
   };
 
   const handleSubmit = (search) => {
     setIsLoad(true);
 
-    if (!savedMoviesList) {
+    if (!savedMoviesInLS) {
       moviesApi
         .getMovies()
         .then((allMoviesArr) => {
-          sessionStorage.setItem("toggleSM", toggleShortMovie);
-          sessionStorage.setItem("sQ", search);
-          localStorage.setItem("movies", JSON.stringify(allMoviesArr));
-          setSavedMoviesList(allMoviesArr);
+          sessionStorage.setItem(STORAGE_DATA_NAME.searchQuery, search);
           setSearchQuery(search);
+
+          sessionStorage.setItem(
+            STORAGE_DATA_NAME.toggleShortMovie,
+            toggleShortMovie
+          );
+
+          localStorage.setItem(
+            STORAGE_DATA_NAME.movies,
+            JSON.stringify(allMoviesArr)
+          );
+          setSavedMoviesInLS(allMoviesArr);
         })
         .catch(() => setError(ERROR_MESSAGE.tryAgainLater))
         .finally(() => setIsLoad(false));
     } else {
-      sessionStorage.setItem("sQ", search);
-      sessionStorage.setItem("toggleSM", toggleShortMovie);
+      sessionStorage.setItem(STORAGE_DATA_NAME.searchQuery, search);
       setSearchQuery(search);
+
+      sessionStorage.setItem(
+        STORAGE_DATA_NAME.toggleShortMovie,
+        toggleShortMovie
+      );
+
       setIsLoad(false);
     }
   };
@@ -164,8 +173,8 @@ export default function Movies({
         moviesList={movies}
         loadList={loadList}
         error={error}
-        handleButtonMore={handleButtonMore}
-        handleToggleLike={handleMovieClickButton}
+        handleBtnMore={handleBtnMore}
+        handleActionBtn={handleMovieBtnClick}
       />
       <Footer />
     </div>

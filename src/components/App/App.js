@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { CurrentUserContext } from "../../context/CurrentUserContext";
 import "./App.css";
 import mainApi from '../../utils/mainApi';
+import { STORAGE_DATA_NAME } from "../../utils/constants";
 import ProtectedRouteElement from "../ProtectedRoute/ProtectedRoute";
 import Main from "../Main/Main";
 import Register from "../Register/Register";
@@ -11,7 +12,6 @@ import Profile from "../Profile/Profile";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Page404 from "../Page404/Page404";
-import { STORAGE_DATA_NAME } from "../../utils/constants";
 
 
 function App() {
@@ -28,87 +28,73 @@ function App() {
     const [requestError, setRequestError] = useState(null);
     const [error, setError] = useState(null);
     const [currentUser, setCurrentUser] = useState({});
-    const [savedMovies, setSavedMovies] = useState([]);
 
-    useEffect(() => {
-      if (isLoggedIn) {
-        setIsLoading(true);
 
-        Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
-          .then((res) => {
-            const [dataMovies, dataUser] = res;
-            setSavedMovies(
-              dataMovies
-                .filter((movie) => movie.owner === currentUser._id)
-                .reverse()
-            );
-            // setSaveMovies(dataMovies);
-            setCurrentUser({ ...dataUser, loggeIn: true });
-          })
-          .catch((err) => console.log(err))
-          .finally(() => setIsLoading(false));
-      }
-    }, [isLoggedIn]);
 
-    const handleErrorUnauthorized = (err) => {
-      if (err.includes('401')) {
-        handelClearAllValues();
-        navigate('/', { replace: true })
-      }
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      setIsLoading(true);
+
+      Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
+        .then((res) => {
+          const [apiSavedMovie, apiCurrentUser] = res;
+
+          setSaveMovies(apiSavedMovie);
+
+          setCurrentUser({ ...apiCurrentUser, loggeIn: true });
+        })
+        .catch(() => localStorage.removeItem(STORAGE_DATA_NAME.userId))
+        .finally(() => setIsLoading(false));
     }
+  }, [isLoggedIn]);
 
-    const handleToggleSaveMovie = (movieData) => {
-      const movieId = movieData.movieId || movieData.id;
-      const movieForDelete = saveMovies.find(
-        (movie) => movie.movieId === movieId || movie.id === movieId
-      );
+  const handleDeleteSaveMovie = (movie) => {
+    const movieId = movie.movieId || movie.id;
+    const movieForDelete = saveMovies.find(
+      (movie) => movie.movieId === movieId || movie.id === movieId
+    );
 
-      mainApi
-        .deleteSavedMovie(movieForDelete)
-        .then(
-          setSaveMovies(
-            saveMovies.filter((cardItem) => cardItem.movieId !== movieId && cardItem.id !== movieId)
-          )
+    mainApi
+      .deleteSavedMovie(movieForDelete)
+      .then(
+        setSaveMovies(
+          saveMovies.filter((c) => c.movieId !== movieId && c.id !== movieId)
         )
-        .catch((err) => {
-          console.log(err)
-          handleErrorUnauthorized(err)
-        });
-    };
+      )
+      .catch((err) => console.log(err));
+  };
 
+  const handleToggleShortMovie = (value) => {
+    setToggleShortMovie(value);
 
-    const handleShortMovie = (value) => {
-      sessionStorage.setItem("toggleSM", value);
-      setToggleShortMovie(value);
-    };
+    sessionStorage.setItem(STORAGE_DATA_NAME.toggleShortMovie, value);
+  };
 
-    const handleShortSavedMovie = (value) => {
-      setToggleShortSavedMovie(value);
-    };
+  const handleToggleShortSavedMovie = (value) => {
+    setToggleShortSavedMovie(value);
+  };
 
-    const handleToggleIsLoad = (value) => {
-      setIsLoading(value);
-    };
+  const handleToggleIsLoad = (value) => {
+    setIsLoading(value);
+  };
 
+  const setClearValues = () => {
+    const movieArrs = [setMovies, setSaveMovies],
+      valueArrs = [setIsLoading, setToggleShortMovie, setError, setRequestError];
 
-  const handelClearAllValues = () => {
-    // const movieArrs = [setMovies, setSaveMovies],
-    //   valueArrs = [setIsLoading, setToggleShortMovie, setError, setRequestError];
-
-    // movieArrs.forEach((i) => i([]));
-    // valueArrs.forEach((i) => i(null));
+    movieArrs.forEach((i) => i([]));
+    valueArrs.forEach((i) => i(null));
     setCurrentUser({
       name: "",
       email: "",
       loggeIn: false,
     });
 
-    setIsLoggedIn(false);
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('movies');
-    localStorage.removeItem('sQ');
-    localStorage.removeItem('uI');
-    localStorage.removeItem('toggleSM');
+    localStorage.clear(STORAGE_DATA_NAME.userId);
+    sessionStorage.clear(STORAGE_DATA_NAME.movies);
+    sessionStorage.clear(STORAGE_DATA_NAME.searchQuery);
+    sessionStorage.clear(STORAGE_DATA_NAME.toggleShortMovie);
   };
 
   return (
@@ -127,7 +113,7 @@ function App() {
                 element={Profile}
                 setCurrentUser={setCurrentUser}
                 navigate={navigate}
-                setClearValues={handelClearAllValues}
+                setClearValues={setClearValues}
               />
             }
           />
@@ -182,12 +168,11 @@ function App() {
                 setMovies={setMovies}
                 saveMovies={saveMovies}
                 setSaveMovies={setSaveMovies}
+                handleDeleteSaveMovie={handleDeleteSaveMovie}
                 toggleShortMovie={toggleShortMovie}
-                onToggleShortMovie={handleShortMovie}
+                onToggleShortMovie={handleToggleShortMovie}
                 error={error}
                 setError={setError}
-                isLoggedIn={isLoggedIn} savedMovies={savedMovies}
-                handleToggleSaveMovie={handleToggleSaveMovie}
               />
             }
           />
@@ -201,11 +186,11 @@ function App() {
                 element={SavedMovies}
                 saveMovies={saveMovies}
                 setSaveMovies={setSaveMovies}
+                handleDeleteSaveMovie={handleDeleteSaveMovie}
                 toggleShortSavedMovie={toggleShortSavedMovie}
-                onToggleShortSavedMovie={handleShortSavedMovie}
+                onToggleShortSavedMovie={handleToggleShortSavedMovie}
                 error={error}
                 setError={setError}
-                handleToggleSaveMovie={handleToggleSaveMovie}
               />
             }
           />

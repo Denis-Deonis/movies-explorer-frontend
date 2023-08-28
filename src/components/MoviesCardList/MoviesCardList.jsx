@@ -5,8 +5,8 @@ export default function MoviesCardList({
   moviesList,
   loadList,
   error,
-  handleButtonMore,
-  handleToggleLike,
+  handleBtnMore,
+  handleActionBtn,
 }) {
 
   return (
@@ -21,14 +21,14 @@ export default function MoviesCardList({
             <MoviesCard
             key={card.id || card.movieId}
             movie={card}
-            handleToggleLike={handleToggleLike}
+            handleActionBtn={handleActionBtn}
             savedMovieBtn={!!loadList}
             />
           ))}
         </ul>
       )}
       {!isLoad && !!loadList && moviesList.length < loadList.length && (
-        <button className="movies-card__more-button" onClick={handleButtonMore}>
+        <button className="movies-card__more-button" onClick={handleBtnMore}>
           Ещё
         </button>
       )}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import findMovies from "../../utils/findMovies";
-import {getShortMovies} from "../../utils/getFilterDuration";
+import selectShortMovies from "../../utils/selectShortMovies";
 import getFilterMovie from "../../utils/getFilterMovie";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -11,16 +11,14 @@ export default function SavedMovies({
   isLoad,
   setIsLoad,
   saveMovies,
-  setSaveMovies,
+  handleDeleteSaveMovie,
   toggleShortSavedMovie,
   onToggleShortSavedMovie,
-  handleToggleSaveMovie,
   error,
   setError,
 }) {
   const [filterList, setFilterList] = useState([]),
     [searchQuery, setSearchQuery] = useState(null);
-
 
   useEffect(() => {
     setIsLoad(true);
@@ -49,7 +47,7 @@ export default function SavedMovies({
 
       setFilterList(
         toggleShortSavedMovie
-          ? getShortMovies(
+          ? selectShortMovies(
               getFilterMovie(
                 findSearchMovies,
                 false,
@@ -88,7 +86,7 @@ export default function SavedMovies({
         moviesList={filterList}
         error={error}
         savedMovieBtn={true}
-        handleToggleLike={handleToggleSaveMovie}
+        handleActionBtn={handleDeleteSaveMovie}
       />
       <Footer />
     </div>

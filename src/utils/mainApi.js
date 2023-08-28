@@ -31,6 +31,7 @@ class MainApi {
     const res = await fetch(`${this._baseUrl}/signin`, {
       method: 'POST',
       headers: this._headers,
+      //credentials: 'include',
       body: JSON.stringify({
         email: email,
         password: password,
@@ -42,6 +43,7 @@ class MainApi {
   async getLogoutUser() {
     const res = await fetch(`${this._baseUrl}/signout`, {
       method: 'GET',
+      //credentials: 'include',
     });
     return this._checkStatusRequest(res);
   }
@@ -49,6 +51,7 @@ class MainApi {
   async getUserInfo() {
     const res = await fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
+      //credentials: 'include',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json',
@@ -60,6 +63,7 @@ class MainApi {
   async setUserInfo({ name, email }) {
     const res = await fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
+      //credentials: 'include',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -75,6 +79,7 @@ class MainApi {
 
   async getAllSavedMovies() {
     const res = await fetch(`${this._baseUrl}/movies`, {
+      //credentials: 'include',
       method: 'GET',
       headers: {
         Accept: 'application/json',
@@ -85,14 +90,40 @@ class MainApi {
     return this._checkStatusRequest(res);
   };
 
-  async postNewSavedMovie({movieDatas}) {
+  async postNewSavedMovie(movieData) {
+    const {
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailerLink,
+      id,
+      nameRU,
+      nameEN,
+    } = movieData;
+
     const res = await fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
+      //credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
       },
-      body: JSON.stringify(movieDatas),
+      body: JSON.stringify({
+        country,
+        director,
+        duration,
+        year,
+        description,
+        image: MOVIES_API_SETTING.baseUrl + image.url,
+        trailerLink,
+        thumbnail: MOVIES_API_SETTING.baseUrl + image.formats.thumbnail.url,
+        movieId: id,
+        nameRU,
+        nameEN,
+      })
     });
     return this._checkStatusRequest(res);
   };
@@ -100,6 +131,7 @@ class MainApi {
   async deleteSavedMovie(movie) {
     const err = await fetch(`${this._baseUrl}/movies/${movie._id}`, {
       method: 'DELETE',
+      //credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('jwt')}`,
@@ -107,7 +139,6 @@ class MainApi {
     });
     return this._checkStatusRequest(err);
   };
-
 }
 
 const mainApi = new MainApi(MAIN_API_SETTING);
