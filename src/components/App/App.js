@@ -43,7 +43,7 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  const handleDeleteSaveMovie = (movie) => {
+  const handleToggleSaveMovie  = (movie) => {
     const movieId = movie.movieId || movie.id;
     const movieForDelete = saveMovies.find((movie) => movie.movieId === movieId || movie.id === movieId );
     mainApi
@@ -51,6 +51,36 @@ function App() {
       .then( setSaveMovies(saveMovies.filter((item) => item.movieId !== movieId && item.id !== movieId)))
       .catch((err) => console.log(err));
   };
+
+  function handleLike(movie) {
+    mainApi
+      .saveMovie({
+          movieData: {
+            country: movie.country,
+            director: movie.director,
+            duration: movie.duration,
+            year: movie.year,
+            description: movie.description,
+            image: `https://api.nomoreparties.co${movie.image.url}`,
+            trailerLink: movie.trailerLink,
+            nameRU: movie.nameRU,
+            nameEN: movie.nameEN,
+            thumbnail: `https://api.nomoreparties.co${movie.image.url}`,
+            movieId: movie.id,
+          },
+        })
+        .then((savedMovie) => {
+          console.log(movie)
+          savedMovie.isLiked = true;
+          setMovies((movies) =>
+            movies.map((movie) =>
+              movie.id === savedMovie.movieId ? savedMovie : movie
+            )
+          );
+          setSaveMovies([...saveMovies, savedMovie]);
+        })
+        .catch((err) => console.log(err));
+  }
 
   const handleToggleShortMovie = (value) => {
     setToggleShortMovie(value);
@@ -146,11 +176,12 @@ function App() {
                 setMovies={setMovies}
                 saveMovies={saveMovies}
                 setSaveMovies={setSaveMovies}
-                handleDeleteSaveMovie={handleDeleteSaveMovie}
+                handleToggleSaveMovie={handleToggleSaveMovie }
                 toggleShortMovie={toggleShortMovie}
                 onToggleShortMovie={handleToggleShortMovie}
                 error={error}
                 setError={setError}
+                handleLike={handleLike}
               />
             }
           />
@@ -164,7 +195,7 @@ function App() {
                 element={SavedMovies}
                 saveMovies={saveMovies}
                 setSaveMovies={setSaveMovies}
-                handleDeleteSaveMovie={handleDeleteSaveMovie}
+                handleToggleSaveMovie={handleToggleSaveMovie }
                 toggleShortSavedMovie={toggleShortSavedMovie}
                 onToggleShortSavedMovie={handleToggleShortSavedMovie}
                 error={error}

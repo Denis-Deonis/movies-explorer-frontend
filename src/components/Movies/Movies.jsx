@@ -21,11 +21,12 @@ export default function Movies({
   setMovies,
   saveMovies,
   setSaveMovies,
-  handleDeleteSaveMovie,
+  handleToggleSaveMovie,
   toggleShortMovie,
   onToggleShortMovie,
   error,
   setError,
+  handleLike
 }) {
   const [windowDimensions, setWindowDimensions] = useState(
       getWindowDimensions()
@@ -112,26 +113,26 @@ export default function Movies({
 
     if (movieData.isLiked) {
       movieData.isLiked = false;
-
-      handleDeleteSaveMovie(movieData);
-
+      handleToggleSaveMovie(movieData);
       const findMovie = savedMoviesInLS.find((movie) => movie.id === movieId);
       setMovies((movies) =>
         movies.map((movie) => (movie.movieId === movieId ? findMovie : movie))
       );
     } else {
-      mainApi
-        .postNewSavedMovie(movieData)
-        .then((savedMovie) => {
-          savedMovie.isLiked = true;
-          setMovies((movies) =>
-            movies.map((movie) =>
-              movie.id === savedMovie.movieId ? savedMovie : movie
-            )
-          );
-          setSaveMovies([...saveMovies, savedMovie]);
-        })
-        .catch((err) => console.log(err));
+      handleLike(movieData)
+      // mainApi
+      //   .postNewSavedMovie(movieData)
+      //   .then((savedMovie) => {
+      //     console.log(movieData)
+      //     savedMovie.isLiked = true;
+      //     setMovies((movies) =>
+      //       movies.map((movie) =>
+      //         movie.id === savedMovie.movieId ? savedMovie : movie
+      //       )
+      //     );
+      //     setSaveMovies([...saveMovies, savedMovie]);
+      //   })
+      //   .catch((err) => console.log(err));
     }
   };
 
