@@ -1,17 +1,10 @@
-import { DURATION_TITLES } from "../../utils/constants";
 import { MOVIES_API_SETTING } from "../../utils/config";
-import getEndLine from "../../utils/getEndLine";
+import { convertDuration } from '../../utils/duration';
 
 export default function MoviesCard({ movie, handleActionBtn, savedMovieBtn }) {
   const { duration, image, trailerLink, nameRU, isLiked } = movie;
 
-  const getDuration = (duration, durationTitles) => {
-    return getEndLine(duration, durationTitles);
-  };
-
-  const handleAction = () => {
-    handleActionBtn(movie);
-  };
+  const handleAction = () =>  handleActionBtn(movie);;
 
   return (
     <li className="card">
@@ -40,7 +33,7 @@ export default function MoviesCard({ movie, handleActionBtn, savedMovieBtn }) {
           onClick={handleAction}
         />
       </div>
-      <p className="card__duration">{getDuration(duration, DURATION_TITLES)}</p>
+      <p className="card__duration">{convertDuration(duration)}</p>
     </li>
   );
 }

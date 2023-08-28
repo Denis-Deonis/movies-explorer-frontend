@@ -80,10 +80,10 @@ function App() {
   };
 
   const setClearValues = () => {
-    const movieArrs = [setMovies, setSaveMovies],
-      valueArrs = [setIsLoading, setToggleShortMovie, setError, setRequestError];
+    // const movieArrs = [setMovies, setSaveMovies];
+    const valueArrs = [setIsLoading, setToggleShortMovie, setError, setRequestError];
 
-    movieArrs.forEach((i) => i([]));
+    // movieArrs.forEach((i) => i([]));
     valueArrs.forEach((i) => i(null));
     setCurrentUser({
       name: "",
@@ -91,8 +91,8 @@ function App() {
       loggeIn: false,
     });
 
-    localStorage.clear(STORAGE_DATA_NAME.userId);
-    sessionStorage.clear(STORAGE_DATA_NAME.movies);
+    // localStorage.clear(STORAGE_DATA_NAME.userId);
+    // sessionStorage.clear(STORAGE_DATA_NAME.movies);
     sessionStorage.clear(STORAGE_DATA_NAME.searchQuery);
     sessionStorage.clear(STORAGE_DATA_NAME.toggleShortMovie);
   };

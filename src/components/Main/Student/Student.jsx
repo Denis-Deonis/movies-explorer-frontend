@@ -1,6 +1,6 @@
 import SectionTitle from "../SectionTitle/SectionTitle";
 import  {DATE_BIRTH}  from "../../../utils/constants";
-import getEndLine from "../../../utils/getEndLine";
+import {convertDurationTitle} from "../../../utils/duration";
 import myPhoto from "./my_photo.png";
 
 export default function Student() {
@@ -11,7 +11,7 @@ export default function Student() {
           diff = nowDate.getFullYear() - birthDate.getFullYear(),
           res = diff - 1 + (addOne ? 1 : 0);
 
-    return getEndLine(res, dateTitles);
+    return convertDurationTitle(res, dateTitles);
   };
 
   return (
