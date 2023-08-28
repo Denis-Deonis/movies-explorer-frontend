@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import findMovies from "../../utils/findMovies";
-import selectShortMovies from "../../utils/selectShortMovies";
+import {getShortMovies} from "../../utils/getFilterDuration";
 import getFilterMovie from "../../utils/getFilterMovie";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -49,7 +49,7 @@ export default function SavedMovies({
 
       setFilterList(
         toggleShortSavedMovie
-          ? selectShortMovies(
+          ? getShortMovies(
               getFilterMovie(
                 findSearchMovies,
                 false,
