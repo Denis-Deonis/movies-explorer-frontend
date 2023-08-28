@@ -77,13 +77,12 @@ function App() {
     };
 
 
-    const handleToggleShortMovie = (value) => {
+    const handleShortMovie = (value) => {
+      sessionStorage.setItem("toggleSM", value);
       setToggleShortMovie(value);
-
-      sessionStorage.setItem(STORAGE_DATA_NAME.toggleShortMovie, value);
     };
 
-    const handleToggleShortSavedMovie = (value) => {
+    const handleShortSavedMovie = (value) => {
       setToggleShortSavedMovie(value);
     };
 
@@ -93,11 +92,11 @@ function App() {
 
 
   const handelClearAllValues = () => {
-    const movieArrs = [setMovies, setSaveMovies],
-      valueArrs = [setIsLoading, setToggleShortMovie, setError, setRequestError];
+    // const movieArrs = [setMovies, setSaveMovies],
+    //   valueArrs = [setIsLoading, setToggleShortMovie, setError, setRequestError];
 
-    movieArrs.forEach((i) => i([]));
-    valueArrs.forEach((i) => i(null));
+    // movieArrs.forEach((i) => i([]));
+    // valueArrs.forEach((i) => i(null));
     setCurrentUser({
       name: "",
       email: "",
@@ -107,9 +106,9 @@ function App() {
     setIsLoggedIn(false);
     localStorage.removeItem('jwt');
     localStorage.removeItem('movies');
-    localStorage.removeItem('query');
-    localStorage.removeItem('shorts');
-    localStorage.removeItem('allMovies');
+    localStorage.removeItem('sQ');
+    localStorage.removeItem('uI');
+    localStorage.removeItem('toggleSM');
   };
 
   return (
@@ -184,7 +183,7 @@ function App() {
                 saveMovies={saveMovies}
                 setSaveMovies={setSaveMovies}
                 toggleShortMovie={toggleShortMovie}
-                onToggleShortMovie={handleToggleShortMovie}
+                onToggleShortMovie={handleShortMovie}
                 error={error}
                 setError={setError}
                 isLoggedIn={isLoggedIn} savedMovies={savedMovies}
@@ -203,7 +202,7 @@ function App() {
                 saveMovies={saveMovies}
                 setSaveMovies={setSaveMovies}
                 toggleShortSavedMovie={toggleShortSavedMovie}
-                onToggleShortSavedMovie={handleToggleShortSavedMovie}
+                onToggleShortSavedMovie={handleShortSavedMovie}
                 error={error}
                 setError={setError}
                 handleToggleSaveMovie={handleToggleSaveMovie}

@@ -5,3 +5,9 @@ export const convertDuration = (dur) => {
   const minutes = dur % 60;
   return `${hours}ч ${minutes}мин`;
 };
+
+export const getShortMovies = (Arr) => {
+  const shortMovies = [];
+  Arr.forEach(movie => {if (movie.duration < 40) {shortMovies.push(movie)}});
+  return shortMovies;
+}
