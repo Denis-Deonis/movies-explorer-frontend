@@ -7,3 +7,4 @@ export const getFilterMovie = (movies, query) => {
   });
   return requestMovies;
 };
+

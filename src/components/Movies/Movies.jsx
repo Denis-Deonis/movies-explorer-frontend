@@ -3,14 +3,14 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
-import { ERROR_MESSAGE, STORAGE_DATA_NAME } from "../../utils/constants";
+import { ERROR_MESSAGE } from "../../utils/constants";
 import moviesApi from "../../utils/moviesApi";
 import mainApi from "../../utils/mainApi";
-import findMovies from "../../utils/findMovies";
-import selectShortMovies from "../../utils/selectShortMovies";
-import getWindowDimensions from "../../utils/getWindowDimensions";
+import {findFilterMovie} from "../../utils/utils";
+import { getShortMovies } from "../../utils/getFilterDuration";
 import getTypeCardList from "../../utils/getTypeCardList";
 import getFilterMovie from "../../utils/getFilterMovie";
+import { getWindow } from "../../utils/utils";
 
 export default function Movies({
   currentUser,
@@ -26,42 +26,33 @@ export default function Movies({
   error,
   setError,
 }) {
-  const [windowDimensions, setWindowDimensions] = useState(
-      getWindowDimensions()
-    ),
-    [searchQuery, setSearchQuery] = useState(null),
-    [loadList, setLoadList] = useState([]),
-    typeContainer = getTypeCardList(windowDimensions),
-    [savedMoviesInLS, setSavedMoviesInLS] = useState(null);
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [windowDimensions]);
-
-  useEffect(() => {
-    setSearchQuery(sessionStorage.getItem(STORAGE_DATA_NAME.searchQuery));
-    onToggleShortMovie(
-      JSON.parse(sessionStorage.getItem(STORAGE_DATA_NAME.toggleShortMovie))
-    );
-    setSavedMoviesInLS(
-      JSON.parse(localStorage.getItem(STORAGE_DATA_NAME.movies))
-    );
-  }, []);
+  const [windowSize, setWindowSize] = useState(getWindow());
+  const [searchQuery, setSearchQuery] = useState(null);
+  const [loadList, setLoadList] = useState([]);
+  const typeMoviesContainer = getTypeCardList(windowSize);
+  const [savedMoviesList, setSavedMoviesList] = useState(null);
 
   useEffect(() => setError(null), []);
+
+  useEffect(() => {
+    const handleWindowResize = () => setWindowSize(getWindow());
+    window.addEventListener("resize", handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, [windowSize]);
+
+  useEffect(() => {
+    setSearchQuery(sessionStorage.getItem("sQ"));
+    onToggleShortMovie(JSON.parse(sessionStorage.getItem("toggleSM")));
+    setSavedMoviesList(JSON.parse(localStorage.getItem("movies")));
+  }, []);
 
   useEffect(() => {
     if (searchQuery) {
       setIsLoad(true);
 
-      const findMoviesList = findMovies(savedMoviesInLS, searchQuery);
+      const findList = findFilterMovie(savedMoviesList, searchQuery);
 
-      findMoviesList.forEach((movie) => {
+      findList.forEach((movie) => {
         const savedMovie = saveMovies.find(
           (savedMovie) =>
             savedMovie.movieId === movie.id || savedMovie.id === movie.id
@@ -70,12 +61,12 @@ export default function Movies({
       });
 
       setLoadList(
-        toggleShortMovie ? selectShortMovies(findMoviesList) : findMoviesList
+        toggleShortMovie ? getShortMovies(findList) : findList
       );
       setMovies(
         getFilterMovie(
-          findMoviesList,
-          typeContainer,
+          findList,
+          typeMoviesContainer,
           toggleShortMovie,
           setError
         )
@@ -83,7 +74,7 @@ export default function Movies({
 
       setIsLoad(false);
     }
-  }, [currentUser, searchQuery, typeContainer.loadCards, toggleShortMovie]);
+  }, [currentUser, searchQuery, typeMoviesContainer.loadCards, toggleShortMovie]);
 
   const handleMovieClickButton = (movieData) => {
     const movieId = movieData.id || movieData.movieId;
@@ -91,11 +82,11 @@ export default function Movies({
     if (movieData.isLiked) {
       movieData.isLiked = false;
 
-      const findMovie = savedMoviesInLS.find((movie) => movie.id === movieId);
+      const findMovie = savedMoviesList.find((movie) => movie.id === movieId);
       setMovies((movies) =>
         movies.map((movie) => (movie.movieId === movieId ? findMovie : movie))
       );
-      handleToggleSaveMovie(movieData)
+      handleToggleSaveMovie(movieData);
     } else {
       mainApi
         .postNewSavedMovie({
@@ -129,7 +120,7 @@ export default function Movies({
   const handleButtonMore = () => {
     const loadMovies = loadList.slice(
       movies.length,
-      movies.length + typeContainer.moreCards
+      movies.length + typeMoviesContainer.moreCards
     );
 
     setMovies([...movies, ...loadMovies]);
@@ -138,35 +129,22 @@ export default function Movies({
   const handleSubmit = (search) => {
     setIsLoad(true);
 
-    if (!savedMoviesInLS) {
+    if (!savedMoviesList) {
       moviesApi
         .getMovies()
         .then((allMoviesArr) => {
-          sessionStorage.setItem(STORAGE_DATA_NAME.searchQuery, search);
+          sessionStorage.setItem("toggleSM", toggleShortMovie);
+          sessionStorage.setItem("sQ", search);
+          localStorage.setItem("movies", JSON.stringify(allMoviesArr));
+          setSavedMoviesList(allMoviesArr);
           setSearchQuery(search);
-
-          sessionStorage.setItem(
-            STORAGE_DATA_NAME.toggleShortMovie,
-            toggleShortMovie
-          );
-
-          localStorage.setItem(
-            STORAGE_DATA_NAME.movies,
-            JSON.stringify(allMoviesArr)
-          );
-          setSavedMoviesInLS(allMoviesArr);
         })
         .catch(() => setError(ERROR_MESSAGE.tryAgainLater))
         .finally(() => setIsLoad(false));
     } else {
-      sessionStorage.setItem(STORAGE_DATA_NAME.searchQuery, search);
+      sessionStorage.setItem("sQ", search);
+      sessionStorage.setItem("toggleSM", toggleShortMovie);
       setSearchQuery(search);
-
-      sessionStorage.setItem(
-        STORAGE_DATA_NAME.toggleShortMovie,
-        toggleShortMovie
-      );
-
       setIsLoad(false);
     }
   };
