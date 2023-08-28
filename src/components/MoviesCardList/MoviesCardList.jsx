@@ -9,6 +9,7 @@ export default function MoviesCardList({
   handleToggleAction,
 }) {
 
+
   return (
     <section className="movies-card">
       {isLoad || !moviesList ? (
@@ -27,11 +28,16 @@ export default function MoviesCardList({
           ))}
         </ul>
       )}
-      {!isLoad && !!loadList && moviesList.length < loadList.length && (
-        <button className="movies-card__more-button" onClick={handleBtnMore}>
-          Ещё
-        </button>
-      )}
+
+    {
+      typeof moviesList !== 'undefined' && moviesList !== null && Object.keys(moviesList).length > 0 && (
+          !isLoad && !!loadList && ( moviesList.length !== 0 ) < loadList.length  && (
+          <button className="movies-card__more-button" onClick={handleBtnMore}>
+            Ещё
+          </button>
+      ))
+    }
+
     </section>
   );
 }
