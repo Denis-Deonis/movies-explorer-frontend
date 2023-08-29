@@ -84,7 +84,6 @@ function App() {
           },
         })
         .then((savedMovie) => {
-          console.log(movie)
           savedMovie.isLiked = true;
           setMovies((movies) =>
             movies.map((movie) =>
@@ -103,17 +102,22 @@ function App() {
 
   const setClearValues = () => {
     // const movieArrs = [setMovies, setSaveMovies];
-    const valueArrs = [setIsLoading, setToggleShortMovie, setError, setRequestError];
+    // const valueArrs = [setIsLoading, setToggleShortMovie, setError, setRequestError];
 
     // movieArrs.forEach((i) => i([]));
-    valueArrs.forEach((i) => i(null));
+    // valueArrs.forEach((i) => i(null));
     setCurrentUser({
       name: "",
       email: "",
       loggeIn: false,
     });
 
-    // localStorage.clear("userID");
+    setIsLoggedIn(false);
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('userID');
+    localStorage.removeItem('movies');
+    localStorage.removeItem('query');
+    localStorage.removeItem('shorts');
     sessionStorage.clear("movies");
     sessionStorage.clear("query");
     sessionStorage.clear("shorts");
