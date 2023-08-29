@@ -14,11 +14,11 @@ export default function MoviesCardList({
 
   return (
     <section className="movies-card">
-      { checkIsLoad && !checkTypeof ? (
-        <p className="movies-card__error">{"Ничего не найдено"}</p>
-      ) :  checkIsLoad ? (
+      { checkIsLoad && checkTypeof ? (
         <span className="movies-card__loader" />
-      ) : error ? (
+      ) : checkIsLoad && !checkTypeof ? (
+        <p className="movies-card__error">{"Ничего не найдено"}</p>
+      ) :  error ? (
         <p className="movies-card__error">{error}</p>
       ) : (
         <ul className="movies-card__list">
