@@ -69,29 +69,17 @@ export default function Movies({
   useEffect(() => {
     if (searchQuery) {
       setIsLoad(true);
-
       const findMoviesList = findMovies(savedMoviesInLS, searchQuery);
-
       findMoviesList.forEach((movie) => {
         const savedMovie = saveMovies.find(
-          (savedMovie) =>
-            savedMovie.movieId === movie.id || savedMovie.id === movie.id
+          (savedMovie) => savedMovie.movieId === movie.id || savedMovie.id === movie.id
         );
         savedMovie ? (movie.isLiked = true) : (movie.isLiked = false);
       });
-
-      setLoadList(
-        toggleShortMovie ? filterDuration(findMoviesList) : findMoviesList
-      );
+      setLoadList( toggleShortMovie ? filterDuration(findMoviesList) : findMoviesList );
       setMovies(
-        getFilterMovie(
-          findMoviesList,
-          typeContainer,
-          toggleShortMovie,
-          setError
-        )
+        getFilterMovie(findMoviesList, typeContainer, toggleShortMovie, setError )
       );
-
       setIsLoad(false);
     }
   }, [currentUser, searchQuery, typeContainer.loadCards, toggleShortMovie]);
