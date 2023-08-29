@@ -10,7 +10,7 @@
 
 ## Pull requests
 
-[PR для ревью](https://github.com/Denis-Deonis/movies-explorer-frontend/pull/10)
+[PR для ревью](https://github.com/Denis-Deonis/movies-explorer-frontend/pull/11)
 
 ## Структура приложения
 
@@ -21,7 +21,8 @@
 
 Website [Ссылка на Movies Explorer](http://denis777.nomoreparties.co/signup)
 
-[Ссылка на макет в Figma](https://www.figma.com/file/g539FjnLn7pqXKfGw6nRv9/My_Diploma_Zykov?type=design&mode=design&t=WuSlqfjWnyBUwCJ3-7)
+[Ссылка на макет в Figma](https://www.figma.com/file/g539FjnLn7pqXKfGw6nRv9/My_Diploma_Zykov?type=design&node-id=891-3857&mode=design&t=JGx792TkAGc9WYbT-0)
+
 
 ## Установка и запуск проекта
 
