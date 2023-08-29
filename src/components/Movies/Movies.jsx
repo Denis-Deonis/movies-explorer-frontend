@@ -9,8 +9,6 @@ import {filterDuration} from '../../utils/utils';
 import {getVisibleCount} from '../../utils/visibleCount';
 
 import findMovies from "../../utils/findMovies";
-import getWindowDimensions from "../../utils/getWindowDimensions";
-
 import getFilterMovie from "../../utils/getFilterMovie";
 
 export default function Movies({
@@ -32,10 +30,6 @@ export default function Movies({
 }) {
 
   const [loadList, setLoadList] = useState([]);
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  );
-
   const [searchQuery, setSearchQuery] = useState(null);
   const typeContainer = getVisibleCount();
 
@@ -54,17 +48,6 @@ export default function Movies({
       onToggleShortMovie(JSON.parse(sessionStorage.getItem("shorts")));
       setSavedMoviesInLS(JSON.parse(localStorage.getItem("movies")));
     }, []);
-
-    useEffect(() => {
-      function handleResize() {
-        setWindowDimensions(getWindowDimensions());
-      }
-
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, [windowDimensions]);
-
-
 
   useEffect(() => {
     if (searchQuery) {
