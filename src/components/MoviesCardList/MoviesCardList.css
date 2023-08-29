@@ -18,10 +18,10 @@
   background-size: 100%;
   background-repeat: no-repeat;
   transform: scale(1.2) rotate(360deg);
-  animation-duration: .7s;
-  animation-name: loaderPulse;
+  animation-name: rotation;
+  animation-duration: 5s;
   animation-iteration-count: infinite;
-  animation-timing-function: ease-in;
+  animation-timing-function: linear;
 }
 
 .movies-card__error {
@@ -97,5 +97,15 @@
   .movies-card {
     margin: 4.375rem auto 0;
     width: 71.25rem;
+  }
+}
+
+
+@keyframes rotation {
+  0% {
+      transform:rotate(0deg);
+  }
+  100% {
+      transform:rotate(360deg);
   }
 }
