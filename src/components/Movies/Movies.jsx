@@ -5,11 +5,12 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import { ERROR_MESSAGE } from "../../utils/constants";
 import moviesApi from "../../utils/moviesApi";
+import {filterDuration} from '../../utils/utils';
+import {getVisibleCount} from '../../utils/visibleCount';
 
-import {filterDuration} from '../../utils/utils'
 import findMovies from "../../utils/findMovies";
 import getWindowDimensions from "../../utils/getWindowDimensions";
-import getTypeCardList from "../../utils/getTypeCardList";
+// import getTypeCardList from "../../utils/getTypeCardList";
 import getFilterMovie from "../../utils/getFilterMovie";
 
 export default function Movies({
@@ -29,22 +30,24 @@ export default function Movies({
   setSavedMoviesInLS,
   savedMoviesInLS
 }) {
+
+  const [loadList, setLoadList] = useState([]);
   const [windowDimensions, setWindowDimensions] = useState(
-      getWindowDimensions()
-    ),
-    [searchQuery, setSearchQuery] = useState(null),
-    [loadList, setLoadList] = useState([]),
-    typeContainer = getTypeCardList(windowDimensions);
+    getWindowDimensions()
+  );
 
-    useEffect(() => setError(null), []);
+  const [searchQuery, setSearchQuery] = useState(null);
+  const typeContainer = getVisibleCount();
 
-    const handleToggleSaveMovie = (movieData) => {
-      if (movieData.isLiked) {
-        handleDeleteSaveMovie(movieData);
-      } else {
-        handleLike(movieData)
-      }
-    };
+  useEffect(() => setError(null), []);
+
+  const handleToggleSaveMovie = (movieData) => {
+    if (movieData.isLiked) {
+      handleDeleteSaveMovie(movieData);
+    } else {
+      handleLike(movieData);
+    }
+  };
 
     useEffect(() => {
       setSearchQuery(sessionStorage.getItem("query"));
@@ -52,14 +55,14 @@ export default function Movies({
       setSavedMoviesInLS(JSON.parse(localStorage.getItem("movies")));
     }, []);
 
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
+    useEffect(() => {
+      function handleResize() {
+        setWindowDimensions(getWindowDimensions());
+      }
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [windowDimensions]);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, [windowDimensions]);
 
 
 
