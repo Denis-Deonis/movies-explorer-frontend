@@ -7,8 +7,8 @@ import { ERROR_MESSAGE } from "../../utils/constants";
 import moviesApi from "../../utils/moviesApi";
 import {filterDuration} from '../../utils/utils';
 import {getVisibleCount} from '../../utils/visibleCount';
+import {findMovies} from "../../utils/moviesByQuery";
 
-import findMovies from "../../utils/findMovies";
 import getFilterMovie from "../../utils/getFilterMovie";
 
 export default function Movies({

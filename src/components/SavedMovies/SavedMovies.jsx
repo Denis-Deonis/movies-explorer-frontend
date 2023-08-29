@@ -4,7 +4,7 @@ import Footer from "../Footer/Footer";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import {filterDuration} from "../../utils/utils";
-import findMovies from "../../utils/findMovies";
+import {findMovies} from "../../utils/moviesByQuery";
 import getFilterMovie from "../../utils/getFilterMovie";
 
 export default function SavedMovies({
