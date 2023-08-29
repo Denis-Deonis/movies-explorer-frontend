@@ -8,8 +8,7 @@ import moviesApi from "../../utils/moviesApi";
 import {filterDuration} from '../../utils/utils';
 import {getVisibleCount} from '../../utils/visibleCount';
 import {findMovies} from "../../utils/moviesByQuery";
-
-import getFilterMovie from "../../utils/getFilterMovie";
+import getFilterMovie from "../../utils/filterMovieArr";
 
 export default function Movies({
   currentUser,

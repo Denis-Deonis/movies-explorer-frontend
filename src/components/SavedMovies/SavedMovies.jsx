@@ -5,7 +5,7 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import {filterDuration} from "../../utils/utils";
 import {findMovies} from "../../utils/moviesByQuery";
-import getFilterMovie from "../../utils/getFilterMovie";
+import getFilterMovie from "../../utils/filterMovieArr";
 
 export default function SavedMovies({
   isLoad,
