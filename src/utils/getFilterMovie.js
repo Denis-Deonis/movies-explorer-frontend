@@ -1,9 +1,9 @@
-import selectShortMovies from './selectShortMovies.js';
 import { ERROR_MESSAGE } from '../utils/constants.js';
+import {filterDuration} from "./utils"
 
 const getFilterMovie = (movieArr, typeContainer, toggle, setError) => {
   let movieNewArr,
-      shorMovietNewArr = selectShortMovies(movieArr);
+      shorMovietNewArr = filterDuration(movieArr);
 
   if (!movieArr.length) {
     setError(ERROR_MESSAGE.notFound);

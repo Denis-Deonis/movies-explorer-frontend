@@ -6,8 +6,8 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import { ERROR_MESSAGE } from "../../utils/constants";
 import moviesApi from "../../utils/moviesApi";
 
+import {filterDuration} from '../../utils/utils'
 import findMovies from "../../utils/findMovies";
-import selectShortMovies from "../../utils/selectShortMovies";
 import getWindowDimensions from "../../utils/getWindowDimensions";
 import getTypeCardList from "../../utils/getTypeCardList";
 import getFilterMovie from "../../utils/getFilterMovie";
@@ -78,7 +78,7 @@ export default function Movies({
       });
 
       setLoadList(
-        toggleShortMovie ? selectShortMovies(findMoviesList) : findMoviesList
+        toggleShortMovie ? filterDuration(findMoviesList) : findMoviesList
       );
       setMovies(
         getFilterMovie(
