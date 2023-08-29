@@ -10,7 +10,7 @@ import {getVisibleCount} from '../../utils/visibleCount';
 
 import findMovies from "../../utils/findMovies";
 import getWindowDimensions from "../../utils/getWindowDimensions";
-// import getTypeCardList from "../../utils/getTypeCardList";
+
 import getFilterMovie from "../../utils/getFilterMovie";
 
 export default function Movies({
@@ -119,13 +119,12 @@ export default function Movies({
     }
   };
 
-  const handleBtnMore = () => {
-    const loadedMovies = loadList.slice(
+  const handleButtonMore = () => {
+    const moreMovies = loadList.slice(
       movies.length,
       movies.length + typeContainer.moreCards
     );
-
-    setMovies([...movies, ...loadedMovies]);
+    setMovies([...movies, ...moreMovies]);
   };
 
 
@@ -145,7 +144,7 @@ export default function Movies({
         moviesList={movies}
         loadList={loadList}
         error={error}
-        handleBtnMore={handleBtnMore}
+        handleBtnMore={handleButtonMore}
         handleToggleAction={handleToggleSaveMovie}
       />
       <Footer />

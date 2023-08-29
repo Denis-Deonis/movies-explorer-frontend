@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import findMovies from "../../utils/findMovies";
-import getFilterMovie from "../../utils/getFilterMovie";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import SearchForm from "../SearchForm/SearchForm";
 import {filterDuration} from "../../utils/utils";
+import findMovies from "../../utils/findMovies";
+import getFilterMovie from "../../utils/getFilterMovie";
 
 export default function SavedMovies({
   isLoad,
