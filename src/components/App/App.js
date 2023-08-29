@@ -59,11 +59,12 @@ function App() {
       .deleteSavedMovie(movieForDelete)
       .then( setSaveMovies(saveMovies.filter((item) => item.movieId !== movieId && item.id !== movieId)))
       .catch((err) => console.log(err));
-    }
-    mainApi
+    } else {
+      mainApi
       .deleteSavedMovie(movieForDelete)
       .then( setSaveMovies(saveMovies.filter((item) => item.movieId !== movieId && item.id !== movieId)))
       .catch((err) => console.log(err));
+    }
   };
 
   const handleSaveMovie = (movie) => {
