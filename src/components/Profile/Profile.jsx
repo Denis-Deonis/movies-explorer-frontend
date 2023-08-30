@@ -3,7 +3,7 @@ import { CurrentUserContext } from "../../context/CurrentUserContext";
 import Header from "../Header/Header";
 import mainApi from "../../utils/mainApi";
 import useFormValidation from "../../hooks/useFormValidator";
-import { INPUT_ERROR_NAME, ERROR_MESSAGE } from "../../utils/constants";
+import { ERROR_MESSAGE, ERROR_INPUT } from "../../utils/constants";
 
 export default function Profile({
   isLoad,
@@ -12,16 +12,11 @@ export default function Profile({
   navigate,
   setClearValues,
 }) {
-  const { name, email } = useContext(CurrentUserContext),
-        { values,
-          setValues,
-          errors,
-          isValid,
-          setIsValid,
-          handleChange,
-        } = useFormValidation(),
-        [ responseError, setResponseError ] = useState(null),
-        [ responseSuccess, setResponseSuccess ] = useState(null);
+  const { name, email } = useContext(CurrentUserContext);
+  const { values, setValues, errors, isValid, setIsValid, handleChange } =
+      useFormValidation();
+  const [responseError, setResponseError] = useState(null);
+  const [responseSuccess, setResponseSuccess] = useState(null);
 
   useEffect(() => {
     if (name && email) {
@@ -40,9 +35,7 @@ export default function Profile({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setIsLoad(true)
-
     mainApi.setUserInfo({ name: values['name'], email: values['email'], })
       .then(data => {
         setCurrentUser({ ...data, loggeIn: true })
@@ -78,7 +71,7 @@ export default function Profile({
                 errors.name ? "profile__input-label_error" : ""
               }`}
             >
-              {errors.name ? INPUT_ERROR_NAME.name : "Имя"}
+              {errors.name ? ERROR_INPUT.name : "Имя"}
             </span>
             <input
               className={`profile__input ${
@@ -102,7 +95,7 @@ export default function Profile({
                 errors.email ? "profile__input-label_error" : ""
               }`}
             >
-              {errors.email ? INPUT_ERROR_NAME.email : "E-mail"}
+              {errors.email ? ERROR_INPUT.email : "E-mail"}
             </span>
             <input
               className={`profile__input ${

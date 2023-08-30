@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Header from "../Header/Header";
 import useFormValidation from "../../hooks/useFormValidator";
-import { CHECK_EMAIL, INPUT_ERROR_NAME } from "../../utils/constants";
+import { CHECK_EMAIL, ERROR_INPUT} from "../../utils/constants";
 
 export default function AuthForm({
   isLoad,
@@ -19,7 +19,6 @@ export default function AuthForm({
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-
     handleSubmit(values);
   };
 
@@ -36,9 +35,7 @@ export default function AuthForm({
           <div className="auth-form__box">
             <label className="auth-form__input-label">Имя</label>
             <input
-              className={`auth-form__input ${
-                errors.name ? "auth-form__input_error" : ""
-              }`}
+              className={`auth-form__input ${errors.name ? "auth-form__input_error" : ""}`}
               type="text"
               name="name"
               minLength={2}
@@ -47,7 +44,7 @@ export default function AuthForm({
               required
             />
             <span className="auth-form__span-error">
-              {errors["name"] ? INPUT_ERROR_NAME["name"] : ""}
+              {errors["name"] ? ERROR_INPUT["name"] : ""}
             </span>
           </div>
         )}
@@ -55,9 +52,7 @@ export default function AuthForm({
         <div className="auth-form__box">
           <label className="auth-form__input-label">E-mail</label>
           <input
-            className={`auth-form__input ${
-              errors.email ? "auth-form__input_error" : ""
-            }`}
+            className={`auth-form__input ${errors.email ? "auth-form__input_error" : ""}`}
             type="email"
             name="email"
             pattern={CHECK_EMAIL}
@@ -65,16 +60,14 @@ export default function AuthForm({
             required
           />
           <span className="auth-form__span-error">
-            {errors["email"] ? INPUT_ERROR_NAME["email"] : ""}
+            {errors["email"] ? ERROR_INPUT["email"] : ""}
           </span>
         </div>
 
         <div className="auth-form__box">
           <label className="auth-form__input-label">Пароль</label>
           <input
-            className={`auth-form__input ${
-              errors.password ? "auth-form__input_error" : ""
-            }`}
+            className={`auth-form__input ${errors.password ? "auth-form__input_error" : ""}`}
             type="password"
             name="password"
             minLength={8}
@@ -83,7 +76,7 @@ export default function AuthForm({
           />
           <span className="auth-form__span-error">
             {errors["password"]
-              ? INPUT_ERROR_NAME["password"]
+              ? ERROR_INPUT["password"]
               : ""
               ? requestError
               : requestError}

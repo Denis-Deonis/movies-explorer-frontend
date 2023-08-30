@@ -8,7 +8,7 @@ export const DURATION_TITLES = ["минута", "минуты", "минут"];
 export const CHECK_EMAIL = '[A-Za-z0-9]+@[a-z]+\\.[a-z]{2,5}';
 
 
-export const INPUT_ERROR_NAME = {
+export const ERROR_INPUT = {
   name: "Имя не должно быть короче 2 букв",
   email: "Введите корректный email",
   password: "Пароль должен быть не короче 8 символов",

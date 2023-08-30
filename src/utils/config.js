@@ -13,3 +13,4 @@ export const MOVIES_API_SETTING = {
 };
 
 export const BASE_URL = "https://api.deonis.nomoredomains.work";
+export const MOVIES_URL = "https://api.nomoreparties.co";

@@ -11,6 +11,7 @@ import Profile from "../Profile/Profile";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
 import Page404 from "../Page404/Page404";
+import {MOVIES_URL} from "../../utils/config";
 
 
 function App() {
@@ -21,16 +22,12 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [movies, setMovies] = useState([]);
   const [saveMovies, setSaveMovies] = useState([]);
-
   const [savedMoviesInLS, setSavedMoviesInLS] = useState(null);
-
-  const navigate = useNavigate(),
-
-    [toggleShortMovie, setToggleShortMovie] = useState(false),
-    [toggleShortSavedMovie, setToggleShortSavedMovie] = useState(false);
-
-    const handleToggleShortSavedMovie = (value) => setToggleShortSavedMovie(value);
-    const handleToggleIsLoad = (value) =>  setIsLoading(value);
+  const navigate = useNavigate();
+  const [toggleShortMovie, setToggleShortMovie] = useState(false);
+  const [toggleShortSavedMovie, setToggleShortSavedMovie] = useState(false);
+  const handleToggleShortSavedMovie = (value) => setToggleShortSavedMovie(value);
+  const handleToggleIsLoad = (value) => setIsLoading(value);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -76,11 +73,11 @@ function App() {
             duration: movie.duration,
             year: movie.year,
             description: movie.description,
-            image: `https://api.nomoreparties.co${movie.image.url}`,
+            image: `${MOVIES_URL}${movie.image.url}`,
             trailerLink: movie.trailerLink,
             nameRU: movie.nameRU,
             nameEN: movie.nameEN,
-            thumbnail: `https://api.nomoreparties.co${movie.image.url}`,
+            thumbnail: `${MOVIES_URL}${movie.image.url}`,
             movieId: movie.id,
           },
         })
@@ -101,12 +98,7 @@ function App() {
     sessionStorage.setItem("shorts", value);
   };
 
-  const setClearValues = () => {
-    // const movieArrs = [setMovies, setSaveMovies];
-    // const valueArrs = [setIsLoading, setToggleShortMovie, setError, setRequestError];
-
-    // movieArrs.forEach((i) => i([]));
-    // valueArrs.forEach((i) => i(null));
+  const handelClearAllValues = () => {
     setCurrentUser({
       name: "",
       email: "",
@@ -135,12 +127,12 @@ function App() {
             path="/profile"
             element={
               <ProtectedRouteElement
+                element={Profile}
                 isLoad={isLoading}
                 setIsLoad={setIsLoading}
-                element={Profile}
                 setCurrentUser={setCurrentUser}
                 navigate={navigate}
-                setClearValues={setClearValues}
+                setClearValues={handelClearAllValues}
               />
             }
           />
@@ -187,10 +179,10 @@ function App() {
             path="/movies"
             element={
               <ProtectedRouteElement
+                element={Movies}
                 currentUser={currentUser}
                 isLoad={isLoading}
                 setIsLoad={handleToggleIsLoad}
-                element={Movies}
                 movies={movies}
                 setMovies={setMovies}
                 saveMovies={saveMovies}
@@ -211,9 +203,9 @@ function App() {
             path="/saved-movies"
             element={
               <ProtectedRouteElement
+                element={SavedMovies}
                 isLoad={isLoading}
                 setIsLoad={handleToggleIsLoad}
-                element={SavedMovies}
                 saveMovies={saveMovies}
                 setSaveMovies={setSaveMovies}
                 handleDeleteSaveMovie={handleDeleteSaveMovie}
