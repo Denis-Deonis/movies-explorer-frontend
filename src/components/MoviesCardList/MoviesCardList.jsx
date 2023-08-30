@@ -5,7 +5,7 @@ export default function MoviesCardList({
   moviesList,
   loadList,
   error,
-  handleBtnMore,
+  handleButtonMore,
   handleToggleAction,
 }) {
 
@@ -16,9 +16,7 @@ export default function MoviesCardList({
     <section className="movies-card">
       { checkIsLoad && checkTypeof ? (
         <span className="movies-card__loader" />
-      ) : checkIsLoad && !checkTypeof ? (
-        <p className="movies-card__error">{"Ничего не найдено"}</p>
-      ) :  error ? (
+      ) : error ? (
         <p className="movies-card__error">{error}</p>
       ) : (
         <ul className="movies-card__list">
@@ -27,7 +25,7 @@ export default function MoviesCardList({
             key={card.id || card.movieId}
             movie={card}
             handleToggleAction={handleToggleAction}
-            savedMovieBtn={!!loadList}
+            savedMovieButton={!!loadList}
             />
           ))}
         </ul>
@@ -36,7 +34,7 @@ export default function MoviesCardList({
     {
       checkTypeof && (
           !isLoad && !!loadList && ( moviesList.length !== 0 ) < loadList.length  && (
-          <button className="movies-card__more-button" onClick={handleBtnMore}>
+          <button className="movies-card__more-button" onClick={handleButtonMore}>
             Ещё
           </button>
       ))

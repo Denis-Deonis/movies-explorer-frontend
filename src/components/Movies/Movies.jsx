@@ -25,11 +25,12 @@ export default function Movies({
   setError,
   handleLike,
   setSavedMoviesInLS,
-  savedMoviesInLS
+  savedMoviesInLS,
+  searchQuery,
+  setSearchQuery
 }) {
 
   const [loadList, setLoadList] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(null);
   const typeContainer = getVisibleCount();
 
   useEffect(() => setError(null), []);
@@ -114,7 +115,7 @@ export default function Movies({
         moviesList={movies}
         loadList={loadList}
         error={error}
-        handleBtnMore={handleButtonMore}
+        handleButtonMore={handleButtonMore}
         handleToggleAction={handleToggleSaveMovie}
       />
       <Footer />

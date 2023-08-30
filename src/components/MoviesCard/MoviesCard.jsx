@@ -1,7 +1,7 @@
-import { MOVIES_API_SETTING } from "../../utils/config";
+import { MOVIES_URL } from "../../utils/config";
 import { convertDuration } from '../../utils/duration';
 
-export default function MoviesCard({ movie, handleToggleAction, savedMovieBtn }) {
+export default function MoviesCard({ movie, handleToggleAction, savedMovieButton }) {
   const { duration, image, trailerLink, nameRU, isLiked } = movie;
 
   const handleToggleButton = () =>  handleToggleAction(movie);;
@@ -16,7 +16,7 @@ export default function MoviesCard({ movie, handleToggleAction, savedMovieBtn })
       >
         <img
           className="card__img"
-          src={image.url ? `${MOVIES_API_SETTING.baseUrl}${image.url}` : image}
+          src={image.url ? `${MOVIES_URL}${image.url}` : image}
           alt={nameRU}
         />
       </a>
@@ -24,7 +24,7 @@ export default function MoviesCard({ movie, handleToggleAction, savedMovieBtn })
         <h2 className="card__title">{nameRU}</h2>
         <button
           className={`card__button ${
-            !savedMovieBtn
+            !savedMovieButton
               ? "card__button_type_delete"
               : isLiked
               ? "card__button_type_seved"

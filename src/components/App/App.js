@@ -28,6 +28,7 @@ function App() {
   const [toggleShortSavedMovie, setToggleShortSavedMovie] = useState(false);
   const handleToggleShortSavedMovie = (value) => setToggleShortSavedMovie(value);
   const handleToggleIsLoad = (value) => setIsLoading(value);
+  const [searchQuery, setSearchQuery] = useState(null);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -99,6 +100,13 @@ function App() {
   };
 
   const handelClearAllValues = () => {
+    const valueArrays = [setIsLoading, setToggleShortMovie, setError, setRequestError];
+    const movieArrays = [setMovies, setSaveMovies];
+    setSearchQuery(null);
+
+    valueArrays.forEach((i) => i(null));
+    movieArrays.forEach((i) => i([]));
+
     setCurrentUser({
       name: "",
       email: "",
@@ -195,6 +203,8 @@ function App() {
                 handleLike={handleSaveMovie}
                 savedMoviesInLS={savedMoviesInLS}
                 setSavedMoviesInLS={setSavedMoviesInLS}
+                setSearchQuery={setSearchQuery}
+                searchQuery={searchQuery}
               />
             }
           />
