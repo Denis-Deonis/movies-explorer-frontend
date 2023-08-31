@@ -1,28 +1,28 @@
-import { Link } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 export default function Navigation({ isOpenBurger }) {
   return (
-    <div className={`navigation ${isOpenBurger ? "navigation_active" : ""}`}>
+    <nav className={`navigation ${isOpenBurger ? "navigation_active" : ""}`}>
       <ul className="navigation__list">
         <li className="navigation__item">
-          <Link to="/" className="navigation__link navigation__link_home">
+          <NavLink  to="/" className="navigation__link navigation__link_home">
             Главная
-          </Link>
+          </NavLink>
         </li>
         <li className="navigation__item">
-          <Link to="/movies" className="navigation__link">
+          <NavLink  to="/movies" className="navigation__link">
             Фильмы
-          </Link>
+          </NavLink>
         </li>
         <li className="navigation__item">
-          <Link to="/saved-movies" className="navigation__link">
+          <NavLink  to="/saved-movies" className="navigation__link">
             Сохраненные фильмы
-          </Link>
+          </NavLink>
         </li>
       </ul>
-      <Link to="/profile" className="navigation__profile">
+      <NavLink  to="/profile" className="navigation__profile">
         Аккаунт
-      </Link>
-    </div>
+      </NavLink>
+    </nav>
   );
 }

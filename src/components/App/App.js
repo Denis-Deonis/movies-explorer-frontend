@@ -29,6 +29,31 @@ function App() {
   const handleToggleShortSavedMovie = (value) => setToggleShortSavedMovie(value);
   const handleToggleIsLoad = (value) => setIsLoading(value);
   const [searchQuery, setSearchQuery] = useState(null);
+  const pathname = window.location.pathname;
+
+  useEffect(() => {
+    tokenVerification();
+  }, []);
+
+  async function tokenVerification() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      setIsLoading(true);
+      try {
+        const res = mainApi.getUserInfo();
+        if (res) {
+          setIsLoggedIn(true);
+          navigate(pathname);
+        }
+      } catch (err) {
+        console.log(err);
+        handelClearAllValues()
+        navigate('/')
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  }
 
   useEffect(() => {
     if (isLoggedIn) {
