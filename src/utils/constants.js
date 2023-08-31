@@ -5,8 +5,8 @@ export const DATE_BIRTH = {
 
 export const DURATION_TITLES = ["минута", "минуты", "минут"];
 
-export const CHECK_EMAIL = '[A-Za-z0-9]+@[a-z]+\\.[a-z]{2,5}';
-
+// export const CHECK_EMAIL = '[A-Za-z0-9]+@[a-z]+\\.[a-z]{2,5}';
+// export const CHECK_EMAIL = "^\S+@\S+\.\S+$"
 
 export const ERROR_INPUT = {
   name: "Имя не должно быть короче 2 букв",

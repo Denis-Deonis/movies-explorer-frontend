@@ -55,7 +55,7 @@ export default function AuthForm({
             className={`auth-form__input ${errors.email ? "auth-form__input_error" : ""}`}
             type="email"
             name="email"
-            pattern={CHECK_EMAIL}
+            pattern="^\S+@\S+\.[\S+$]{2,5}"
             onChange={handleChange}
             required
           />
