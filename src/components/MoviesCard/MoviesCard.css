@@ -68,11 +68,19 @@
   transform: scale(0.9);
 }
 
-.card__button_type_delete {
+/* .card__button_type_delete {
   visibility: hidden;
 }
 
 .card__group:hover .card__button_type_delete {
+  visibility: visible;
+  transform: scale(1.2);
+  background-image: url("./delete.svg");
+  cursor: pointer;
+} */
+
+
+.card__button_type_delete {
   visibility: visible;
   transform: scale(1.2);
   background-image: url("./delete.svg");
@@ -116,6 +124,17 @@
   .card__group {
     margin: 14px;
   }
+
+  .card__button_type_delete {
+  visibility: hidden;
+}
+
+.card:hover .card__button_type_delete {
+  visibility: visible;
+  transform: scale(1.2);
+  background-image: url("./delete.svg");
+  cursor: pointer;
+}
 }
 
 @media (min-width: 1280px) {

@@ -99,8 +99,6 @@
 }
 
 .search-form__button:disabled {
-  opacity: .5;
-  /* background-color: #808080; */
   cursor: default;
   transform: scale(1);
 }
