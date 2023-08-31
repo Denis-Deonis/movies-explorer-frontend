@@ -11,35 +11,39 @@ export default function SearchForm({
   onToggleShortMovie,
 }) {
 
-  const { values, setValues, handleChange } = useFormValidation();
+  const { values, setValues, errors, isValid, handleChange } = useFormValidation();
   const handleChecked = () => onToggleShortMovie(!toggleShortMovie);
 
   useEffect(() => {
-    const name = "search-films";
+    const name = "search";
     setValues({ [name]: savedSearch });
   }, [setValues, savedSearch]);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    onSubmit(values["search-films"]);
+    onSubmit(values["search"]);
   };
 
   return (
-    <form className="search-form"  onSubmit={handleSubmit}>
+    <form id="search-form" className="search-form"  onSubmit={handleSubmit}>
       <label className="search-form__wrapper search-form__wrapper_find">
+      <span className="search-form__span-error">
+        {errors.search ? "Нужно ввести ключевое слово": ""}
+      </span>
         <img className="search-form__img" src={findIcon} alt="" />
         <input
-          className="search-form__input"
-          name="search-films"
+          className={`search-form__input ${errors.search ? "search-form__input_error" : ""}`}
+          id="search"
+          name="search"
           type="text"
-          placeholder="Фильм"
+          placeholder={errors.search ? "": "Фильм"}
           onChange={handleChange}
-          value={values["search-films"] || ""}
+          value={values.search || ""}
           required={!savedMoviesType ?? false}
         />
         <button
           className="search-form__button"
-          disabled={isLoad ? true : false}
+          disabled={isLoad || !isValid  ? true : false}
         />
       </label>
       <label className="search-form__wrapper search-form__wrapper_short-film">

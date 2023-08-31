@@ -60,6 +60,20 @@
   transition: all .2s ease-out;
 }
 
+.search-form__input_error {
+  outline: 1px solid #EE3465;
+  color: #EE3465;
+}
+
+.search-form__span-error {
+  position: absolute;
+  margin: 46px 0 0 80px;
+  padding: 0;
+  font-size: .625rem;
+  line-height: .625rem;
+  color: #EE3465;
+}
+
 .search-form__button {
   width: 80px;
   height: 34px;
@@ -80,7 +94,7 @@
 }
 
 
-.search-form__button:hover {
+.search-form__button:hover  {
   transform: scale(.9);
 }
 
@@ -88,6 +102,7 @@
   opacity: .5;
   /* background-color: #808080; */
   cursor: default;
+  transform: scale(1);
 }
 
 .search-form__short-film-text {
