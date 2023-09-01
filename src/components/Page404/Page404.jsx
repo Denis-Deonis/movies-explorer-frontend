@@ -11,7 +11,7 @@ export default function Page404() {
     <main className="page404">
       <h1 className="page404__title">404</h1>
       <p className="page404__subtitle">Страница не найдена</p>
-      <NavLink  className="page404__link" onClick={handleClickComeBack}>
+      <NavLink to="#" className="page404__link" onClick={handleClickComeBack}>
         Назад
       </NavLink>
     </main>
