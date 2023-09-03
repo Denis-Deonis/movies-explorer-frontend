@@ -1,5 +1,5 @@
 import findIcon from "./icon_find.svg";
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import useFormValidation from '../../hooks/useFormValidator';
 
 export default function SearchForm({
@@ -13,6 +13,7 @@ export default function SearchForm({
 
   const { values, setValues, errors, isValid, handleChange } = useFormValidation();
   const handleChecked = () => onToggleShortMovie(!toggleShortMovie);
+  const [isQueryError, setIsQueryError] = useState(false);
 
   useEffect(() => {
     const name = "search";
@@ -21,15 +22,25 @@ export default function SearchForm({
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    onSubmit(values["search"]);
+
+    if (!isValid) {
+      setIsQueryError(true);
+    } else if ( values["search"].length === 0) {
+      setIsQueryError(true);
+    } else {
+      setIsQueryError(false);
+      onSubmit(values["search"]);
+    }
   };
 
   return (
     <form id="search-form" className="search-form"  onSubmit={handleSubmit}>
       <label className="search-form__wrapper search-form__wrapper_find">
-      <span className="search-form__span-error">
-        {errors.search ? "Нужно ввести ключевое слово": ""}
-      </span>
+      { isQueryError && (<span className="search-form__span-error">
+        {"Нужно ввести ключевое слово"}
+      </span>)
+      }
+
         <img className="search-form__img" src={findIcon} alt="" />
         <input
           className={`search-form__input ${errors.search ? "search-form__input_error" : ""}`}
@@ -39,11 +50,12 @@ export default function SearchForm({
           placeholder={errors.search ? "": "Фильм"}
           onChange={handleChange}
           value={values.search || ""}
-          required={!savedMoviesType ?? false}
         />
         <button
           className="search-form__button"
-          disabled={isLoad || !isValid  ? true : false}
+          type="submit"
+          form="search-form"
+          disabled={isLoad ? true : false}
         />
       </label>
       <label className="search-form__wrapper search-form__wrapper_short-film">
