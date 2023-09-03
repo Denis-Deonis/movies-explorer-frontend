@@ -29,38 +29,26 @@ function App() {
   const handleToggleShortSavedMovie = (value) => setToggleShortSavedMovie(value);
   const handleToggleIsLoad = (value) => setIsLoading(value);
   const [searchQuery, setSearchQuery] = useState(null);
-  const pathname = window.location.pathname;
   const jwt = localStorage.getItem('jwt');
+  const path = window.location.pathname;
 
-
-
-   //с помощью tokenVerification идет проверка токена на валидность
   useEffect(() => {
-    tokenVerification();
-  }, []);
-
-  async function tokenVerification() {
-    if (isLoggedIn) {
+    if (jwt) {
       setIsLoading(true);
-      try {
-        const res = mainApi.getUserInfo();
-        if (res.jwt === jwt) {
-          setIsLoggedIn(true);
-          navigate(pathname);
-          console.log(res.jwt)
-        }
-      } catch (err) {
+      mainApi.getUserInfo()
+      .then(() => {
+          setIsLoggedIn(true)
+          navigate(path)
+      })
+      .catch(() => {
         handelClearAllValues()
         navigate('/')
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      localStorage.removeItem("userID")
-      handelClearAllValues()
-      navigate('/')
+        mainApi.getLogoutUser()
+      })
+      .finally(() => setIsLoading(false));
     }
-  }
+  }, [jwt]);
+
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -68,21 +56,11 @@ function App() {
       Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
         .then((res) => {
           const [dataMovie, dataCurrentUser] = res;
-          console.log(dataCurrentUser.jwt)
-          if(dataCurrentUser.jwt === jwt)
           setSaveMovies(dataMovie);
           setCurrentUser({ ...dataCurrentUser, loggeIn: true });
         })
-        .catch(() => {
-          localStorage.removeItem("userID")
-          handelClearAllValues()
-          navigate('/')
-        })
+        .catch(() => localStorage.removeItem("userID"))
         .finally(() => setIsLoading(false));
-    } else {
-      localStorage.removeItem("userID")
-      handelClearAllValues()
-      navigate('/')
     }
   }, [isLoggedIn]);
 
