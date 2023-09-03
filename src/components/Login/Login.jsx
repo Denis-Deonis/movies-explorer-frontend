@@ -10,9 +10,11 @@ export default function Login({
   navigate,
   requestError,
   setRequestError,
+  setClearValues
 }) {
   const handleAuthorizationUser = (userData) => {
     setIsLoad(true);
+    setClearValues()
 
     mainApi
       .getAuthorizationUser(userData)

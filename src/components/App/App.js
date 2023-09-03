@@ -30,28 +30,35 @@ function App() {
   const handleToggleIsLoad = (value) => setIsLoading(value);
   const [searchQuery, setSearchQuery] = useState(null);
   const pathname = window.location.pathname;
+  const jwt = localStorage.getItem('jwt');
 
+
+
+   //с помощью tokenVerification идет проверка токена на валидность
   useEffect(() => {
     tokenVerification();
   }, []);
 
   async function tokenVerification() {
-    const jwt = localStorage.getItem('jwt');
-    if (jwt) {
+    if (isLoggedIn) {
       setIsLoading(true);
       try {
         const res = mainApi.getUserInfo();
-        if (res) {
+        if (res.jwt === jwt) {
           setIsLoggedIn(true);
           navigate(pathname);
+          console.log(res.jwt)
         }
       } catch (err) {
-        console.log(err);
         handelClearAllValues()
         navigate('/')
       } finally {
         setIsLoading(false);
       }
+    } else {
+      localStorage.removeItem("userID")
+      handelClearAllValues()
+      navigate('/')
     }
   }
 
@@ -61,11 +68,21 @@ function App() {
       Promise.all([mainApi.getAllSavedMovies(), mainApi.getUserInfo()])
         .then((res) => {
           const [dataMovie, dataCurrentUser] = res;
+          console.log(dataCurrentUser.jwt)
+          if(dataCurrentUser.jwt === jwt)
           setSaveMovies(dataMovie);
           setCurrentUser({ ...dataCurrentUser, loggeIn: true });
         })
-        .catch(() => localStorage.removeItem("userID"))
+        .catch(() => {
+          localStorage.removeItem("userID")
+          handelClearAllValues()
+          navigate('/')
+        })
         .finally(() => setIsLoading(false));
+    } else {
+      localStorage.removeItem("userID")
+      handelClearAllValues()
+      navigate('/')
     }
   }, [isLoggedIn]);
 
@@ -201,6 +218,7 @@ function App() {
                   navigate={navigate}
                   requestError={requestError}
                   setRequestError={setRequestError}
+                  setClearValues={handelClearAllValues}
                 />
               ) : (
                 <Navigate to="/movies" />

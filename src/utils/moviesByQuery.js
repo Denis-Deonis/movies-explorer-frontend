@@ -1,9 +1,10 @@
-export const findMovies = (movies, query) => {
-  const moviesByQuery = movies.filter((movie) => {
-    const movieRu = String(movie.nameRU).toLowerCase().trim();
-    const movieEn = String(movie.nameEN).toLowerCase().trim();
-    const userQuery = query.toLowerCase().trim();
-    return movieRu.indexOf(userQuery) !== -1 || movieEn.indexOf(userQuery) !== -1;
-  });
-  return moviesByQuery;
+export const findMovies = (movies, searchQuery) => {
+  const newArrMovies = [];
+  if (searchQuery) {
+    const search = searchQuery.toLowerCase();
+    movies.forEach(film => {
+      if (~film.nameEN.toLowerCase().indexOf(search) || ~film.nameRU.toLowerCase().indexOf(search)) newArrMovies.push(film)
+    });
+    return newArrMovies;
+  }
 };
